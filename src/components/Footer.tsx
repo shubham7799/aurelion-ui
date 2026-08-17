@@ -1,3 +1,4 @@
+import { useNavigate } from 'react-router-dom';
 import './Footer.css';
 
 const SOCIAL_LINKS = [
@@ -10,12 +11,16 @@ const SOCIAL_LINKS = [
 const PARTNER_LOGOS = Array.from({ length: 16 }, (_, i) => `/partners/${String(i + 1).padStart(2, '0')}.svg`);
 
 export default function Footer() {
+  const navigate = useNavigate();
+
   return (
     <footer className="footer">
       <div className="footer-top">
         <img src="/footer-logo.svg" alt="Aurelion" className="footer-logo" />
         <nav className="footer-nav">
-          <button type="button">Contact</button>
+          <button type="button" onClick={() => navigate('/contact')}>
+            Contact
+          </button>
           <button type="button">About</button>
         </nav>
       </div>
