@@ -1,0 +1,66 @@
+.nav {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  z-index: 500;
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  height: 32px;
+}
+
+.nav-col {
+  display: flex;
+  align-items: center;
+  height: 100%;
+}
+
+.nav-col-logo {
+  padding-left: 40px;
+}
+
+.nav-logo {
+  height: 28px;
+  width: auto;
+  filter: brightness(0) invert(1);
+  transform: translateY(9px);
+}
+
+.nav-item {
+  appearance: none;
+  background: none;
+  border: none;
+  border-radius: 0;
+  justify-content: space-between;
+  padding: 0 24px;
+  cursor: pointer;
+  color: #ffffff;
+  font-family: 'Instrument Sans', sans-serif;
+  font-size: 13px;
+  font-weight: 500;
+  letter-spacing: 0.08em;
+}
+
+.nav-item-marker {
+  width: 5px;
+  height: 5px;
+  flex-shrink: 0;
+  background: currentColor;
+}
+
+.nav-item-glass {
+  font-family: 'Instrument Serif', serif;
+  font-style: normal;
+  font-weight: 400;
+  font-size: 16px;
+  line-height: 19px;
+  text-transform: uppercase;
+  color: #ffffff;
+  background: rgba(4, 17, 33, 0.25);
+  backdrop-filter: blur(4.5px);
+  -webkit-backdrop-filter: blur(4.5px);
+}
+
+.nav-item-highlight {
+  background: #041121;
+}
