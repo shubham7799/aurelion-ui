@@ -1,7 +1,7 @@
 import './BookCall.css';
 
 
-export default function BookCall({}) {
+export default function BookCall() {
   return (
     <section className="book-call" style={{ backgroundImage: 'url(../book-call.png)' }}>
       <div className="book-call-content">
