@@ -1,5 +1,7 @@
 import { useState } from 'react';
 import Preloader from './components/Preloader';
+import Nav from './components/Nav';
+import GuideLines from './components/GuideLines';
 import Home from './pages/Home';
 import './App.css';
 
@@ -9,6 +11,8 @@ function App() {
   return (
     <>
       {loading && <Preloader onComplete={() => setLoading(false)} />}
+      <Nav />
+      <GuideLines />
       <Home />
     </>
   );
