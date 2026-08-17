@@ -1,0 +1,44 @@
+.preloader {
+  position: fixed;
+  inset: 0;
+  z-index: 10000;
+}
+
+.preloader-backdrop,
+.preloader-outline-layer,
+.preloader-fill-layer {
+  position: absolute;
+  inset: 0;
+  -webkit-mask-repeat: no-repeat;
+  mask-repeat: no-repeat;
+  -webkit-mask-position: center;
+  mask-position: center;
+}
+
+.preloader-backdrop {
+  background-color: #f5f0e6;
+  will-change: mask-size, background-color;
+}
+
+.preloader-outline-layer,
+.preloader-fill-layer {
+  background-color: #041121;
+  -webkit-mask-size: 76px auto;
+  mask-size: 76px auto;
+}
+
+.preloader-fill-layer {
+  clip-path: inset(100% 0 0 0);
+  will-change: clip-path;
+}
+
+.preloader-count {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, 56px);
+  font-family: Georgia, 'Times New Roman', serif;
+  font-size: 1.5rem;
+  color: #041121;
+  font-variant-numeric: tabular-nums;
+}
