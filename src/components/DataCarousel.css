@@ -1,0 +1,281 @@
+.data-carousel {
+  position: relative;
+  height: 100vh;
+  min-height: 640px;
+  overflow: hidden;
+  background: #041121;
+}
+
+.data-carousel-images {
+  position: absolute;
+  inset: 0;
+}
+
+.data-carousel-image {
+  position: absolute;
+  inset: 0;
+  background-size: cover;
+  background-position: center;
+  opacity: 0;
+  transition: opacity 1s ease;
+}
+
+.data-carousel-image.is-active {
+  opacity: 1;
+}
+
+.data-carousel-scrim {
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(90deg, rgba(4, 17, 33, 0.55) 0%, rgba(4, 17, 33, 0) 45%);
+}
+
+.data-carousel-ring {
+  /* Height is the section's available space minus 78px top and 78px bottom;
+     width follows via `aspect-ratio` to keep it a perfect circle. Sizes with
+     the viewport instead of staying fixed at one pixel size. */
+  position: absolute;
+  top: 78px;
+  bottom: 78px;
+  left: 50%;
+  aspect-ratio: 1;
+  transform: translateX(-50%);
+}
+
+.data-carousel-ring-outer {
+  /* Absolute + inset so this scales against the same box as
+     `.data-carousel-ring-inner-wrap` below — otherwise the two can drift out
+     of proportion with each other. */
+  position: absolute;
+  inset: 0;
+  display: block;
+  width: 100%;
+  height: 100%;
+}
+
+.data-carousel-ring-inner-wrap {
+  /* Default (q0): top-right quadrant, unmirrored — the source asset is drawn
+     to trace the ring's right-hand circumference as-is. Every quadrant sets
+     all four offsets explicitly (not just the two it needs) so switching
+     quadrants can't leave a stale `top`/`left` etc. from a previous one. */
+  position: absolute;
+  top: 0;
+  right: 0;
+  bottom: auto;
+  left: auto;
+  width: 50%;
+  height: 50%;
+  /* No transition on transform — animating scaleY/scaleX between quadrants
+     passes through 0 mid-flight, which reads as a squash/flip. The position
+     (top/right/bottom/left) already can't animate to/from `auto` anyway, so
+     both the move and the mirror just cut instantly, together. */
+}
+
+/* q1: bottom-right — box moves down to that corner; mirrored vertically so
+   the arc traces the lower circumference instead of the upper one. */
+.data-carousel-ring-q1 .data-carousel-ring-inner-wrap {
+  top: auto;
+  right: 0;
+  bottom: 0;
+  left: auto;
+  transform: scaleY(-1);
+}
+
+/* q2: bottom-left — mirrored on both axes (the asset traces the right-hand
+   circumference by default, so the left side always needs a horizontal
+   mirror on top of whichever vertical mirror that corner needs). */
+.data-carousel-ring-q2 .data-carousel-ring-inner-wrap {
+  top: auto;
+  right: auto;
+  bottom: 0;
+  left: 0;
+  transform: scale(-1, -1);
+}
+
+/* q3: top-left — horizontal mirror only. */
+.data-carousel-ring-q3 .data-carousel-ring-inner-wrap {
+  top: 0;
+  right: auto;
+  bottom: auto;
+  left: 0;
+  transform: scaleX(-1);
+}
+
+.data-carousel-ring-q3 .data-carousel-ring-inner-wrap {
+  transform: scaleX(-1);
+}
+
+.data-carousel-ring-inner {
+  display: block;
+  width: 100%;
+  height: 100%;
+}
+
+.data-carousel-content {
+  position: absolute;
+  left: 32px;
+  top: 64px;
+  z-index: 2;
+  display: flex;
+  flex-direction: column;
+  gap: 24px;
+  width: 334px;
+  max-width: calc(100% - 64px);
+  animation: data-carousel-fade-in 0.6s ease both;
+}
+
+@keyframes data-carousel-fade-in {
+  from {
+    opacity: 0;
+    transform: translateX(-8px);
+  }
+  to {
+    opacity: 1;
+    transform: translateX(0);
+  }
+}
+
+.data-carousel-heading {
+  margin: 0;
+  max-width: 334px;
+  font-family: 'Instrument Serif', serif;
+  font-style: normal;
+  font-weight: 400;
+  font-size: 52px;
+  line-height: 52px;
+  color: #ffffff;
+}
+
+.data-carousel-description {
+  margin: 0;
+  font-family: 'Instrument Sans', sans-serif;
+  font-style: normal;
+  font-weight: 400;
+  font-size: 18px;
+  line-height: 21px;
+  color: #ffffff;
+}
+
+.data-carousel-tabs {
+  position: absolute;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  z-index: 2;
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  align-items: end;
+}
+
+.data-carousel-tab {
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  height: 32px;
+  padding: 0 12px;
+  overflow: hidden;
+  background: rgba(4, 17, 33, 0.25);
+  backdrop-filter: blur(4.5px);
+  -webkit-backdrop-filter: blur(4.5px);
+  transition: height 0.4s ease, background-color 0.4s ease, padding 0.4s ease;
+}
+
+.data-carousel-tab.is-active {
+  height: 171px;
+  justify-content: flex-start;
+  padding-top: 21px;
+  background: #041121;
+}
+
+.data-carousel-progress {
+  position: absolute;
+  top: 0;
+  left: 0;
+  height: 4px;
+  width: 0;
+  background: #ffffff;
+  animation-name: data-carousel-progress;
+  animation-timing-function: linear;
+  animation-fill-mode: forwards;
+}
+
+@keyframes data-carousel-progress {
+  from {
+    width: 0;
+  }
+  to {
+    width: 100%;
+  }
+}
+
+.data-carousel-tab-row {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 4px;
+  width: 100%;
+}
+
+.data-carousel-tab-label {
+  display: flex;
+  align-items: center;
+  gap: 4px;
+  overflow: hidden;
+  white-space: nowrap;
+  text-overflow: ellipsis;
+  font-family: 'Instrument Serif', serif;
+  font-size: 16px;
+  line-height: 19px;
+  text-transform: uppercase;
+  color: #ffffff;
+}
+
+.data-carousel-tab-muted {
+  flex-shrink: 0;
+  opacity: 0.42;
+}
+
+.data-carousel-tab-dot {
+  flex-shrink: 0;
+  width: 4px;
+  height: 4px;
+  background: #ffffff;
+}
+
+.data-carousel-tab-description {
+  margin: 24px 0 0;
+  font-family: 'Instrument Sans', sans-serif;
+  font-weight: 500;
+  font-size: 14px;
+  line-height: 20px;
+  text-transform: uppercase;
+  color: rgba(255, 255, 255, 0.85);
+}
+
+@media (max-width: 900px) {
+  .data-carousel {
+    height: auto;
+    min-height: 100vh;
+  }
+
+  .data-carousel-content {
+    width: auto;
+    max-width: calc(100% - 48px);
+    left: 24px;
+  }
+
+  .data-carousel-heading {
+    font-size: 36px;
+    line-height: 38px;
+  }
+
+  .data-carousel-tabs {
+    grid-template-columns: repeat(2, 1fr);
+    grid-auto-rows: min-content;
+  }
+
+  .data-carousel-tab.is-active {
+    grid-column: 1 / -1;
+  }
+}
