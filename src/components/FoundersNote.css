@@ -1,0 +1,124 @@
+.founders-note {
+  background: #f5f0e6;
+  padding: 96px 32px;
+}
+
+.founders-note-grid {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  column-gap: 24px;
+  max-width: 1440px;
+  margin: 0 auto;
+}
+
+.founders-note-label {
+  grid-column: 1;
+  margin: 0;
+  padding-right: 48px;
+  font-family: 'Instrument Sans', sans-serif;
+  font-weight: 500;
+  font-size: 13px;
+  line-height: 1.5;
+  letter-spacing: 0.06em;
+  text-align: right;
+  text-transform: uppercase;
+  color: rgba(4, 17, 33, 0.5);
+}
+
+.founders-note-list {
+  grid-column: 2 / span 3;
+  display: flex;
+  flex-direction: column;
+  gap: 96px;
+}
+
+.founders-note-item {
+  display: grid;
+  grid-template-columns: minmax(220px, 1fr) 2fr;
+  gap: 48px;
+}
+
+.founders-note-person {
+  display: flex;
+  flex-direction: column;
+}
+
+.founders-note-photo {
+  display: block;
+  width: 100%;
+  aspect-ratio: 262 / 308;
+  object-fit: cover;
+  background: #ffffff;
+}
+
+.founders-note-byline {
+  margin-top: 24px;
+}
+
+.founders-note-name {
+  margin: 0;
+  font-family: 'Instrument Sans', sans-serif;
+  font-weight: 500;
+  font-size: 15px;
+  line-height: 1.4;
+  text-transform: uppercase;
+  color: #041121;
+}
+
+.founders-note-title {
+  margin: 4px 0 0;
+  font-family: 'Instrument Sans', sans-serif;
+  font-weight: 500;
+  font-size: 15px;
+  line-height: 1.4;
+  text-transform: uppercase;
+  color: rgba(4, 17, 33, 0.62);
+}
+
+.founders-note-signature {
+  display: block;
+  width: 108px;
+  height: auto;
+  margin-top: 16px;
+  opacity: 0.7;
+}
+
+.founders-note-quote-block {
+  padding-top: 94px;
+}
+
+.founders-note-quote-icon {
+  display: block;
+  width: 48px;
+  height: 48px;
+  margin-bottom: 16px;
+}
+
+.founders-note-quote {
+  margin: 0;
+  font-family: 'Instrument Serif', serif;
+  font-style: normal;
+  font-weight: 400;
+  font-size: 52px;
+  line-height: 57px;
+  letter-spacing: -0.55px;
+  max-width: 527px;
+  color: #041121;
+}
+
+@media (max-width: 900px) {
+  .founders-note-label {
+    grid-column: 1 / span 4;
+    margin-bottom: 32px;
+    padding-right: 0;
+    text-align: left;
+  }
+
+  .founders-note-list {
+    grid-column: 1 / span 4;
+  }
+
+  .founders-note-item {
+    grid-template-columns: 1fr;
+  }
+}

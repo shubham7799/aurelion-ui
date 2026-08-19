@@ -2,7 +2,7 @@ import { useNavigate } from 'react-router-dom';
 import './Nav.css';
 
 const NAV_ITEMS = [
-  { label: 'About Us' },
+  { label: 'About Us', to: '/about' },
   { label: 'Contact Us', to: '/contact' },
   { label: 'Schedule a Call', highlight: true },
 ];

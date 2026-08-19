@@ -21,7 +21,9 @@ export default function Footer() {
           <button type="button" onClick={() => navigate('/contact')}>
             Contact
           </button>
-          <button type="button">About</button>
+          <button type="button" onClick={() => navigate('/about')}>
+            About
+          </button>
         </nav>
       </div>
 
