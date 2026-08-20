@@ -1,0 +1,16 @@
+/*
+ * Consumers restyle the reveal by overriding these two custom properties on
+ * whatever class they pass in — no need to reach into `.shl-char` itself.
+ */
+.scroll-highlight-text {
+  --shl-muted: rgba(4, 17, 33, 0.35);
+  --shl-highlight: #041121;
+}
+
+.shl-char {
+  color: var(--shl-muted);
+}
+
+.shl-char.shl-active {
+  color: var(--shl-highlight);
+}

@@ -1,0 +1,18 @@
+<svg preserveAspectRatio="none" overflow="visible" style="display: block;" width="348" height="348" viewBox="0 0 348 348" fill="none" xmlns="http://www.w3.org/2000/svg">
+<g id="Ellipse 10">
+<mask id="path-1-inside-1_0_4" fill="white">
+<path d="M348 348C348 302.3 338.999 257.047 321.51 214.826C304.021 172.605 278.388 134.242 246.073 101.927C213.758 69.612 175.395 43.9786 133.174 26.4899C90.9525 9.00128 45.7 -1.99761e-06 -1.52116e-05 0L0 348H348Z"/>
+</mask>
+<path d="M348 348C348 302.3 338.999 257.047 321.51 214.826C304.021 172.605 278.388 134.242 246.073 101.927C213.758 69.612 175.395 43.9786 133.174 26.4899C90.9525 9.00128 45.7 -1.99761e-06 -1.52116e-05 0L0 348H348Z" fill="url(#paint0_linear_0_4)" fill-opacity="0.35" stroke="url(#paint1_linear_0_4)" stroke-opacity="0.35" stroke-width="2" mask="url(#path-1-inside-1_0_4)"/>
+</g>
+<defs>
+<linearGradient id="paint0_linear_0_4" x1="267" y1="18" x2="98.0965" y2="191.184" gradientUnits="userSpaceOnUse">
+<stop stop-color="white"/>
+<stop offset="1" stop-color="white" stop-opacity="0"/>
+</linearGradient>
+<linearGradient id="paint1_linear_0_4" x1="207" y1="63" x2="-1.69873e-05" y2="348" gradientUnits="userSpaceOnUse">
+<stop stop-color="white"/>
+<stop offset="0.241033" stop-color="white" stop-opacity="0"/>
+</linearGradient>
+</defs>
+</svg>
