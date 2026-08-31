@@ -32,6 +32,13 @@ interface ScrollHighlightTextProps {
    * viewport height. Only applies inside a scroll track.
    */
   startOffset?: number;
+  /**
+   * Fraction (0–1) of the track's remaining scroll the reveal consumes. The
+   * default 1 runs it to the very end of the track; a smaller value finishes
+   * the reveal early, leaving the rest of the track free for another animation
+   * to take over. Only applies inside a scroll track.
+   */
+  trackSpan?: number;
   /** Set false to render the text fully highlighted, with no scroll animation. */
   animate?: boolean;
 }
@@ -40,6 +47,7 @@ export default function ScrollHighlightText({
   text,
   className = '',
   startOffset = 0,
+  trackSpan = 1,
   animate = true,
 }: ScrollHighlightTextProps) {
   const rootRef = useRef<HTMLDivElement>(null);
@@ -87,15 +95,21 @@ export default function ScrollHighlightText({
       // Numeric start/end only — string positions are easy to get subtly wrong,
       // and if `end` resolves before `start`, progress pins at 1 immediately.
       // With a track: starts after `startOffset` of hold time once it locks, and
-      // ends exactly when the sticky child releases. Without one: reveals as
+      // ends when the sticky child releases — or earlier, if `trackSpan` hands
+      // the tail of the track to another animation. Without one: reveals as
       // `root` crosses the viewport.
+      const trackStart = () => docTop(track!) + (window.innerHeight * startOffset) / 100;
+      const trackEnd = () =>
+        docTop(track!) + track!.offsetHeight - (sticky ?? target).offsetHeight;
+
       const trigger = ScrollTrigger.create({
         trigger: target,
-        start: track
-          ? () => docTop(track) + (window.innerHeight * startOffset) / 100
-          : () => docTop(target) - window.innerHeight * 0.75,
+        start: track ? trackStart : () => docTop(target) - window.innerHeight * 0.75,
         end: track
-          ? () => docTop(track) + track.offsetHeight - (sticky ?? target).offsetHeight
+          ? () => {
+              const from = trackStart();
+              return from + (trackEnd() - from) * trackSpan;
+            }
           : () => docTop(target) - window.innerHeight * 0.25,
         invalidateOnRefresh: true,
         onUpdate: (self) => revealTo(Math.round(self.progress * chars.length)),
@@ -103,7 +117,7 @@ export default function ScrollHighlightText({
 
       return () => trigger.kill();
     },
-    { scope: rootRef, dependencies: [characters, animate, startOffset] }
+    { scope: rootRef, dependencies: [characters, animate, startOffset, trackSpan] }
   );
 
   return (

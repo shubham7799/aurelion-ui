@@ -1,0 +1,151 @@
+/*
+ * Scroll-track pattern (same as .membership): the section is deliberately
+ * taller than its sticky child, and that surplus is the scroll budget — the
+ * headline reveal takes the first stretch, the card stack the rest.
+ * Geometry mirrors Figma node 357:1373 on a 1440x976 frame.
+ */
+.service-stack {
+  position: relative;
+  /* Sticky screen plus the scroll the reveal and the card arrivals consume.
+     Set from the component so it grows with the number of cards; the fallback
+     only applies if that inline value is ever missing. */
+  height: var(--track-height, 470vh);
+  background: #b6d3f6;
+}
+
+.service-stack-sticky {
+  position: sticky;
+  top: 0;
+  display: flex;
+  flex-direction: column;
+  height: 100vh;
+  overflow: hidden;
+}
+
+.service-stack-grid {
+  flex: 0 0 auto;
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  column-gap: 24px;
+  width: 100%;
+  /* Full frame width — the 32px gutters below are the section's, so the four
+     columns land on the same grid the other sections use. */
+  max-width: 1440px;
+  margin: 0 auto;
+  padding: 70px 32px 0;
+}
+
+.service-stack-heading {
+  grid-column: 2 / span 3;
+  /* Figma starts the copy at x=415, a little inside the column edge. */
+  margin-left: 33px;
+  max-width: 764px;
+  font-family: 'Instrument Serif', serif;
+  font-style: normal;
+  font-weight: 400;
+  font-size: 51px;
+  line-height: 57px;
+  letter-spacing: -0.55px;
+  --shl-muted: #7d93b8;
+  --shl-highlight: #041121;
+}
+
+.service-stack-stage {
+  position: relative;
+  flex: 1 1 auto;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  min-height: 0;
+  /* The card column sits right of centre in the design — 800 of 1440. */
+  padding-left: 11.11%;
+}
+
+.service-stack-cards {
+  position: relative;
+  height: min(431px, 46vh);
+  aspect-ratio: 356 / 431;
+  margin-top: 77px;
+}
+
+.service-stack-card {
+  position: absolute;
+  inset: 0;
+  overflow: hidden;
+  background: #ffffff;
+  box-shadow: 0 0 6.7px 7px rgba(0, 0, 0, 0.06);
+  /* Grows from the bottom edge so a card receding behind the stack stays
+     anchored where it sits rather than drifting off its own centre. */
+  transform-origin: 50% 100%;
+  will-change: transform;
+}
+
+.service-stack-image {
+  display: block;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+.service-stack-caption {
+  flex: 0 0 auto;
+  width: 310px;
+  margin: 16px 0 0;
+  font-family: 'Instrument Sans', sans-serif;
+  font-style: normal;
+  font-weight: 500;
+  font-size: 19.739px;
+  line-height: 21.713px;
+  text-align: center;
+  text-transform: uppercase;
+  color: #041121;
+  animation: service-stack-caption-in 0.35s ease both;
+}
+
+@keyframes service-stack-caption-in {
+  from {
+    opacity: 0;
+  }
+  to {
+    opacity: 1;
+  }
+}
+
+@media (max-width: 1200px) {
+  .service-stack-heading {
+    font-size: 38px;
+    line-height: 44px;
+  }
+
+  .service-stack-cards {
+    margin-top: 56px;
+  }
+}
+
+@media (max-width: 900px) {
+  .service-stack-grid {
+    padding-top: 48px;
+  }
+
+  .service-stack-heading {
+    grid-column: 1 / span 4;
+    margin-left: 0;
+    font-size: 28px;
+    line-height: 34px;
+  }
+
+  .service-stack-stage {
+    padding-left: 0;
+  }
+
+  .service-stack-cards {
+    height: min(431px, 40vh);
+    margin-top: 40px;
+  }
+
+  .service-stack-caption {
+    width: 100%;
+    font-size: 16px;
+    line-height: 20px;
+  }
+}
