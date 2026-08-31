@@ -317,6 +317,26 @@
   cursor: pointer;
 }
 
+.contact-submit:disabled {
+  cursor: progress;
+  opacity: 0.6;
+}
+
+.contact-status {
+  margin: 16px 0 0;
+  font-family: 'Instrument Sans', sans-serif;
+  font-size: 14px;
+  line-height: 20px;
+}
+
+.contact-status-sent {
+  color: #1a1a1e;
+}
+
+.contact-status-error {
+  color: #a2321f;
+}
+
 @media (max-width: 900px) {
   .contact-heading {
     grid-column: 1 / span 4;

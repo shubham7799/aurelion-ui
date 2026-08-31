@@ -11,8 +11,69 @@ const SERVICES = [
   'Other',
 ];
 
+/**
+ * URL of the mail-sending endpoint. This is a plain URL and nothing else —
+ * never a mailbox password, SMTP host or API secret. Create React App inlines
+ * every REACT_APP_* value into the public bundle, so anything put here is
+ * readable by any visitor. The credentials belong to that endpoint's own
+ * server-side environment.
+ */
+const ENDPOINT = process.env.REACT_APP_CONTACT_ENDPOINT ?? '/api/contact';
+
+const EMPTY_FORM = {
+  firstName: '',
+  lastName: '',
+  email: '',
+  phone: '',
+  projectType: '',
+  service: '',
+  message: '',
+  consent: false,
+};
+
+type Status = 'idle' | 'sending' | 'sent' | 'error';
+
 export default function Contact() {
-  const [message, setMessage] = useState('');
+  const [form, setForm] = useState(EMPTY_FORM);
+  const [status, setStatus] = useState<Status>('idle');
+  const [error, setError] = useState('');
+
+  const update = <K extends keyof typeof EMPTY_FORM>(key: K, value: (typeof EMPTY_FORM)[K]) =>
+    setForm((prev) => ({ ...prev, [key]: value }));
+
+  const handleSubmit = async (event: React.FormEvent<HTMLFormElement>) => {
+    event.preventDefault();
+    if (status === 'sending') return;
+
+    setStatus('sending');
+    setError('');
+
+    try {
+      const response = await fetch(ENDPOINT, {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify(form),
+      });
+
+      if (!response.ok) {
+        // Surface the server's own reason when it sends one, so a misconfigured
+        // mail relay doesn't just read as a generic failure. Anything else —
+        // a dropped connection, DNS failure — reports as raw browser text like
+        // "Failed to fetch", which is noise to a visitor, so it falls back to
+        // the friendly copy below.
+        const body = await response.json().catch(() => null);
+        setStatus('error');
+        setError(typeof body?.message === 'string' ? body.message : '');
+        return;
+      }
+
+      setStatus('sent');
+      setForm(EMPTY_FORM);
+    } catch {
+      setStatus('error');
+      setError('');
+    }
+  };
 
   return (
     <div className="contact-page">
@@ -46,24 +107,51 @@ export default function Contact() {
         <div className="contact-form-grid">
           <h2 className="contact-heading">Send us a message</h2>
 
-          <form
-            className="contact-form"
-            onSubmit={(e) => {
-              e.preventDefault();
-            }}
-          >
+          <form className="contact-form" onSubmit={handleSubmit}>
             <div className="contact-form-col contact-form-col-left">
               <div className="contact-field">
-                <input type="text" placeholder="Name *" required />
+                <input
+                  type="text"
+                  name="firstName"
+                  placeholder="Name *"
+                  autoComplete="given-name"
+                  value={form.firstName}
+                  onChange={(e) => update('firstName', e.target.value)}
+                  required
+                />
               </div>
               <div className="contact-field">
-                <input type="text" placeholder="Last name *" required />
+                <input
+                  type="text"
+                  name="lastName"
+                  placeholder="Last name *"
+                  autoComplete="family-name"
+                  value={form.lastName}
+                  onChange={(e) => update('lastName', e.target.value)}
+                  required
+                />
               </div>
               <div className="contact-field">
-                <input type="email" placeholder="Email *" required />
+                <input
+                  type="email"
+                  name="email"
+                  placeholder="Email *"
+                  autoComplete="email"
+                  value={form.email}
+                  onChange={(e) => update('email', e.target.value)}
+                  required
+                />
               </div>
               <div className="contact-field">
-                <input type="tel" placeholder="Phone *" required />
+                <input
+                  type="tel"
+                  name="phone"
+                  placeholder="Phone *"
+                  autoComplete="tel"
+                  value={form.phone}
+                  onChange={(e) => update('phone', e.target.value)}
+                  required
+                />
               </div>
             </div>
 
@@ -76,12 +164,24 @@ export default function Contact() {
                 </p>
                 <div className="contact-radio-group">
                   <label className="contact-radio">
-                    <input type="radio" name="project-type" value="staff" />
+                    <input
+                      type="radio"
+                      name="projectType"
+                      value="staff"
+                      checked={form.projectType === 'staff'}
+                      onChange={(e) => update('projectType', e.target.value)}
+                    />
                     <span className="contact-radio-dot" />
                     <span>Staff</span>
                   </label>
                   <label className="contact-radio">
-                    <input type="radio" name="project-type" value="company" />
+                    <input
+                      type="radio"
+                      name="projectType"
+                      value="company"
+                      checked={form.projectType === 'company'}
+                      onChange={(e) => update('projectType', e.target.value)}
+                    />
                     <span className="contact-radio-dot" />
                     <span>Company</span>
                   </label>
@@ -91,7 +191,12 @@ export default function Contact() {
               <div className="contact-group">
                 <p className="contact-group-label">Service you are interested in</p>
                 <div className="contact-select-wrap">
-                  <select defaultValue="" required>
+                  <select
+                    name="service"
+                    value={form.service}
+                    onChange={(e) => update('service', e.target.value)}
+                    required
+                  >
                     <option value="" disabled>
                       Select a service
                     </option>
@@ -108,28 +213,44 @@ export default function Contact() {
               <div className="contact-group">
                 <p className="contact-group-label">Tell us what you need</p>
                 <textarea
+                  name="message"
                   placeholder="Write your message *"
                   maxLength={400}
-                  value={message}
-                  onChange={(e) => setMessage(e.target.value)}
+                  value={form.message}
+                  onChange={(e) => update('message', e.target.value)}
                   required
                 />
-                <span className="contact-char-count">
-                  {message.length} / 400
-                </span>
+                <span className="contact-char-count">{form.message.length} / 400</span>
               </div>
 
               <label className="contact-checkbox">
-                <input type="checkbox" required />
+                <input
+                  type="checkbox"
+                  name="consent"
+                  checked={form.consent}
+                  onChange={(e) => update('consent', e.target.checked)}
+                  required
+                />
                 <span className="contact-checkbox-box" />
                 <span>
                   I agree to the <a href="/privacy">Privacy Policy</a>
                 </span>
               </label>
 
-              <button type="submit" className="contact-submit">
-                Send
+              <button type="submit" className="contact-submit" disabled={status === 'sending'}>
+                {status === 'sending' ? 'Sending…' : 'Send'}
               </button>
+
+              {status === 'sent' && (
+                <p className="contact-status contact-status-sent" role="status">
+                  Thank you — your message is on its way. We'll be in touch shortly.
+                </p>
+              )}
+              {status === 'error' && (
+                <p className="contact-status contact-status-error" role="alert">
+                  {error || "We couldn't send that just now. Please try again."}
+                </p>
+              )}
             </div>
           </form>
         </div>
