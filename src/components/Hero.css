@@ -1,0 +1,59 @@
+.hero {
+  position: relative;
+  display: flex;
+  align-items: flex-end;
+  justify-content: space-between;
+  gap: 32px;
+  min-height: 100vh;
+  padding: 0 32px 40px;
+  background-size: cover;
+  background-position: center;
+}
+
+.hero-headline {
+  max-width: 900px;
+  margin: 0;
+  font-family: 'Instrument Serif', serif;
+  font-style: normal;
+  font-weight: 400;
+  font-size: 52px;
+  line-height: 57px;
+  letter-spacing: -0.55px;
+  color: #ffffff;
+}
+
+.hero-scroll {
+  flex-shrink: 0;
+  /* Sits on the headline's last baseline rather than the box bottom, so the
+     two read as one line across the foot of the image. */
+  padding-bottom: 6px;
+  font-family: 'Instrument Serif', serif;
+  font-style: normal;
+  font-weight: 400;
+  font-size: 13px;
+  line-height: 16px;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+  white-space: nowrap;
+  color: #ffffff;
+}
+
+@media (max-width: 900px) {
+  .hero {
+    padding-bottom: 32px;
+  }
+
+  .hero-headline {
+    font-size: 32px;
+    line-height: 38px;
+  }
+
+  /* The forced break belongs to the desktop measure; let it wrap naturally. */
+  .hero-headline br {
+    display: none;
+  }
+
+  .hero-scroll {
+    display: none;
+  }
+}

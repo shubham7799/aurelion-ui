@@ -1,4 +1,5 @@
 import './Home.css';
+import Hero from '../components/Hero';
 import Membership from '../components/Membership';
 import ServiceStack from '../components/ServiceStack';
 import IntroGrid from '../components/IntroGrid';
@@ -11,7 +12,7 @@ import Footer from '../components/Footer';
 export default function Home() {
   return (
     <div className="home">
-      <section className="hero" style={{ backgroundImage: 'url(/hero.png)' }} />
+      <Hero />
       <ServiceStack />
       <IntroGrid />
       <AboutCarousel />
