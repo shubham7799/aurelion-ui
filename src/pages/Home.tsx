@@ -1,5 +1,6 @@
 import './Home.css';
 import Membership from '../components/Membership';
+import ServiceStack from '../components/ServiceStack';
 import AboutCarousel from '../components/AboutCarousel';
 import CustomerStories from '../components/CustomerStories';
 import NetworkPartners from '../components/NetworkPartners';
@@ -10,6 +11,7 @@ export default function Home() {
   return (
     <div className="home">
       <section className="hero" style={{ backgroundImage: 'url(/hero.png)' }} />
+      <ServiceStack />
       <AboutCarousel />
       <CustomerStories />
       <NetworkPartners />
