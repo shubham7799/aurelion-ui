@@ -1,0 +1,118 @@
+/* Geometry mirrors Figma node 357:308 (1440-wide frame): the label right-aligns
+   at x=327 in column 1 and the 986-wide ring sits alongside it, 68px in from
+   the right edge of the content area. */
+.network-partners {
+  background: #f5f0e6;
+  padding: 161px 32px 142px;
+}
+
+.network-partners-grid {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  column-gap: 24px;
+  max-width: 1376px;
+  margin: 0 auto;
+}
+
+.network-partners-label {
+  grid-column: 1;
+  grid-row: 1;
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+  margin: 0;
+  padding-right: 31px;
+  font-family: 'Instrument Sans', sans-serif;
+  font-style: normal;
+  font-weight: 400;
+  font-size: 15.478px;
+  line-height: 18.573px;
+  text-align: right;
+  text-transform: uppercase;
+  color: rgba(4, 17, 33, 0.5);
+}
+
+.network-partners-ring {
+  grid-column: 1 / span 4;
+  grid-row: 1;
+  position: relative;
+  width: min(986px, 100%);
+  aspect-ratio: 986 / 618.047;
+  margin-left: auto;
+  margin-right: 68px;
+}
+
+.network-partners-heading {
+  position: absolute;
+  top: 35.71%;
+  left: 50%;
+  z-index: 1;
+  width: 46.3%;
+  margin: 0;
+  transform: translateX(-50%);
+  font-family: 'Instrument Serif', serif;
+  font-style: normal;
+  font-weight: 400;
+  font-size: 53.825px;
+  line-height: 59px;
+  letter-spacing: -0.5693px;
+  text-align: center;
+  color: #041121;
+}
+
+.network-partners-badge {
+  position: absolute;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  aspect-ratio: 1;
+  overflow: hidden;
+  border-radius: 50%;
+  background: #f8f8f8;
+  box-shadow: 0 0 14px rgba(0, 0, 0, 0.4);
+}
+
+.network-partners-logo {
+  display: block;
+  width: 60%;
+  height: 60%;
+  object-fit: contain;
+  /* These marks were exported light-on-transparent for the dark Footer, so
+     flatten them to a dark silhouette to read on the light badge here. */
+  filter: brightness(0);
+  opacity: 0.75;
+}
+
+@media (max-width: 1200px) {
+  .network-partners-heading {
+    width: 56%;
+    font-size: 38px;
+    line-height: 42px;
+  }
+}
+
+@media (max-width: 900px) {
+  .network-partners {
+    padding: 96px 32px 96px;
+  }
+
+  .network-partners-label {
+    grid-column: 1 / span 4;
+    grid-row: 1;
+    margin-bottom: 32px;
+    padding-right: 0;
+    text-align: left;
+  }
+
+  .network-partners-ring {
+    grid-column: 1 / span 4;
+    grid-row: 2;
+    margin-right: 0;
+  }
+
+  .network-partners-heading {
+    width: 70%;
+    font-size: 28px;
+    line-height: 32px;
+  }
+}

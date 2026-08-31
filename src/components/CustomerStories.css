@@ -1,0 +1,183 @@
+/* Geometry mirrors Figma node 357:308 (1440-wide frame):
+   label + photo right-align at x=327 in column 1, copy starts at x=408. */
+.customer-stories {
+  background: #f5f0e6;
+  padding: 160px 32px 0;
+}
+
+.customer-stories-grid {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  column-gap: 24px;
+  max-width: 1376px;
+  margin: 0 auto;
+}
+
+.customer-stories-aside {
+  grid-column: 1;
+  display: flex;
+  flex-direction: column;
+  align-items: flex-end;
+  padding-right: 31px;
+}
+
+.customer-stories-label {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+  margin: 0;
+  font-family: 'Instrument Sans', sans-serif;
+  font-style: normal;
+  font-weight: 400;
+  font-size: 15.478px;
+  line-height: 18.573px;
+  text-align: right;
+  text-transform: uppercase;
+  color: rgba(4, 17, 33, 0.5);
+}
+
+.customer-stories-photo {
+  display: block;
+  width: 100%;
+  max-width: 262.533px;
+  aspect-ratio: 262.533 / 308;
+  margin-top: 246px;
+  background: #ffffff;
+  object-fit: cover;
+  /* Matches the crop set on the image fill in Figma. */
+  object-position: 87% 41%;
+  animation: customer-stories-fade-in 0.5s ease both;
+}
+
+.customer-stories-main {
+  grid-column: 2 / span 3;
+  padding-left: 26px;
+  animation: customer-stories-fade-in 0.5s ease both;
+}
+
+@keyframes customer-stories-fade-in {
+  from {
+    opacity: 0;
+    transform: translateY(8px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+.customer-stories-quote-icon {
+  display: block;
+  width: 80px;
+  height: 80px;
+  margin-top: 80px;
+}
+
+.customer-stories-quote {
+  max-width: 877px;
+  margin: 32px 0 0;
+  font-family: 'Instrument Serif', serif;
+  font-style: normal;
+  font-weight: 400;
+  font-size: 52px;
+  line-height: 57px;
+  letter-spacing: -0.55px;
+  color: #041121;
+  word-break: break-word;
+}
+
+.customer-stories-footer {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 24px;
+  margin-top: 44px;
+  padding-right: 24px;
+}
+
+.customer-stories-byline {
+  margin: 0;
+  font-family: 'Instrument Sans', sans-serif;
+  font-style: normal;
+  font-weight: 500;
+  font-size: 20px;
+  line-height: 22px;
+  text-transform: uppercase;
+  color: #041121;
+}
+
+.customer-stories-byline span {
+  color: rgba(4, 17, 33, 0.62);
+}
+
+.customer-stories-dots {
+  display: flex;
+  flex-shrink: 0;
+  gap: 4px;
+}
+
+.customer-stories-dot {
+  width: 8px;
+  height: 8px;
+  border-radius: 50%;
+  background: rgba(4, 17, 33, 0.2);
+}
+
+.customer-stories-dot.is-active {
+  background: #041121;
+}
+
+@media (max-width: 1200px) {
+  .customer-stories-quote {
+    font-size: 38px;
+    line-height: 44px;
+  }
+
+  .customer-stories-quote-icon {
+    width: 60px;
+    height: 60px;
+  }
+}
+
+@media (max-width: 900px) {
+  .customer-stories {
+    padding-top: 96px;
+  }
+
+  .customer-stories-aside {
+    grid-column: 1 / span 4;
+    align-items: flex-start;
+    padding-right: 0;
+  }
+
+  .customer-stories-label {
+    text-align: left;
+  }
+
+  .customer-stories-photo {
+    margin-top: 32px;
+  }
+
+  .customer-stories-main {
+    grid-column: 1 / span 4;
+    padding-left: 0;
+  }
+
+  .customer-stories-quote-icon {
+    margin-top: 48px;
+  }
+
+  .customer-stories-quote {
+    font-size: 30px;
+    line-height: 36px;
+  }
+
+  .customer-stories-footer {
+    padding-right: 0;
+  }
+
+  .customer-stories-byline {
+    font-size: 16px;
+    line-height: 20px;
+  }
+}
