@@ -27,14 +27,17 @@ export default function DataCarousel({
 }: DataCarouselProps) {
   const [activeIndex, setActiveIndex] = useState(0);
 
-  // Auto-advance only — no prev/next controls, per spec.
+  // Auto-advances, and the tabs below can jump straight to a slide. Keyed on
+  // activeIndex with a timeout rather than a standing interval, so picking a tab
+  // restarts the countdown — otherwise a click landing late in the cycle would
+  // be snatched away a moment later by the pending tick.
   useEffect(() => {
     if (slides.length <= 1) return;
-    const timer = window.setInterval(() => {
+    const timer = window.setTimeout(() => {
       setActiveIndex((i) => (i + 1) % slides.length);
     }, intervalMs);
-    return () => window.clearInterval(timer);
-  }, [slides.length, intervalMs]);
+    return () => window.clearTimeout(timer);
+  }, [activeIndex, slides.length, intervalMs]);
 
   const active = slides[activeIndex];
   if (!active) return null;
@@ -71,7 +74,13 @@ export default function DataCarousel({
         {slides.map((slide, i) => {
           const isActive = i === activeIndex;
           return (
-            <div key={slide.label} className={`data-carousel-tab${isActive ? ' is-active' : ''}`}>
+            <button
+              key={slide.label}
+              type="button"
+              className={`data-carousel-tab${isActive ? ' is-active' : ''}`}
+              aria-current={isActive}
+              onClick={() => setActiveIndex(i)}
+            >
               {isActive && (
                 <span
                   key={activeIndex}
@@ -87,8 +96,10 @@ export default function DataCarousel({
                 </span>
                 {!isActive && <span className="data-carousel-tab-dot" />}
               </span>
-              {isActive && <p className="data-carousel-tab-description">{tabDescription}</p>}
-            </div>
+              {/* A span, not a p: the tab is a <button>, which only permits
+                  phrasing content. Styled as a block in CSS. */}
+              {isActive && <span className="data-carousel-tab-description">{tabDescription}</span>}
+            </button>
           );
         })}
       </div>

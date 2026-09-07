@@ -46,7 +46,8 @@
   position: absolute;
   top: 35.71%;
   left: 50%;
-  z-index: 1;
+  /* Above the badges, which take stacking order 0–100 from their depth. */
+  z-index: 200;
   width: 46.3%;
   margin: 0;
   transform: translateX(-50%);
@@ -60,16 +61,23 @@
   color: #041121;
 }
 
+/* Parked at the origin and carried onto the ellipse by transforms alone, so a
+   badge travelling the ring never triggers layout. Size is fixed at the ring's
+   largest; the depth scale shrinks it toward the back. */
 .network-partners-badge {
   position: absolute;
+  top: 0;
+  left: 0;
   display: flex;
   align-items: center;
   justify-content: center;
+  width: 8.888%;
   aspect-ratio: 1;
   overflow: hidden;
   border-radius: 50%;
   background: #f8f8f8;
   box-shadow: 0 0 14px rgba(0, 0, 0, 0.4);
+  will-change: transform;
 }
 
 .network-partners-logo {

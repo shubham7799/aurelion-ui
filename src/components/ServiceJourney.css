@@ -1,0 +1,281 @@
+/*
+ * Merges the old ServiceStack and IntroGrid into one scroll story on a single
+ * sticky track: the headline reveals, three cards stack, the deck fans out
+ * anticlockwise to every edge of the page, then spirals back in and resolves
+ * into the Aurelion mark. Geometry follows Figma nodes 357:1373 and 752:756
+ * on their shared 1440x976 frame.
+ */
+.journey {
+  position: relative;
+  height: var(--track-height, 990vh);
+  background: #b6d3f6;
+}
+
+.journey-sticky {
+  position: sticky;
+  top: 0;
+  height: 100vh;
+  overflow: hidden;
+}
+
+.journey-grid {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  column-gap: 24px;
+  width: 100%;
+  max-width: 1440px;
+  margin: 0 auto;
+  padding: 70px 32px 0;
+}
+
+.journey-heading {
+  grid-column: 2 / span 3;
+  /* Figma starts the copy at x=415, a little inside the column edge. */
+  margin-left: 33px;
+  max-width: 764px;
+  position: relative;
+  z-index: 2;
+  font-family: 'Instrument Serif', serif;
+  font-style: normal;
+  font-weight: 400;
+  font-size: 51px;
+  line-height: 57px;
+  letter-spacing: -0.55px;
+  --shl-muted: #7d93b8;
+  --shl-highlight: #041121;
+}
+
+/* Fills the sticky screen so tiles can be placed anywhere across it, including
+   past the edges — several of the design's resting places bleed off-frame. */
+.journey-stage {
+  position: absolute;
+  inset: 0;
+}
+
+.journey-tile {
+  position: absolute;
+  top: 0;
+  left: 0;
+  overflow: hidden;
+  background: #111111;
+  box-shadow: 0 0 7.761px 8.108px rgba(0, 0, 0, 0.06);
+  will-change: transform, width, height;
+}
+
+.journey-tile-image {
+  display: block;
+  width: 100%;
+  height: 100%;
+  /* Cover means the photo re-crops as the box morphs from portrait card to
+     square tile, instead of squashing. */
+  object-fit: cover;
+}
+
+/* Placed entirely by transform, alongside the card it labels. */
+.journey-caption {
+  position: absolute;
+  top: 0;
+  left: 0;
+  z-index: 30;
+  width: 359px;
+  font-family: 'Instrument Sans', sans-serif;
+  font-style: normal;
+  font-weight: 500;
+  font-size: 22.864px;
+  line-height: 25.151px;
+  text-align: center;
+  text-transform: uppercase;
+  color: #041121;
+  pointer-events: none;
+}
+
+.journey-logo {
+  position: absolute;
+  top: 0;
+  left: 0;
+  z-index: 40;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: #041121;
+}
+
+/* The emblem ships navy, so it is used as a mask and filled with the brand
+   gold rather than recoloured with a filter. The mask-image itself is set
+   inline in the component: a url() pointing at /public breaks the CRA build
+   when it lives in a stylesheet. */
+.journey-logo-mark {
+  width: 46%;
+  height: 46%;
+  background: #e5bc67;
+  -webkit-mask-repeat: no-repeat;
+  mask-repeat: no-repeat;
+  -webkit-mask-position: center;
+  mask-position: center;
+  -webkit-mask-size: contain;
+  mask-size: contain;
+}
+
+/*
+ * Closing screen — Figma node 752:836 ("Desktop - 42") on its 1440x1108 frame.
+ * Covers the whole sticky screen and is faded up once the sequence has played.
+ */
+.journey-finale {
+  position: absolute;
+  inset: 0;
+  z-index: 60;
+  overflow: hidden;
+  background: #01060e;
+  pointer-events: none;
+}
+
+/*
+ * Two stacked copies of the grid, drifting upward forever. The travel is one
+ * block plus one gap — expressed as half the track minus half a gap, since the
+ * track is two blocks with a single gap between them — so the second copy lands
+ * exactly where the first started and the loop is seamless.
+ */
+.journey-finale-track {
+  --finale-row-gap: 23px;
+  --finale-col-gap: 24px;
+
+  position: absolute;
+  top: -16%;
+  right: 0;
+  left: 0;
+  display: flex;
+  flex-direction: column;
+  gap: var(--finale-row-gap);
+  padding: 0 36px;
+  animation: journey-finale-drift 64s linear infinite;
+  will-change: transform;
+}
+
+.journey-finale-block {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: var(--finale-row-gap) var(--finale-col-gap);
+}
+
+/* Reads the gap from the custom property, so changing the gap at any breakpoint
+   keeps the loop seamless without a second copy of these keyframes. */
+@keyframes journey-finale-drift {
+  from {
+    transform: translateY(0);
+  }
+  to {
+    transform: translateY(calc(-50% - var(--finale-row-gap) / 2));
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .journey-finale-track {
+    animation: none;
+  }
+}
+
+/* Holds the design's cell proportion, so the row height follows the column
+   width at any viewport rather than being pinned to the 1440 frame. */
+.journey-finale-cell {
+  position: relative;
+  aspect-ratio: 324 / 425;
+  overflow: hidden;
+  background: #000000;
+}
+
+.journey-finale-photo {
+  display: block;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+/* Each cell darkens from the top down. */
+.journey-finale-cell::after {
+  content: '';
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(to bottom, #010513, rgba(1, 5, 19, 0));
+}
+
+/* One wash over the whole grid, which is what sinks the photography into the
+   near-black the design sits at. */
+.journey-finale-wash {
+  position: absolute;
+  inset: 0;
+  background: #041121;
+  mix-blend-mode: hard-light;
+  opacity: 0.77;
+}
+
+.journey-finale-lockup {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 41px;
+  transform: translate(-50%, -50%);
+}
+
+.journey-finale-mark {
+  display: block;
+  width: min(473.594px, 62vw);
+  height: auto;
+  aspect-ratio: 473.594 / 98.505;
+}
+
+.journey-finale-copy {
+  width: min(547px, 76vw);
+  margin: 0;
+  font-family: 'Instrument Serif', serif;
+  font-style: normal;
+  font-weight: 400;
+  font-size: 32px;
+  line-height: 36px;
+  text-align: center;
+  color: #ffffff;
+}
+
+@media (max-width: 1200px) {
+  .journey-heading {
+    font-size: 38px;
+    line-height: 44px;
+  }
+}
+
+@media (max-width: 900px) {
+  .journey-grid {
+    padding-top: 48px;
+  }
+
+  .journey-heading {
+    grid-column: 1 / span 4;
+    margin-left: 0;
+    font-size: 28px;
+    line-height: 34px;
+  }
+
+  .journey-caption {
+    width: 220px;
+    font-size: 16px;
+    line-height: 20px;
+  }
+
+  .journey-finale-track {
+    --finale-row-gap: 12px;
+    --finale-col-gap: 12px;
+
+    padding: 0 16px;
+  }
+
+  .journey-finale-lockup {
+    gap: 24px;
+  }
+
+  .journey-finale-copy {
+    font-size: 20px;
+    line-height: 25px;
+  }
+}

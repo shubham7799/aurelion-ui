@@ -12,9 +12,14 @@ export default function Nav() {
 
   return (
     <header className="nav">
-      <div className="nav-col nav-col-logo">
-        <img src="/loader-logo-fill.svg" alt="Aurelion" className="nav-logo" />
-      </div>
+      <button
+        type="button"
+        className="nav-col nav-col-logo"
+        aria-label="Aurelion — home"
+        onClick={() => navigate('/')}
+      >
+        <img src="/loader-logo-fill.svg" alt="" className="nav-logo" />
+      </button>
       {NAV_ITEMS.map((item) => (
         <button
           key={item.label}

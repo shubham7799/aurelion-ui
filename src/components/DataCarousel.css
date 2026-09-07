@@ -179,6 +179,28 @@
   backdrop-filter: blur(4.5px);
   -webkit-backdrop-filter: blur(4.5px);
   transition: height 0.4s ease, background-color 0.4s ease, padding 0.4s ease;
+  /* Button resets — the tabs are real buttons so a slide can be picked
+     directly, with keyboard and screen-reader support for free. */
+  appearance: none;
+  margin: 0;
+  border: none;
+  border-radius: 0;
+  font: inherit;
+  text-align: left;
+  cursor: pointer;
+}
+
+.data-carousel-tab:hover:not(.is-active) {
+  background: rgba(4, 17, 33, 0.45);
+}
+
+.data-carousel-tab:focus-visible {
+  outline: 2px solid #ffffff;
+  outline-offset: -2px;
+}
+
+.data-carousel-tab.is-active {
+  cursor: default;
 }
 
 .data-carousel-tab.is-active {
@@ -244,6 +266,7 @@
 }
 
 .data-carousel-tab-description {
+  display: block;
   margin: 24px 0 0;
   font-family: 'Instrument Sans', sans-serif;
   font-weight: 500;
