@@ -50,3 +50,38 @@
   color: #ffffff;
   cursor: pointer;
 }
+
+@media (max-width: 900px) {
+  .book-call {
+    padding: 0 32px;
+  }
+
+  .book-call-content h2 {
+    font-size: 38px;
+    line-height: 40px;
+  }
+}
+
+@media (max-width: 560px) {
+  .book-call {
+    min-height: 78vh;
+    padding: 0 20px;
+  }
+
+  .book-call-content h2 {
+    font-size: 28px;
+    line-height: 31px;
+    margin-bottom: 16px;
+  }
+
+  .book-call-content p {
+    font-size: 14px;
+    line-height: 18px;
+    margin-bottom: 22px;
+  }
+
+  .book-call-link {
+    font-size: 13px;
+    line-height: 17px;
+  }
+}

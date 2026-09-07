@@ -26,6 +26,9 @@ const TILE_RADIUS = 30.941;
 const DECK_GAP = 56;
 const CAPTION_GAP = 31;
 
+/** At or below this width the deck is sized and placed for a phone. */
+const COMPACT_WIDTH = 760;
+
 
 interface Tile {
   image: string;
@@ -212,7 +215,20 @@ export default function ServiceJourney() {
         // tall enough to leave no room at all, and a card shrunk to nothing is
         // worse than one that crowds the copy slightly.
         const room = height - deckTop - (CAPTION_GAP + 34) * scale;
-        const cardH = Math.min(CARD_H * scale, Math.max(room, CARD_H * scale * 0.45));
+
+        // On a phone `scale` is driven by width against the 1440 design frame,
+        // which lands around 0.26 and shrinks the card to a stamp with the
+        // screen half empty beneath it. There the card is sized from the space
+        // it actually has instead, capped so it still leaves a margin either
+        // side. Desktop keeps the design's own size.
+        const compact = width <= COMPACT_WIDTH;
+        const cardH = compact
+          ? Math.min(
+              Math.max(CARD_H * scale, room * 0.7),
+              room,
+              (width * 0.78) / (CARD_W / CARD_H)
+            )
+          : Math.min(CARD_H * scale, Math.max(room, CARD_H * scale * 0.45));
         const cardW = cardH * (CARD_W / CARD_H);
 
         const stackP = span(progress, 0, STACK_END);
@@ -229,7 +245,12 @@ export default function ServiceJourney() {
         const tiltIn = span(centreP, 0.7, 1);
 
         const deckX = width / 2;
-        const deckY = lerp(deckTop + cardH / 2, height / 2, toCentre);
+        // Sat directly under the headline on desktop, where that matches the
+        // design. On a phone it is centred in the space left below the headline
+        // instead, so the copy and the deck read as one balanced screen rather
+        // than both crowding the top.
+        const deckRest = compact ? deckTop + room / 2 : deckTop + cardH / 2;
+        const deckY = lerp(deckRest, height / 2, toCentre);
         const deckTilt = DECK_TILT * tiltIn;
         /** The deck falling away to the bottom-left, before the tiles take over. */
         const drop = span(fanP, 0, DECK_DROP_SPAN);

@@ -9,6 +9,19 @@
   height: 32px;
 }
 
+/* The three links keep the four-column bar they had, by spanning the last
+   three of it. On mobile this same element becomes the drop-down panel. */
+.nav-items {
+  grid-column: 2 / span 3;
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+}
+
+/* Only ever visible on narrow screens. */
+.nav-toggle {
+  display: none;
+}
+
 .nav-col {
   display: flex;
   align-items: center;
@@ -78,4 +91,97 @@
 
 .nav-item-highlight {
   background: #041121;
+}
+
+/*
+ * Mobile: the bar collapses to the mark and a MENU toggle, and the links move
+ * into a panel that drops over the page.
+ */
+@media (max-width: 760px) {
+  .nav {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    height: 48px;
+    padding: 0 16px;
+    background: #041121;
+  }
+
+  .nav-col-logo {
+    padding-left: 0;
+  }
+
+  .nav-logo {
+    height: 24px;
+    /* The desktop bar is shallower than the mark, hence the nudge there. Here
+       the bar is tall enough to centre it properly. */
+    transform: none;
+  }
+
+  .nav-toggle {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    appearance: none;
+    margin: 0;
+    padding: 0;
+    border: none;
+    background: none;
+    font-family: 'Instrument Serif', serif;
+    font-size: 14px;
+    line-height: 17px;
+    letter-spacing: 0.04em;
+    text-transform: uppercase;
+    color: #ffffff;
+    cursor: pointer;
+  }
+
+  /*
+   * The panel keeps its items at full height and is clipped by its own
+   * max-height instead. Collapsing the items themselves left them as zero-height
+   * grid items, which the row sizing then refused to grow again.
+   */
+  .nav-items {
+    position: fixed;
+    top: 48px;
+    right: 0;
+    left: 0;
+    display: flex;
+    flex-direction: column;
+    max-height: 0;
+    overflow: hidden;
+    background: #041121;
+    transition: max-height 0.35s ease;
+  }
+
+  .nav.is-open .nav-items {
+    /* Comfortably clears three rows; the panel is clipped, not stretched, so a
+       generous value simply lets the real content height through. */
+    max-height: 320px;
+  }
+
+  /* Beats `.nav-col { height: 100% }`, which would otherwise resolve against the
+     collapsed panel and flatten every item. */
+  .nav .nav-item {
+    flex: 0 0 auto;
+    height: 52px;
+    padding: 0 16px;
+    font-size: 15px;
+    line-height: 18px;
+  }
+
+  /* On the panel the glass treatment has nothing to sit over. The divider is an
+     inset shadow rather than a border: a border still occupies layout on a
+     zero-height item, which left a hairline strip under the closed bar. */
+  .nav-item-glass {
+    background: none;
+    backdrop-filter: none;
+    -webkit-backdrop-filter: none;
+    box-shadow: inset 0 -1px 0 rgba(255, 255, 255, 0.14);
+  }
+
+  .nav-item-highlight {
+    background: none;
+    color: #e5bc67;
+  }
 }

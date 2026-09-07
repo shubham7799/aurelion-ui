@@ -13,8 +13,9 @@
 
 .journey-sticky {
   position: sticky;
-  top: 0;
-  height: 100vh;
+  /* Locks below the nav bar, not under it. */
+  top: var(--nav-h);
+  height: calc(100vh - var(--nav-h));
   overflow: hidden;
 }
 
@@ -270,6 +271,18 @@
     padding: 0 16px;
   }
 
+  /*
+   * Two columns, not four. The loop only covers the screen if one block is
+   * taller than the viewport, and twelve photos across four narrow columns is
+   * just three short rows — which left the blank band below the grid. Halving
+   * the columns doubles the rows and makes each row taller, so a block clears
+   * the screen comfortably. It also keeps the drift speed matching desktop,
+   * since the travel distance scales with the block.
+   */
+  .journey-finale-block {
+    grid-template-columns: repeat(2, 1fr);
+  }
+
   .journey-finale-lockup {
     gap: 24px;
   }
@@ -277,5 +290,27 @@
   .journey-finale-copy {
     font-size: 20px;
     line-height: 25px;
+  }
+}
+
+@media (max-width: 560px) {
+  .journey-grid {
+    padding: 40px 20px 0;
+  }
+
+  .journey-heading {
+    font-size: 26px;
+    line-height: 31px;
+  }
+
+  .journey-caption {
+    width: 200px;
+    font-size: 13px;
+    line-height: 17px;
+  }
+
+  .journey-finale-copy {
+    font-size: 16px;
+    line-height: 21px;
   }
 }

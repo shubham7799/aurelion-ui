@@ -18,7 +18,8 @@
 
 .membership-sticky {
   position: sticky;
-  top: 0;
+  /* Locks below the nav bar, not under it. */
+  top: var(--nav-h);
   display: flex;
   flex-direction: column;
 }
@@ -100,5 +101,37 @@
   .membership-copy {
     grid-column: 1 / span 4;
     margin-top: 24px;
+  }
+}
+
+@media (max-width: 760px) {
+  /* The sticky screen takes the full height so the image can sit on the bottom
+     edge of it, rather than trailing the copy with dead space underneath. */
+  .membership-sticky {
+    height: calc(100vh - var(--nav-h));
+  }
+
+  .membership-image {
+    margin-top: auto;
+  }
+}
+
+@media (max-width: 560px) {
+  .membership-grid {
+    padding: 40px 20px 0;
+  }
+
+  .membership-label {
+    font-size: 11px;
+    margin-bottom: 20px;
+  }
+
+  .membership-highlight {
+    font-size: 26px;
+    line-height: 31px;
+  }
+
+  .membership-link {
+    font-size: 12px;
   }
 }

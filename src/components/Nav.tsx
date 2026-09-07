@@ -1,4 +1,5 @@
-import { useNavigate } from 'react-router-dom';
+import { useEffect, useState } from 'react';
+import { useLocation, useNavigate } from 'react-router-dom';
 import './Nav.css';
 
 const NAV_ITEMS = [
@@ -9,28 +10,63 @@ const NAV_ITEMS = [
 
 export default function Nav() {
   const navigate = useNavigate();
+  const { pathname } = useLocation();
+  const [open, setOpen] = useState(false);
+
+  // Never leave the panel hanging open over a page it no longer belongs to.
+  useEffect(() => setOpen(false), [pathname]);
+
+  // The panel covers the screen, so the page behind it shouldn't scroll under it.
+  useEffect(() => {
+    if (!open) return;
+    const { overflow } = document.body.style;
+    document.body.style.overflow = 'hidden';
+    return () => {
+      document.body.style.overflow = overflow;
+    };
+  }, [open]);
+
+  const go = (to?: string) => {
+    setOpen(false);
+    if (to) navigate(to);
+  };
 
   return (
-    <header className="nav">
+    <header className={`nav${open ? ' is-open' : ''}`}>
       <button
         type="button"
         className="nav-col nav-col-logo"
         aria-label="Aurelion — home"
-        onClick={() => navigate('/')}
+        onClick={() => go('/')}
       >
         <img src="/loader-logo-fill.svg" alt="" className="nav-logo" />
       </button>
-      {NAV_ITEMS.map((item) => (
-        <button
-          key={item.label}
-          type="button"
-          onClick={item.to ? () => navigate(item.to) : undefined}
-          className={`nav-col nav-item${item.highlight ? ' nav-item-highlight' : ' nav-item-glass'}`}
-        >
-          <span>{item.label.toUpperCase()}</span>
-          <span className="nav-item-marker" />
-        </button>
-      ))}
+
+      {/* Only ever shown on narrow screens; the bar itself is the menu above that. */}
+      <button
+        type="button"
+        className="nav-toggle"
+        aria-expanded={open}
+        aria-controls="nav-panel"
+        onClick={() => setOpen((v) => !v)}
+      >
+        <span>{open ? 'Close' : 'Menu'}</span>
+        <span className="nav-item-marker" />
+      </button>
+
+      <div className="nav-items" id="nav-panel">
+        {NAV_ITEMS.map((item) => (
+          <button
+            key={item.label}
+            type="button"
+            onClick={() => go(item.to)}
+            className={`nav-col nav-item${item.highlight ? ' nav-item-highlight' : ' nav-item-glass'}`}
+          >
+            <span>{item.label.toUpperCase()}</span>
+            <span className="nav-item-marker" />
+          </button>
+        ))}
+      </div>
     </header>
   );
 }

@@ -67,3 +67,19 @@
     grid-column: 1 / span 4;
   }
 }
+
+@media (max-width: 560px) {
+  .about-hero-grid {
+    padding: 0 20px;
+  }
+
+  .about-hero-heading {
+    font-size: 28px;
+    line-height: 32px;
+  }
+
+  .about-hero-description {
+    font-size: 12px;
+    line-height: 18px;
+  }
+}

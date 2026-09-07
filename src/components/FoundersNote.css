@@ -122,3 +122,42 @@
     grid-template-columns: 1fr;
   }
 }
+
+@media (max-width: 560px) {
+  .founders-note {
+    padding: 56px 20px;
+  }
+
+  .founders-note-label {
+    font-size: 11px;
+    margin-bottom: 24px;
+  }
+
+  .founders-note-list {
+    gap: 56px;
+  }
+
+  .founders-note-item {
+    gap: 24px;
+  }
+
+  .founders-note-quote-block {
+    padding-top: 0;
+  }
+
+  .founders-note-quote {
+    font-size: 24px;
+    line-height: 29px;
+    letter-spacing: -0.3px;
+  }
+
+  .founders-note-quote-icon {
+    width: 36px;
+    height: 36px;
+  }
+
+  .founders-note-name,
+  .founders-note-title {
+    font-size: 13px;
+  }
+}

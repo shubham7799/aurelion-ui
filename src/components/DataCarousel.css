@@ -1,6 +1,6 @@
 .data-carousel {
   position: relative;
-  height: 100vh;
+  height: calc(100vh - var(--nav-h));
   min-height: 640px;
   overflow: hidden;
   background: #041121;
@@ -300,5 +300,58 @@
 
   .data-carousel-tab.is-active {
     grid-column: 1 / -1;
+  }
+}
+
+@media (max-width: 560px) {
+  .data-carousel {
+    min-height: 88vh;
+  }
+
+  .data-carousel-content {
+    max-width: calc(100% - 40px);
+    left: 20px;
+  }
+
+  .data-carousel-heading {
+    font-size: 26px;
+    line-height: 29px;
+  }
+
+  .data-carousel-description {
+    font-size: 13px;
+    line-height: 18px;
+  }
+
+  /* One tab per row, the open one expanding in place — the ring is too small to
+     read at this width, so it steps aside. */
+  .data-carousel-tabs {
+    grid-template-columns: 1fr;
+  }
+
+  .data-carousel-tab {
+    height: 30px;
+    padding: 0 20px;
+  }
+
+  .data-carousel-tab.is-active {
+    height: auto;
+    min-height: 96px;
+    padding: 14px 20px 18px;
+  }
+
+  .data-carousel-tab-label {
+    font-size: 12px;
+    line-height: 15px;
+  }
+
+  .data-carousel-tab-description {
+    margin-top: 12px;
+    font-size: 10px;
+    line-height: 14px;
+  }
+
+  .data-carousel-ring {
+    display: none;
   }
 }

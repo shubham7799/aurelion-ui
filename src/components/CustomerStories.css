@@ -181,3 +181,38 @@
     line-height: 20px;
   }
 }
+
+@media (max-width: 560px) {
+  .customer-stories {
+    padding: 64px 20px 0;
+  }
+
+  .customer-stories-label {
+    font-size: 11px;
+    line-height: 14px;
+  }
+
+  .customer-stories-quote-icon {
+    width: 40px;
+    height: 40px;
+    margin-top: 32px;
+  }
+
+  .customer-stories-quote {
+    font-size: 22px;
+    line-height: 27px;
+  }
+
+  /* The byline and dots no longer fit on one line at this width. */
+  .customer-stories-footer {
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 14px;
+    margin-top: 28px;
+  }
+
+  .customer-stories-byline {
+    font-size: 13px;
+    line-height: 17px;
+  }
+}

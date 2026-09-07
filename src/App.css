@@ -1,3 +1,15 @@
 .App {
   min-height: 100vh;
 }
+
+/*
+ * The nav is fixed, so it takes no space of its own. On desktop that is the
+ * intent — it is a translucent strip over the hero. On mobile it is a solid
+ * bar, so every page starts below it and nothing scrolls underneath.
+ * `--nav-h` is 0 above the mobile breakpoint, which leaves desktop untouched.
+ */
+.home,
+.about-page,
+.contact-page {
+  padding-top: var(--nav-h);
+}

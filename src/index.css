@@ -1,3 +1,19 @@
+:root {
+  /*
+   * Height the fixed nav bar occupies. Zero on desktop, where the bar is a
+   * translucent strip that content is meant to run beneath. On mobile it is a
+   * solid bar, so it takes real space: pages are pushed down by it and every
+   * sticky screen locks below it rather than sliding underneath.
+   */
+  --nav-h: 0px;
+}
+
+@media (max-width: 760px) {
+  :root {
+    --nav-h: 48px;
+  }
+}
+
 * {
   box-sizing: border-box;
 }

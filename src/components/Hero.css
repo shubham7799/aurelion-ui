@@ -4,7 +4,7 @@
   align-items: flex-end;
   justify-content: space-between;
   gap: 32px;
-  min-height: 100vh;
+  min-height: calc(100vh - var(--nav-h));
   padding: 0 32px 40px;
   background-size: cover;
   background-position: center;
@@ -55,5 +55,17 @@
 
   .hero-scroll {
     display: none;
+  }
+}
+
+@media (max-width: 560px) {
+  .hero {
+    padding: 0 20px 28px;
+  }
+
+  .hero-headline {
+    font-size: 26px;
+    line-height: 30px;
+    letter-spacing: -0.3px;
   }
 }

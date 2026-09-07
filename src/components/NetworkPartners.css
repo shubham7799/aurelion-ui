@@ -124,3 +124,20 @@
     line-height: 32px;
   }
 }
+
+@media (max-width: 560px) {
+  .network-partners {
+    padding: 64px 20px 64px;
+  }
+
+  .network-partners-label {
+    font-size: 11px;
+    line-height: 14px;
+  }
+
+  .network-partners-heading {
+    width: 84%;
+    font-size: 22px;
+    line-height: 26px;
+  }
+}

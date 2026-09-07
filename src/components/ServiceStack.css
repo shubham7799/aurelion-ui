@@ -15,10 +15,11 @@
 
 .service-stack-sticky {
   position: sticky;
-  top: 0;
+  /* Locks below the nav bar, not under it. */
+  top: var(--nav-h);
   display: flex;
   flex-direction: column;
-  height: 100vh;
+  height: calc(100vh - var(--nav-h));
   overflow: hidden;
 }
 
@@ -147,5 +148,26 @@
     width: 100%;
     font-size: 16px;
     line-height: 20px;
+  }
+}
+
+@media (max-width: 560px) {
+  .service-stack-grid {
+    padding: 40px 20px 0;
+  }
+
+  .service-stack-heading {
+    font-size: 26px;
+    line-height: 31px;
+  }
+
+  .service-stack-cards {
+    height: min(431px, 34vh);
+    margin-top: 28px;
+  }
+
+  .service-stack-caption {
+    font-size: 13px;
+    line-height: 17px;
   }
 }
