@@ -1,11 +1,13 @@
 import './GuideLines.css';
 
+// Positions live in CSS rather than inline styles: an inline `left` wins over
+// any stylesheet rule, so the mobile placement could not override it.
 export default function GuideLines() {
   return (
     <div className="guide-lines">
-      <span className="guide-line" style={{ left: '25%' }} />
-      <span className="guide-line" style={{ left: '50%' }} />
-      <span className="guide-line" style={{ left: '75%' }} />
+      <span className="guide-line guide-line-first" />
+      <span className="guide-line guide-line-middle" />
+      <span className="guide-line guide-line-last" />
     </div>
   );
 }

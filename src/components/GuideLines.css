@@ -12,3 +12,31 @@
   width: 1px;
   background: rgba(4, 17, 33, 0.08);
 }
+
+/* Desktop: the quarter marks of the four-column grid. */
+.guide-line-first {
+  left: 25%;
+}
+
+.guide-line-middle {
+  left: 50%;
+}
+
+.guide-line-last {
+  left: 75%;
+}
+
+/* Mobile: the outer two hug the screen edges and the middle one stays centred,
+   so the three still frame the content at a width where quarter marks would sit
+   almost on top of each other. */
+@media (max-width: 760px) {
+  .guide-line-first {
+    left: 8px;
+  }
+
+  .guide-line-last {
+    /* `left` has to be cleared, or it would win over `right`. */
+    left: auto;
+    right: 8px;
+  }
+}

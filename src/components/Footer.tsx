@@ -40,7 +40,7 @@ export default function Footer() {
         </div>
       </div>
 
-      <div className="footer-partners">
+      {/* <div className="footer-partners">
         <span className="footer-partners-divider" />
         <p>Trusted Partners</p>
         <span className="footer-partners-divider" />
@@ -50,7 +50,7 @@ export default function Footer() {
         {PARTNER_LOGOS.map((src) => (
           <img key={src} src={src} alt="Partner logo" className="footer-partner-logo" />
         ))}
-      </div>
+      </div> */}
 
       <div className="footer-watermark">
         <img src="/footer-watermark.svg" alt="Aurelion" />
