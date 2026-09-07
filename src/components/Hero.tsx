@@ -1,5 +1,9 @@
 import './Hero.css';
 
+const SCROLL_LABEL = 'Scroll Down';
+/** Seconds between one character starting its roll and the next. */
+const ROLL_STAGGER = 0.06;
+
 export default function Hero() {
   return (
     <section className="hero" style={{ backgroundImage: 'url(/hero.png)' }}>
@@ -9,7 +13,21 @@ export default function Hero() {
         Everything included.
       </h1>
 
-      <span className="hero-scroll">Scroll Down</span>
+      {/* Split per character so each can roll on its own beat. The label is
+          announced from the aria-label — the pieces are decorative, and read
+          one letter at a time otherwise. */}
+      <span className="hero-scroll" aria-label={SCROLL_LABEL} role="img">
+        {Array.from(SCROLL_LABEL).map((char, i) => (
+          <span
+            key={`${char}-${i}`}
+            aria-hidden="true"
+            className="hero-scroll-char"
+            style={{ animationDelay: `${i * ROLL_STAGGER}s` }}
+          >
+            {char === ' ' ? ' ' : char}
+          </span>
+        ))}
+      </span>
     </section>
   );
 }

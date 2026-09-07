@@ -22,6 +22,51 @@
   color: #ffffff;
 }
 
+/*
+ * Each character rolls downward, drops out at the bottom and returns from
+ * above — a dial turning one notch. They run on a stagger, so the motion reads
+ * left to right across the label and keeps pointing down the page.
+ */
+.hero-scroll-char {
+  display: inline-block;
+  /* A space collapses to nothing once it is its own inline-block. */
+  white-space: pre;
+  animation: hero-scroll-roll 2.6s cubic-bezier(0.6, 0, 0.2, 1) infinite;
+}
+
+@keyframes hero-scroll-roll {
+  /* Rests for most of the cycle, so it reads as a periodic tick rather than a
+     constant churn. */
+  0%,
+  52% {
+    transform: translateY(0);
+    opacity: 1;
+  }
+
+  66% {
+    transform: translateY(110%);
+    opacity: 0;
+  }
+
+  /* Cuts to above the line while invisible, so the return is never seen. */
+  67% {
+    transform: translateY(-110%);
+    opacity: 0;
+  }
+
+  82%,
+  100% {
+    transform: translateY(0);
+    opacity: 1;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .hero-scroll-char {
+    animation: none;
+  }
+}
+
 .hero-scroll {
   flex-shrink: 0;
   /* Sits on the headline's last baseline rather than the box bottom, so the

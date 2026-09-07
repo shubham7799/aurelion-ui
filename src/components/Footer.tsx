@@ -8,7 +8,8 @@ const SOCIAL_LINKS = [
   { name: 'YouTube', icon: '/footer-social-youtube.svg' },
 ];
 
-const PARTNER_LOGOS = Array.from({ length: 16 }, (_, i) => `/partners/${String(i + 1).padStart(2, '0')}.svg`);
+// Kept alongside the partner strip below, which is commented out for now.
+// const PARTNER_LOGOS = Array.from({ length: 16 }, (_, i) => `/partners/${String(i + 1).padStart(2, '0')}.svg`);
 
 export default function Footer() {
   const navigate = useNavigate();

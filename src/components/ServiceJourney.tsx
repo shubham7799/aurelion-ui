@@ -90,6 +90,13 @@ const SWEEP_IN = Math.PI * 0.7;
 const MERGE_TURN = -30;
 
 /**
+ * How much smaller each card in the deck is than the one in front of it. Small
+ * enough to read as depth rather than as a size difference, and enough that the
+ * card behind is fully covered.
+ */
+const DECK_DEPTH_STEP = 0.03;
+
+/**
  * Tilt the finished deck settles at once it reaches the middle of the page —
  * top edge leaning left, per Figma node 752:670 ("Desktop - 37").
  */
@@ -136,8 +143,21 @@ const DROP_TILT = -16;
  * just short of a clean hand-off between them.
  */
 const DROP_SPREAD = 0.66;
-/** When every tile begins fading up on its resting place — after that. */
-const APPEAR_AT = 0.42;
+/**
+ * Where in the drop a given stack card starts and finishes its own fall. The
+ * last card's lead is exactly DROP_SPREAD, which is what the arrival is keyed to.
+ */
+const dropLead = (i: number) => ((STACK_COUNT - 1 - i) / (STACK_COUNT - 1)) * DROP_SPREAD;
+const dropEnd = (i: number) => dropLead(i) + (1 - DROP_SPREAD);
+
+/**
+ * When the tiles begin fading up on their resting places: the moment the last
+ * card of the deck starts falling, so the screen is repopulating while it is
+ * still on its way out rather than sitting empty until it has gone. A card that
+ * is itself still falling waits for its own landing instead — by which point it
+ * is off-shot, so it is never seen in two places at once.
+ */
+const APPEAR_AT = DECK_DROP_SPAN * DROP_SPREAD;
 /**
  * How long that entrance takes, as a share of the fan phase. Nothing travels:
  * each tile fades up and grows a little on the spot, and all eight share this
@@ -146,6 +166,21 @@ const APPEAR_AT = 0.42;
 const APPEAR_SPAN = 0.28;
 /** Size they start that entrance at. */
 const APPEAR_FROM = 0.82;
+/**
+ * The entrance is a short anticlockwise swing rather than a straight fade-in:
+ * each tile starts a little further round the ring and a little further out,
+ * then sweeps down into its resting place. Screen y runs downward, so the angle
+ * decreasing is anticlockwise — the same way round as the later merge, so the
+ * whole sequence turns consistently.
+ */
+const APPEAR_SWEEP = Math.PI * 0.07;
+/** How much further out from the centre it begins, as a share of its radius. */
+const APPEAR_ARC = 0.07;
+/** The lean it carries in with, unwound by the time it settles. */
+const APPEAR_TURN = 10;
+
+/** Decelerating, so each tile eases into its place instead of stopping dead. */
+const easeOut = (t: number) => 1 - (1 - t) ** 3;
 
 /** Scroll budget per phase, in viewport heights. */
 const VH_TEXT = 150;
@@ -264,7 +299,10 @@ export default function ServiceJourney() {
           // The deck drops away to the bottom-left, and then every tile — the
           // three that were stacked included — fades up on its own resting
           // place, all on the same beat.
-          const appear = span(fanP, APPEAR_AT, APPEAR_AT + APPEAR_SPAN);
+          const appearAt = isStackCard
+            ? Math.max(APPEAR_AT, DECK_DROP_SPAN * dropEnd(i))
+            : APPEAR_AT;
+          const appear = span(fanP, appearAt, appearAt + APPEAR_SPAN);
           const placed = appear > 0;
 
           // --- size: portrait card while it is still the deck, square tile once
@@ -279,23 +317,21 @@ export default function ServiceJourney() {
           let rotate = deckTilt;
 
           if (placed) {
-            // Straight onto its resting place — no arc, no spin. The tile is
-            // already at its angle before it becomes visible, so the change of
-            // position happens while it is still fully transparent.
-            const radius = target.radius * (1 - inward);
-            const angle = target.angle - SWEEP_IN * inward;
+            // How far it still has to swing: 1 as it appears, 0 once settled.
+            const settle = 1 - easeOut(appear);
+
+            const radius = target.radius * (1 - inward) * (1 + APPEAR_ARC * settle);
+            const angle = target.angle + APPEAR_SWEEP * settle - SWEEP_IN * inward;
 
             x = (0.5 + radius * Math.cos(angle)) * width;
             y = (0.5 + radius * Math.sin(angle)) * height;
-            rotate = target.rotate + MERGE_TURN * inward;
+            rotate = target.rotate + APPEAR_TURN * settle + MERGE_TURN * inward;
           } else if (drop > 0 && isStackCard) {
             // The pile empties a card at a time, topmost first: each one waits
             // its turn, then falls down and to the left, leaning a little
             // further as it goes — sliding out of shot rather than spinning
             // away. A card yet to go stays put on the deck.
-            const turn = STACK_COUNT - 1 - i;
-            const lead = (turn / (STACK_COUNT - 1)) * DROP_SPREAD;
-            const fall = span(drop, lead, lead + (1 - DROP_SPREAD));
+            const fall = span(drop, dropLead(i), dropEnd(i));
 
             x = lerp(deckX, DROP_TO_X * width, fall);
             y = lerp(deckY, DROP_TO_Y * height, fall);
@@ -314,7 +350,11 @@ export default function ServiceJourney() {
           } else if (isStackCard) {
             const landed = Math.floor(stackP * (STACK_COUNT - 1) + 1e-6);
             const behind = Math.max(0, landed - i);
-            depthScale = 1 + 0.03 * behind;
+            // Each card sits a shade *smaller* than the one in front of it, so
+            // the deck reads as receding and — the point of it — every card
+            // under the top one is hidden completely. Scaling the other way
+            // left a rim of the photo behind showing all the way round.
+            depthScale = 1 - DECK_DEPTH_STEP * behind;
           }
 
           // --- opacity. The deck stays solid as it falls — it exits by leaving
