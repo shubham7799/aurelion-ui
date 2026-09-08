@@ -1,7 +1,9 @@
 /*
- * Figma node 822:42: the label sits at the top of column 1 with nothing below
- * it, and columns 2-4 hold a single 16:9 video with a play control, the
- * customer's byline, and pagination dots underneath.
+ * Two card layouts share this section: a written testimonial (Figma node
+ * 357:308 — a portrait alongside the label, a large quote) and a video story
+ * (node 822:42 — no portrait, a single 16:9 clip with a play control in its
+ * place). Which one shows is per-story (`kind`); the label, byline and
+ * pagination dots are common to both.
  */
 .customer-stories {
   background: #f5f0e6;
@@ -16,13 +18,16 @@
   margin: 0 auto;
 }
 
-.customer-stories-label {
+.customer-stories-aside {
   grid-column: 1;
+  padding-right: 31px;
+}
+
+.customer-stories-label {
   display: flex;
   flex-direction: column;
   gap: 4px;
   margin: 0;
-  padding-right: 31px;
   font-family: 'Instrument Sans', sans-serif;
   font-style: normal;
   font-weight: 400;
@@ -35,6 +40,74 @@
 
 .customer-stories-main {
   grid-column: 2 / span 3;
+  animation: customer-stories-fade-in 0.5s ease both;
+}
+
+/*
+ * Figma node 788:800. The quote mark occupies its own row above the portrait;
+ * the portrait and the copy then share the row below it, in a 1:2 split that
+ * mirrors the outer grid's own column-2-vs-columns-3&4 proportion. Naming both
+ * rows (rather than stacking the icon and portrait with margins) is what keeps
+ * the copy aligned to the portrait specifically, not to the icon above it.
+ */
+.customer-stories-quote-block {
+  display: grid;
+  grid-template-columns: 1fr 2fr;
+  grid-template-rows: auto 1fr;
+  column-gap: 24px;
+  row-gap: 24px;
+  /* Clears the label's own top space, matching where it used to come from the
+     icon's own margin before the icon became a grid row instead of a
+     margin-pushed block. */
+  margin-top: 80px;
+}
+
+.customer-stories-quote-icon {
+  display: block;
+  grid-column: 1;
+  grid-row: 1;
+  width: 80px;
+  height: 80px;
+}
+
+/* Only a quote card has one of these — a video card's image is the video. */
+.customer-stories-photo {
+  display: block;
+  grid-column: 1;
+  grid-row: 2;
+  width: 100%;
+  aspect-ratio: 262.533 / 308;
+  background: #ffffff;
+  object-fit: cover;
+  /* Matches the crop set on the image fill in Figma. */
+  object-position: 87% 41%;
+}
+
+.customer-stories-quote {
+  grid-column: 2;
+  grid-row: 2;
+  align-self: start;
+  margin: 0;
+  font-family: 'Instrument Serif', serif;
+  font-style: normal;
+  font-weight: 400;
+  font-size: 52px;
+  line-height: 57px;
+  letter-spacing: -0.55px;
+  color: #041121;
+  word-break: break-word;
+}
+
+@media (max-width: 1200px) {
+  .customer-stories-quote {
+    font-size: 38px;
+    line-height: 44px;
+  }
+
+  .customer-stories-quote-icon {
+    width: 60px;
+    height: 60px;
+  }
 }
 
 .customer-stories-media {
@@ -117,6 +190,7 @@
   justify-content: space-between;
   gap: 24px;
   margin-top: 28px;
+  padding-right: 24px;
 }
 
 .customer-stories-byline {
@@ -157,18 +231,52 @@
 
 @media (max-width: 900px) {
   .customer-stories {
-    padding: 96px 32px 96px;
+    padding-top: 96px;
+  }
+
+  .customer-stories-aside {
+    grid-column: 1 / span 4;
+    padding-right: 0;
+    margin-bottom: 32px;
   }
 
   .customer-stories-label {
-    grid-column: 1 / span 4;
-    margin-bottom: 32px;
-    padding-right: 0;
     text-align: left;
   }
 
   .customer-stories-main {
     grid-column: 1 / span 4;
+  }
+
+  /* Portrait and copy no longer sit comfortably side by side; the portrait
+     moves above the text instead, both still below the quote mark. */
+  .customer-stories-quote-block {
+    grid-template-columns: 1fr;
+    grid-template-rows: auto auto auto;
+    row-gap: 20px;
+    margin-top: 48px;
+  }
+
+  .customer-stories-photo {
+    grid-column: 1;
+    grid-row: 2;
+    max-width: 220px;
+  }
+
+  .customer-stories-quote {
+    grid-column: 1;
+    grid-row: 3;
+    font-size: 30px;
+    line-height: 36px;
+  }
+
+  .customer-stories-footer {
+    padding-right: 0;
+  }
+
+  .customer-stories-byline {
+    font-size: 16px;
+    line-height: 20px;
   }
 
   .customer-stories-play,

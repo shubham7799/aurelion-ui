@@ -16,14 +16,14 @@ const TESTIMONIALS: Testimonial[] = [
       "Organizing a surprise family reunion while the client is overseas can be quite a challenge, but it's also an exciting opportunity to create lasting memories. From selecting the perfect location to coordinating every detail, the made ensure that this celebration will be truly unforgettable.",
     name: 'Deepali Mane',
     title: 'Founder, M.D',
-    photo: '/about-founder-1.png',
+    photo: '/about-founder-1.jpeg',
   },
   {
     quote:
       "Organizing a surprise family reunion while the client is overseas can be quite a challenge, but it's also an exciting opportunity to create lasting memories. From selecting the perfect location to coordinating every detail, the made ensure that this celebration will be truly unforgettable.",
     name: 'Bholesing Girase',
     title: 'Co-Founder & COO',
-    photo: '/about-founder-2.png',
+    photo: '/about-founder-2.jpeg',
   },
 ];
 

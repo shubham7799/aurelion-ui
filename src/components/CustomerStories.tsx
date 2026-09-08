@@ -1,23 +1,42 @@
 import { useEffect, useRef, useState } from 'react';
 import './CustomerStories.css';
 
-interface Story {
+interface QuoteStory {
+  kind: 'quote';
+  name: string;
+  title: string;
+  quote: string;
+  photo: string;
+}
+
+interface VideoStory {
+  kind: 'video';
   name: string;
   title: string;
   video: string;
   poster: string;
 }
 
+type Story = QuoteStory | VideoStory;
+
 /**
- * Figma node 822:42. Each dot is a separate customer's video; only one asset
- * exists in the project so far (`hero.mp4`), so every story points at it until
- * the real clips are supplied — swap `video`/`poster` in per story then.
+ * Figma nodes 357:308 (the written testimonial) and 822:42 (the video one) —
+ * two card layouts on the same rotation, distinguished by `kind`. Only one
+ * video asset exists in the project so far (`hero.mp4`), so every video story
+ * points at it until the real clips are supplied.
  */
 const STORIES: Story[] = [
-  { name: 'Deepali Mane', title: 'Business Manager ITC', video: '/hero.mp4', poster: '/story-1.png' },
-  { name: 'Customer Name', title: 'Guest', video: '/hero.mp4', poster: '/story-1.png' },
-  { name: 'Customer Name', title: 'Guest', video: '/hero.mp4', poster: '/story-1.png' },
-  { name: 'Customer Name', title: 'Guest', video: '/hero.mp4', poster: '/story-1.png' },
+  {
+    kind: 'quote',
+    quote:
+      'Organizing a surprise family reunion while the client is overseas can be quite a challenge, but it’s also an exciting opportunity to create lasting memories. From selecting the perfect location to coordinating every detail, the made ensure that this celebration will be truly unforgettable.',
+    name: 'Deepali Mane',
+    title: 'Business Manager ITC',
+    photo: '/story-1.png',
+  },
+  { kind: 'video', name: 'Customer Name', title: 'Guest', video: '/hero.mp4', poster: '/story-1.png' },
+  { kind: 'video', name: 'Customer Name', title: 'Guest', video: '/hero.mp4', poster: '/story-1.png' },
+  { kind: 'video', name: 'Customer Name', title: 'Guest', video: '/hero.mp4', poster: '/story-1.png' },
 ];
 
 /** How long an unwatched story sits before the carousel moves on. */
@@ -42,10 +61,11 @@ export default function CustomerStories() {
     );
     observer.observe(media);
     return () => observer.disconnect();
-  }, []);
+  }, [activeIndex]);
 
-  // Advances on its own, but only while nobody is actually watching — a story
-  // the visitor pressed play on keeps its place instead of being cut away from.
+  // Advances on its own, but only while nobody is actually watching — a video
+  // story the visitor pressed play on keeps its place instead of being cut
+  // away from.
   useEffect(() => {
     if (playing) return;
     const timer = window.setInterval(() => {
@@ -54,13 +74,14 @@ export default function CustomerStories() {
     return () => window.clearInterval(timer);
   }, [playing]);
 
-  // Switching stories always lands back on the poster frame with the play
-  // button showing, never mid-playback of the story just left.
+  // Switching stories always lands a video back on the poster frame with the
+  // play button showing, never mid-playback of the story just left.
   useEffect(() => {
     setPlaying(false);
   }, [activeIndex]);
 
   const active = STORIES[activeIndex];
+  const isQuote = active.kind === 'quote';
 
   const goTo = (i: number) => {
     videoRef.current?.pause();
@@ -78,51 +99,65 @@ export default function CustomerStories() {
   return (
     <section className="customer-stories">
       <div className="customer-stories-grid">
-        <p className="customer-stories-label">
-          <span>Customer</span>
-          <span>Stories</span>
-        </p>
+        <div className="customer-stories-aside">
+          <p className="customer-stories-label">
+            <span>Customer</span>
+            <span>Stories</span>
+          </p>
+        </div>
 
-        <div className="customer-stories-main">
-          <div className="customer-stories-media" key={`media-${activeIndex}`} ref={mediaRef}>
-            <video
-              ref={videoRef}
-              className="customer-stories-video"
-              src={active.video}
-              poster={active.poster}
-              playsInline
-              onPlay={() => setPlaying(true)}
-              onPause={() => setPlaying(false)}
-              onEnded={() => setPlaying(false)}
-            />
+        <div className="customer-stories-main" key={`main-${activeIndex}`}>
+          {isQuote ? (
+            // The quote mark sits above the portrait; the portrait and the
+            // copy then share a row, aligned to each other rather than to the
+            // icon above — a named grid row for each, not stacked margins.
+            <div className="customer-stories-quote-block">
+              <img src="/about-quote.svg" alt="" className="customer-stories-quote-icon" />
+              <img src={active.photo} alt={active.name} className="customer-stories-photo" />
+              <p className="customer-stories-quote">{active.quote}</p>
+            </div>
+          ) : (
+            <div className="customer-stories-media" ref={mediaRef}>
+              <video
+                ref={videoRef}
+                className="customer-stories-video"
+                src={active.video}
+                poster={active.poster}
+                playsInline
+                onPlay={() => setPlaying(true)}
+                onPause={() => setPlaying(false)}
+                onEnded={() => setPlaying(false)}
+              />
 
-            {/* Paused: a solid button, always there, the invitation to start.
-                Playing: the same spot turns into a hover-only pause control —
-                out of the way while watching, a click away when wanted. */}
-            {!playing ? (
-              <button
-                type="button"
-                className="customer-stories-play"
-                aria-label={`Play ${active.name}'s story`}
-                onClick={play}
-              >
-                <svg viewBox="0 0 24 24" fill="none" aria-hidden="true">
-                  <path d="M9 7.5v9l7.5-4.5L9 7.5Z" fill="#041121" />
-                </svg>
-              </button>
-            ) : (
-              <button
-                type="button"
-                className="customer-stories-pause"
-                aria-label={`Pause ${active.name}'s story`}
-                onClick={pause}
-              >
-                <svg viewBox="0 0 24 24" fill="none" aria-hidden="true">
-                  <path d="M8 7h2.5v10H8V7Zm5.5 0H16v10h-2.5V7Z" fill="#041121" />
-                </svg>
-              </button>
-            )}
-          </div>
+              {/* Paused: a solid button, always there, the invitation to
+                  start. Playing: the same spot turns into a hover-only pause
+                  control — out of the way while watching, a click away when
+                  wanted. */}
+              {!playing ? (
+                <button
+                  type="button"
+                  className="customer-stories-play"
+                  aria-label={`Play ${active.name}'s story`}
+                  onClick={play}
+                >
+                  <svg viewBox="0 0 24 24" fill="none" aria-hidden="true">
+                    <path d="M9 7.5v9l7.5-4.5L9 7.5Z" fill="#041121" />
+                  </svg>
+                </button>
+              ) : (
+                <button
+                  type="button"
+                  className="customer-stories-pause"
+                  aria-label={`Pause ${active.name}'s story`}
+                  onClick={pause}
+                >
+                  <svg viewBox="0 0 24 24" fill="none" aria-hidden="true">
+                    <path d="M8 7h2.5v10H8V7Zm5.5 0H16v10h-2.5V7Z" fill="#041121" />
+                  </svg>
+                </button>
+              )}
+            </div>
+          )}
 
           <div className="customer-stories-footer">
             <p className="customer-stories-byline">

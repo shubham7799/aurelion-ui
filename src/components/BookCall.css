@@ -2,15 +2,27 @@
   position: relative;
   min-height: 92vh;
   display: flex;
-  align-items: center;
+  align-items: flex-start;
   padding: 0 80px;
   background-size: cover;
   background-position: center;
 }
 
+/* Darkens the top of the photo down into transparency, so the heading sits on
+   a legible ground without a flat scrim covering the whole image. */
+.book-call::before {
+  content: '';
+  position: absolute;
+  inset: 0;
+  z-index: 0;
+  background: linear-gradient(180deg, #050c14 -24.41%, rgba(5, 12, 20, 0) 68.94%);
+  pointer-events: none;
+}
+
 .book-call-content {
   position: relative;
   z-index: 1;
+  margin-top: 54px;
   color: #f5f0e6;
   max-width: 32rem;
 }

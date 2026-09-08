@@ -7,13 +7,16 @@ export interface CarouselSlide {
   heading: string;
   description: string;
   image: string;
+  /** Shown in this slide's own expanded tab panel. Falls back to the
+      carousel-level `tabDescription` when a slide doesn't set one. */
+  tabDescription?: string;
 }
 
 interface DataCarouselProps {
   slides: CarouselSlide[];
   /** How long each slide stays up before auto-advancing, in ms. */
   intervalMs?: number;
-  /** Shown in every tab's expanded panel — fixed copy, not per-slide. */
+  /** Fallback tab-panel copy for any slide that doesn't set its own. */
   tabDescription?: string;
 }
 
@@ -101,7 +104,11 @@ export default function DataCarousel({
               </span>
               {/* A span, not a p: the tab is a <button>, which only permits
                   phrasing content. Styled as a block in CSS. */}
-              {isActive && <span className="data-carousel-tab-description">{tabDescription}</span>}
+              {isActive && (
+                <span className="data-carousel-tab-description">
+                  {slide.tabDescription ?? tabDescription}
+                </span>
+              )}
             </button>
           );
         })}

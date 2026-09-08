@@ -6,14 +6,12 @@ export default function AboutHero() {
       <div className="about-hero-scrim" />
 
       <h1 className="about-hero-heading">
-        At Aurelion, we believe true luxury is having less to true luxury is having less to gieve true luxury is having At Aurelion, we believe true luxury is having less to
+        At Aurelion, we thrive to become the most trusted private lifestyle partner for discerning individuals and families making life more effortless through personalised attention, trusted access and meaningful experiences.
       </h1>
 
       <div className="about-hero-grid">
         <p className="about-hero-description">
-          Every journey, every reservation, every introduction, every detail—quietly
-          anticipated, seamlessly coordinated, and impeccably delivered through one
-          trusted relationship.
+          To simplify the lives of our members by understanding their needs, anticipating what matters and taking care of every detail with discretion and ownership.
         </p>
       </div>
     </section>
