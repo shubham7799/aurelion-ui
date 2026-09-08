@@ -6,7 +6,19 @@ const ROLL_STAGGER = 0.06;
 
 export default function Hero() {
   return (
-    <section className="hero" style={{ backgroundImage: 'url(/hero.png)' }}>
+    <section className="hero">
+      <video
+        className="hero-video"
+        autoPlay
+        loop
+        muted
+        playsInline
+        poster="/hero.png"
+      >
+        <source src="/hero.mp4" type="video/mp4" />
+        Your browser does not support the video tag.
+      </video>
+
       <h1 className="hero-headline">
         Luxury is having less to think about —
         <br />

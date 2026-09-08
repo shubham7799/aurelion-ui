@@ -70,7 +70,10 @@ export default function DataCarousel({
         <p className="data-carousel-description">{active.description}</p>
       </div>
 
-      <div className="data-carousel-tabs">
+      <div
+        className="data-carousel-tabs"
+        style={{ '--tab-count': slides.length } as React.CSSProperties}
+      >
         {slides.map((slide, i) => {
           const isActive = i === activeIndex;
           return (

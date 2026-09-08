@@ -135,8 +135,7 @@
 .contact-form {
   grid-column: 2 / span 2;
   display: flex;
-  border: 1px solid rgba(136, 136, 136, 0.32);
-  border-right: none;
+  border-left: 1px solid rgba(136, 136, 136, 0.32);
 }
 
 .contact-form-col {
@@ -150,6 +149,10 @@
 }
 
 .contact-form-col-left {
+  /* Only the left column gets a top edge — above Name — not the right one,
+     which starts lower down and shouldn't have a line floating over its own
+     empty top space. */
+  border-top: 1px solid rgba(136, 136, 136, 0.32);
   border-right: 1px solid rgba(136, 136, 136, 0.32);
 }
 

@@ -59,6 +59,7 @@ export default function Footer() {
 
       <div className="footer-bottom">
         <p>2026 © Aurelion</p>
+        <p className="footer-powered">Powered by Concierge ®</p>
         <div className="footer-legal">
           <button type="button">Cookie Policy</button>
           <button type="button">Privacy Policy</button>

@@ -1,8 +1,11 @@
-/* Geometry mirrors Figma node 357:308 (1440-wide frame):
-   label + photo right-align at x=327 in column 1, copy starts at x=408. */
+/*
+ * Figma node 822:42: the label sits at the top of column 1 with nothing below
+ * it, and columns 2-4 hold a single 16:9 video with a play control, the
+ * customer's byline, and pagination dots underneath.
+ */
 .customer-stories {
   background: #f5f0e6;
-  padding: 160px 32px 0;
+  padding: 160px 32px 160px;
 }
 
 .customer-stories-grid {
@@ -13,19 +16,13 @@
   margin: 0 auto;
 }
 
-.customer-stories-aside {
-  grid-column: 1;
-  display: flex;
-  flex-direction: column;
-  align-items: flex-end;
-  padding-right: 31px;
-}
-
 .customer-stories-label {
+  grid-column: 1;
   display: flex;
   flex-direction: column;
   gap: 4px;
   margin: 0;
+  padding-right: 31px;
   font-family: 'Instrument Sans', sans-serif;
   font-style: normal;
   font-weight: 400;
@@ -36,22 +33,16 @@
   color: rgba(4, 17, 33, 0.5);
 }
 
-.customer-stories-photo {
-  display: block;
-  width: 100%;
-  max-width: 262.533px;
-  aspect-ratio: 262.533 / 308;
-  margin-top: 246px;
-  background: #ffffff;
-  object-fit: cover;
-  /* Matches the crop set on the image fill in Figma. */
-  object-position: 87% 41%;
-  animation: customer-stories-fade-in 0.5s ease both;
-}
-
 .customer-stories-main {
   grid-column: 2 / span 3;
-  padding-left: 26px;
+}
+
+.customer-stories-media {
+  position: relative;
+  width: 100%;
+  aspect-ratio: 16 / 9;
+  overflow: hidden;
+  background: #000000;
   animation: customer-stories-fade-in 0.5s ease both;
 }
 
@@ -66,24 +57,58 @@
   }
 }
 
-.customer-stories-quote-icon {
+.customer-stories-video {
   display: block;
-  width: 80px;
-  height: 80px;
-  margin-top: 80px;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
 }
 
-.customer-stories-quote {
-  max-width: 877px;
-  margin: 32px 0 0;
-  font-family: 'Instrument Serif', serif;
-  font-style: normal;
-  font-weight: 400;
-  font-size: 52px;
-  line-height: 57px;
-  letter-spacing: -0.55px;
-  color: #041121;
-  word-break: break-word;
+.customer-stories-play,
+.customer-stories-pause {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 64px;
+  height: 64px;
+  padding: 0;
+  border: none;
+  border-radius: 50%;
+  background: #ffffff;
+  box-shadow: 0 4px 18px rgba(0, 0, 0, 0.28);
+  transform: translate(-50%, -50%);
+  cursor: pointer;
+}
+
+.customer-stories-play svg,
+.customer-stories-pause svg {
+  width: 24px;
+  height: 24px;
+}
+
+/*
+ * While playing, the control only shows up on hover — invisible during
+ * ordinary viewing, a click away as soon as the pointer lands on the video.
+ * Opacity rather than mount/unmount, so it fades rather than snapping in.
+ */
+.customer-stories-pause {
+  opacity: 0;
+  transition: opacity 0.2s ease;
+}
+
+.customer-stories-media:hover .customer-stories-pause,
+.customer-stories-pause:focus-visible {
+  opacity: 1;
+}
+
+/* Touch has no hover to reveal it on, so the control stays reachable there. */
+@media (hover: none) {
+  .customer-stories-pause {
+    opacity: 1;
+  }
 }
 
 .customer-stories-footer {
@@ -91,8 +116,7 @@
   align-items: center;
   justify-content: space-between;
   gap: 24px;
-  margin-top: 44px;
-  padding-right: 24px;
+  margin-top: 28px;
 }
 
 .customer-stories-byline {
@@ -100,91 +124,63 @@
   font-family: 'Instrument Sans', sans-serif;
   font-style: normal;
   font-weight: 500;
-  font-size: 20px;
-  line-height: 22px;
+  font-size: 15px;
+  line-height: 18px;
   text-transform: uppercase;
   color: #041121;
 }
 
 .customer-stories-byline span {
+  font-weight: 400;
   color: rgba(4, 17, 33, 0.62);
 }
 
 .customer-stories-dots {
   display: flex;
   flex-shrink: 0;
-  gap: 4px;
+  gap: 6px;
 }
 
 .customer-stories-dot {
   width: 8px;
   height: 8px;
+  padding: 0;
+  border: none;
   border-radius: 50%;
   background: rgba(4, 17, 33, 0.2);
+  cursor: pointer;
 }
 
 .customer-stories-dot.is-active {
   background: #041121;
 }
 
-@media (max-width: 1200px) {
-  .customer-stories-quote {
-    font-size: 38px;
-    line-height: 44px;
-  }
-
-  .customer-stories-quote-icon {
-    width: 60px;
-    height: 60px;
-  }
-}
-
 @media (max-width: 900px) {
   .customer-stories {
-    padding-top: 96px;
-  }
-
-  .customer-stories-aside {
-    grid-column: 1 / span 4;
-    align-items: flex-start;
-    padding-right: 0;
+    padding: 96px 32px 96px;
   }
 
   .customer-stories-label {
+    grid-column: 1 / span 4;
+    margin-bottom: 32px;
+    padding-right: 0;
     text-align: left;
-  }
-
-  .customer-stories-photo {
-    margin-top: 32px;
   }
 
   .customer-stories-main {
     grid-column: 1 / span 4;
-    padding-left: 0;
   }
 
-  .customer-stories-quote-icon {
-    margin-top: 48px;
-  }
-
-  .customer-stories-quote {
-    font-size: 30px;
-    line-height: 36px;
-  }
-
-  .customer-stories-footer {
-    padding-right: 0;
-  }
-
-  .customer-stories-byline {
-    font-size: 16px;
-    line-height: 20px;
+  .customer-stories-play,
+  .customer-stories-pause {
+    width: 56px;
+    height: 56px;
   }
 }
 
 @media (max-width: 560px) {
   .customer-stories {
-    padding: 64px 20px 0;
+    padding: 64px 20px 64px;
   }
 
   .customer-stories-label {
@@ -192,15 +188,16 @@
     line-height: 14px;
   }
 
-  .customer-stories-quote-icon {
-    width: 40px;
-    height: 40px;
-    margin-top: 32px;
+  .customer-stories-play,
+  .customer-stories-pause {
+    width: 48px;
+    height: 48px;
   }
 
-  .customer-stories-quote {
-    font-size: 22px;
-    line-height: 27px;
+  .customer-stories-play svg,
+  .customer-stories-pause svg {
+    width: 18px;
+    height: 18px;
   }
 
   /* The byline and dots no longer fit on one line at this width. */
@@ -208,7 +205,7 @@
     flex-direction: column;
     align-items: flex-start;
     gap: 14px;
-    margin-top: 28px;
+    margin-top: 20px;
   }
 
   .customer-stories-byline {

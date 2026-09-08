@@ -163,7 +163,10 @@
   bottom: 0;
   z-index: 2;
   display: grid;
-  grid-template-columns: repeat(4, 1fr);
+  /* Sized to however many slides are actually passed in — a fixed repeat(4, …)
+     left a bare fourth column when a carousel ran with fewer, instead of the
+     tabs sharing the full width. */
+  grid-template-columns: repeat(var(--tab-count, 4), 1fr);
   align-items: end;
 }
 
