@@ -10,7 +10,7 @@ export default function About() {
   return (
     <div className="about-page">
       <AboutHero />
-      <ServiceStack />
+      {/* <ServiceStack /> */}
       <FounderStory />
       <ApproachCarousel />
       <FoundersNote />
