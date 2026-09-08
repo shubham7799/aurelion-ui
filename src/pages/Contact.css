@@ -104,16 +104,23 @@
   padding: 104px 0 120px;
 }
 
+/*
+ * Full-bleed and un-padded on purpose: the four columns then fall exactly on the
+ * quarter marks the page's guide lines are drawn at, which are viewport
+ * fractions. A centred max-width box with side padding — which is what this was
+ * — puts the columns somewhere else entirely, so the form floated free of the
+ * guides. Anything needing breathing room insets itself instead.
+ */
 .contact-form-grid {
   display: grid;
   grid-template-columns: repeat(4, 1fr);
-  max-width: 1440px;
-  margin: 0 auto;
-  padding: 0 32px;
 }
 
 .contact-heading {
   grid-column: 1 / span 1;
+  /* Sits against the first guide line, which the form starts at. */
+  justify-self: end;
+  padding-right: 32px;
   font-family: 'Instrument Serif', serif;
   font-weight: 400;
   font-size: 52px;
@@ -352,8 +359,16 @@
 }
 
 @media (max-width: 900px) {
+  /* Stacked, the columns no longer line up with anything, so the block takes
+     ordinary page margins back. */
+  .contact-form-grid {
+    padding: 0 24px;
+  }
+
   .contact-heading {
     grid-column: 1 / span 4;
+    justify-self: stretch;
+    max-width: none;
     text-align: left;
     padding-right: 0;
     margin-bottom: 32px;
@@ -402,7 +417,11 @@
   }
 
   .contact-form-section {
-    padding: 48px 20px;
+    padding: 48px 0;
+  }
+
+  .contact-form-grid {
+    padding: 0 20px;
   }
 
   .contact-heading {

@@ -1,17 +1,23 @@
-/* Geometry mirrors Figma node 357:308 (1440-wide frame): the label right-aligns
-   at x=327 in column 1 and the 986-wide ring sits alongside it, 68px in from
-   the right edge of the content area. */
+/*
+ * Figma node 788:800. Four stats set against the guide grid, over a globe that
+ * bleeds off the bottom of the section with its inventory of clubs turning
+ * anticlockwise round the crown.
+ */
 .network-partners {
+  position: relative;
+  overflow: hidden;
   background: #f5f0e6;
-  padding: 161px 32px 142px;
+  padding: 161px 0 0;
 }
 
+/*
+ * Full-bleed and unpadded, so the four columns fall exactly on the page's guide
+ * lines — those are viewport quarters, which a centred max-width box would miss
+ * at every width but one. Children inset themselves instead.
+ */
 .network-partners-grid {
   display: grid;
   grid-template-columns: repeat(4, 1fr);
-  column-gap: 24px;
-  max-width: 1376px;
-  margin: 0 auto;
 }
 
 .network-partners-label {
@@ -21,7 +27,7 @@
   flex-direction: column;
   gap: 4px;
   margin: 0;
-  padding-right: 31px;
+  padding-right: 32px;
   font-family: 'Instrument Sans', sans-serif;
   font-style: normal;
   font-weight: 400;
@@ -32,102 +38,174 @@
   color: rgba(4, 17, 33, 0.5);
 }
 
-.network-partners-ring {
-  grid-column: 1 / span 4;
+.network-stats {
+  grid-column: 2 / span 3;
   grid-row: 1;
-  position: relative;
-  width: min(986px, 100%);
-  aspect-ratio: 986 / 618.047;
-  margin-left: auto;
-  margin-right: 68px;
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  row-gap: 56px;
+  margin: 0;
+  padding: 0 32px 0 32px;
+  list-style: none;
 }
 
-.network-partners-heading {
-  position: absolute;
-  top: 35.71%;
-  left: 50%;
-  /* Above the badges, which take stacking order 0–100 from their depth. */
-  z-index: 200;
-  width: 46.3%;
-  margin: 0;
-  transform: translateX(-50%);
+/* The label sits on the number's baseline, at its right. */
+.network-stat {
+  display: flex;
+  align-items: baseline;
+  gap: 12px;
+}
+
+.network-stat-value {
   font-family: 'Instrument Serif', serif;
   font-style: normal;
   font-weight: 400;
-  font-size: 53.825px;
-  line-height: 59px;
-  letter-spacing: -0.5693px;
-  text-align: center;
+  font-size: clamp(44px, 6.2vw, 90px);
+  line-height: 1;
+  letter-spacing: -0.02em;
   color: #041121;
 }
 
-/* Parked at the origin and carried onto the ellipse by transforms alone, so a
-   badge travelling the ring never triggers layout. Size is fixed at the ring's
-   largest; the depth scale shrinks it toward the back. */
-.network-partners-badge {
-  position: absolute;
-  top: 0;
-  left: 0;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  width: 8.888%;
+.network-stat-label {
+  font-family: 'Instrument Sans', sans-serif;
+  font-style: normal;
+  font-weight: 400;
+  font-size: clamp(12px, 1.2vw, 17px);
+  line-height: 1.3;
+  color: #041121;
+}
+
+/*
+ * The sphere is square and deliberately taller than the room left for it: the
+ * negative bottom margin is how much of it the section crops, which is what puts
+ * the horizon low in the frame.
+ */
+.network-globe {
+  --globe-cut: 46%;
+  --globe-inset: 40px;
+  --map-inset: 8%;
+  --map-top: -12%;
+
+  position: relative;
+  width: min(1180px, 92vw);
   aspect-ratio: 1;
-  overflow: hidden;
-  border-radius: 50%;
-  background: #f8f8f8;
-  box-shadow: 0 0 14px rgba(0, 0, 0, 0.4);
-  will-change: transform;
+  /* Pushed to the right-hand edge of the page rather than centred. */
+  margin: 110px var(--globe-inset) calc(var(--globe-cut) * -1) auto;
+  color: rgba(4, 17, 33, 0.82);
 }
 
-.network-partners-logo {
-  display: block;
-  width: 60%;
-  height: 60%;
-  object-fit: contain;
-  /* These marks were exported light-on-transparent for the dark Footer, so
-     flatten them to a dark silhouette to read on the light badge here. */
-  filter: brightness(0);
-  opacity: 0.75;
+/*
+ * The export is a flat 2:1 world map, so the box takes the image's own
+ * proportion and is anchored near the top of the sphere. A square box with
+ * `contain` rendered it as a band across the middle of the circle, which the
+ * bottom crop then swallowed — hence the map being nowhere to be seen.
+ */
+.network-globe-map {
+  position: absolute;
+  top: var(--map-top);
+  right: var(--map-inset);
+  left: var(--map-inset);
+  aspect-ratio: 2242 / 1510;
+  background-position: center;
+  background-repeat: no-repeat;
+  background-size: contain;
 }
 
-@media (max-width: 1200px) {
-  .network-partners-heading {
-    width: 56%;
-    font-size: 38px;
-    line-height: 42px;
+/*
+ * Turns anticlockwise — negative rotation — carrying the text round the crown
+ * against the reading direction, so words rise on the right and set on the left.
+ */
+.network-globe-orbit {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  overflow: visible;
+  transform-origin: 50% 50%;
+  animation: network-globe-spin 120s linear infinite;
+}
+
+@keyframes network-globe-spin {
+  from {
+    transform: rotate(0deg);
   }
+  to {
+    transform: rotate(-360deg);
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .network-globe-orbit {
+    animation: none;
+  }
+}
+
+.network-globe-label {
+  font-family: 'Instrument Sans', sans-serif;
+  font-size: 18px;
+  color: rgba(4, 17, 33, 0.62);
 }
 
 @media (max-width: 900px) {
   .network-partners {
-    padding: 96px 32px 96px;
+    padding-top: 96px;
+  }
+
+  /* Stacked, the columns line up with nothing, so the block takes ordinary page
+     margins back. */
+  .network-partners-grid {
+    padding: 0 24px;
   }
 
   .network-partners-label {
     grid-column: 1 / span 4;
     grid-row: 1;
-    margin-bottom: 32px;
+    margin-bottom: 40px;
     padding-right: 0;
     text-align: left;
   }
 
-  .network-partners-ring {
+  .network-stats {
     grid-column: 1 / span 4;
     grid-row: 2;
-    margin-right: 0;
+    row-gap: 36px;
+    column-gap: 24px;
+    padding: 0;
   }
 
-  .network-partners-heading {
-    width: 70%;
-    font-size: 28px;
-    line-height: 32px;
+  /*
+   * A sphere far wider than the screen, so only a shallow arc of the text
+   * crosses the top — and centred rather than pushed right, since at this width
+   * it spans the viewport either way.
+   */
+  .network-globe {
+    --globe-cut: 48%;
+    --map-inset: 14%;
+    --map-top: 5.6%;
+
+    width: 130vw;
+    /*
+     * `auto` margins cannot centre a box wider than its container — both
+     * resolve to zero and it simply overflows to the right, which left the map
+     * hanging off the edge of the screen. Half the container across, then half
+     * its own width back, which centres it at any overhang.
+     */
+    margin: 72px 0 calc(var(--globe-cut) * -1) 50%;
+    transform: translateX(-50%);
+  }
+
+  .network-globe-label {
+    font-size: 22px;
   }
 }
 
 @media (max-width: 560px) {
   .network-partners {
-    padding: 64px 20px 64px;
+    padding-top: 64px;
+  }
+
+  .network-partners-grid {
+    padding: 0 20px;
   }
 
   .network-partners-label {
@@ -135,9 +213,23 @@
     line-height: 14px;
   }
 
-  .network-partners-heading {
-    width: 84%;
-    font-size: 22px;
-    line-height: 26px;
+  /* Two stats across is too tight to hold a big serif number and its label. */
+  .network-stats {
+    grid-template-columns: 1fr;
+    row-gap: 28px;
+  }
+
+  /* The map runs the full width of the screen, with the arc skimming above it. */
+  .network-globe {
+    --globe-cut: 100%;
+    --map-inset: 9%;
+    --map-top: -12%;
+
+    width: 161vw;
+    margin-top: 56px;
+  }
+
+  .network-globe-label {
+    font-size: 24px;
   }
 }
