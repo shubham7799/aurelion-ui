@@ -3,10 +3,10 @@
 }
 
 /*
- * The nav is fixed, so it takes no space of its own. On desktop that is the
- * intent — it is a translucent strip over the hero. On mobile it is a solid
- * bar, so every page starts below it and nothing scrolls underneath.
- * `--nav-h` is 0 above the mobile breakpoint, which leaves desktop untouched.
+ * The nav is fixed and floats over the page at every width, so it takes no
+ * space of its own — `--nav-h` is 0. The hook is kept because it is the single
+ * switch every sticky screen reads, and a future bar that does occupy space
+ * would only need the variable changed.
  */
 .home,
 .about-page,

@@ -97,32 +97,32 @@ const MERGE_TURN = -30;
 const DECK_DEPTH_STEP = 0.03;
 
 /**
- * Tilt the finished deck settles at once it reaches the middle of the page —
- * top edge leaning left, per Figma node 752:670 ("Desktop - 37").
+ * The resting places in the order they light up: the bottom-right corner first,
+ * then round the ring anticlockwise. Sorting by descending angle is what makes
+ * it anticlockwise — screen y runs downward — and the list is then rotated so it
+ * begins at whichever place sits nearest the bottom-right diagonal.
  */
-const DECK_TILT = -8.53;
-
-/**
- * The resting places, ordered from the bottom-left corner and then round the
- * ring anticlockwise. Nothing travels any more, so this no longer sets any
- * timing — it just decides which photo ends up where, with the three that were
- * stacked taking the first places.
- */
-const ORDER = (() => {
+const REVEAL_ORDER = (() => {
   const byAngle = TARGETS.map((_, i) => i).sort((a, b) => TARGETS[b].angle - TARGETS[a].angle);
-  const bottomLeft = (index: number) => Math.abs(TARGETS[index].angle - Math.PI * 0.75);
-  const start = byAngle.reduce((best, i) => (bottomLeft(i) < bottomLeft(best) ? i : best), byAngle[0]);
+  const bottomRight = (index: number) => Math.abs(TARGETS[index].angle - Math.PI * 0.25);
+  const start = byAngle.reduce((best, i) => (bottomRight(i) < bottomRight(best) ? i : best), byAngle[0]);
   const from = byAngle.indexOf(start);
   return [...byAngle.slice(from), ...byAngle.slice(0, from)];
 })();
 
-/** TARGET_FOR[i] is the resting place tile i takes. */
+/** TARGET_FOR[i] is the resting place tile i takes; REVEAL_RANK[i] is its turn. */
 const TARGET_FOR: number[] = [];
+const REVEAL_RANK: number[] = [];
 [
-  ...Array.from({ length: STACK_COUNT }, (_, k) => STACK_COUNT - 1 - k),
+  // The five that were never in the deck take the opening places, so the run
+  // round the ring starts with tiles that have nothing to wait for.
   ...Array.from({ length: TILES.length - STACK_COUNT }, (_, k) => STACK_COUNT + k),
-].forEach((tileIndex, position) => {
-  TARGET_FOR[tileIndex] = ORDER[position];
+  // Then the three that were, in the order they fell — each one's turn comes
+  // round well after it has landed, so the sequence never has to stall.
+  ...Array.from({ length: STACK_COUNT }, (_, k) => STACK_COUNT - 1 - k),
+].forEach((tileIndex, rank) => {
+  TARGET_FOR[tileIndex] = REVEAL_ORDER[rank];
+  REVEAL_RANK[tileIndex] = rank;
 });
 
 /** Share of the fan phase the deck takes to drop away out of shot. */
@@ -134,15 +134,20 @@ const DECK_DROP_SPAN = 0.34;
  */
 const DROP_TO_X = -0.3;
 const DROP_TO_Y = 1.35;
-/** A touch more lean on the way down. A tilt, not a tumble. */
-const DROP_TILT = -16;
+/**
+ * The lean the card picks up on its way down. It stands square in the deck and
+ * takes on all of this while falling — the tilt is part of the fall rather than
+ * a pose struck before it.
+ */
+const DROP_TILT = -48;
 /**
  * Share of the drop given over to spacing the cards out, so the pile leaves one
- * card at a time — topmost first — rather than falling as a single block. Each
- * card's own fall takes the remaining 1 - DROP_SPREAD, which at this setting is
- * just short of a clean hand-off between them.
+ * card at a time — topmost first. Each card's own fall takes the remaining
+ * 1 - DROP_SPREAD, and at this setting the two are equal: a card is released
+ * once the one before it is halfway down, so they overlap on the way out
+ * instead of queuing for a clear screen.
  */
-const DROP_SPREAD = 0.66;
+const DROP_SPREAD = 0.4;
 /**
  * Where in the drop a given stack card starts and finishes its own fall. The
  * last card's lead is exactly DROP_SPREAD, which is what the arrival is keyed to.
@@ -163,7 +168,9 @@ const APPEAR_AT = DECK_DROP_SPAN * DROP_SPREAD;
  * each tile fades up and grows a little on the spot, and all eight share this
  * one window, so they arrive together rather than in sequence.
  */
-const APPEAR_SPAN = 0.28;
+const APPEAR_SPAN = 0.24;
+/** Lead between one tile starting its entrance and the next round the ring. */
+const APPEAR_STAGGER = 0.07;
 /** Size they start that entrance at. */
 const APPEAR_FROM = 0.82;
 /**
@@ -173,20 +180,38 @@ const APPEAR_FROM = 0.82;
  * decreasing is anticlockwise — the same way round as the later merge, so the
  * whole sequence turns consistently.
  */
-const APPEAR_SWEEP = Math.PI * 0.07;
+const APPEAR_SWEEP = Math.PI * 0.1;
 /** How much further out from the centre it begins, as a share of its radius. */
-const APPEAR_ARC = 0.07;
+const APPEAR_ARC = 0.1;
 /** The lean it carries in with, unwound by the time it settles. */
-const APPEAR_TURN = 10;
+const APPEAR_TURN = 14;
+/**
+ * How quickly it becomes solid, as a multiple of its entrance. It has to be
+ * opaque early or the swing happens underneath the fade and never reads: at
+ * full opacity by a fifth of the way in, roughly two thirds of the travel is
+ * still to come.
+ */
+const APPEAR_FADE = 5;
+/**
+ * A slow anticlockwise creep every placed tile carries through the rest of the
+ * fan phase. Without it a tile that arrived early — the first one lands with
+ * most of the phase still to run — simply stopped and sat there until the merge
+ * began, which read as the ring seizing up. Each tile therefore arrives a little
+ * ahead of its resting place and keeps turning, passing through the design's
+ * arrangement exactly as the merge takes over, so the motion never breaks.
+ */
+const IDLE_SWEEP = Math.PI * 0.06;
+/** The matching creep in the tile's own rotation. */
+const IDLE_TURN = 10;
 
 /** Decelerating, so each tile eases into its place instead of stopping dead. */
-const easeOut = (t: number) => 1 - (1 - t) ** 3;
+const easeOut = (t: number) => 1 - (1 - t) ** 2;
 
 /** Scroll budget per phase, in viewport heights. */
 const VH_TEXT = 150;
 const VH_ARRIVAL = 150;
 const VH_CENTRE = 150;
-const VH_FAN = 230;
+const VH_FAN = 320;
 const VH_MERGE = 230;
 const VH_FINALE = 170;
 
@@ -272,12 +297,11 @@ export default function ServiceJourney() {
         const mergeP = span(progress, FAN_END, MERGE_END);
         const finaleP = span(progress, MERGE_END, 1);
 
-        // The centre phase runs as three beats in order: the headline clears,
-        // then the finished deck slides up into the middle of the now-empty
-        // screen, then it settles into its tilt.
+        // The centre phase runs as two beats: the headline clears, then the
+        // finished deck slides up into the middle of the now-empty screen. It
+        // stands square the whole way — nothing rotates until the fall.
         const textOut = span(centreP, 0, 0.3);
-        const toCentre = span(centreP, 0.3, 0.7);
-        const tiltIn = span(centreP, 0.7, 1);
+        const toCentre = span(centreP, 0.3, 1);
 
         const deckX = width / 2;
         // Sat directly under the headline on desktop, where that matches the
@@ -286,7 +310,6 @@ export default function ServiceJourney() {
         // than both crowding the top.
         const deckRest = compact ? deckTop + room / 2 : deckTop + cardH / 2;
         const deckY = lerp(deckRest, height / 2, toCentre);
-        const deckTilt = DECK_TILT * tiltIn;
         /** The deck falling away to the bottom-left, before the tiles take over. */
         const drop = span(fanP, 0, DECK_DROP_SPAN);
 
@@ -299,9 +322,13 @@ export default function ServiceJourney() {
           // The deck drops away to the bottom-left, and then every tile — the
           // three that were stacked included — fades up on its own resting
           // place, all on the same beat.
+          // Its turn round the ring, never earlier than its own landing — a
+          // guard rather than a timing device, since the deck cards are given
+          // the closing places precisely so it never has to bite.
+          const turnAt = APPEAR_AT + REVEAL_RANK[i] * APPEAR_STAGGER;
           const appearAt = isStackCard
-            ? Math.max(APPEAR_AT, DECK_DROP_SPAN * dropEnd(i))
-            : APPEAR_AT;
+            ? Math.max(turnAt, DECK_DROP_SPAN * dropEnd(i))
+            : turnAt;
           const appear = span(fanP, appearAt, appearAt + APPEAR_SPAN);
           const placed = appear > 0;
 
@@ -314,18 +341,25 @@ export default function ServiceJourney() {
           // --- position
           let x = deckX;
           let y = deckY;
-          let rotate = deckTilt;
+          let rotate = 0;
 
           if (placed) {
             // How far it still has to swing: 1 as it appears, 0 once settled.
             const settle = 1 - easeOut(appear);
 
+            // Runs out exactly at the end of the fan phase, which is where the
+            // merge picks the movement up — so one hands over to the other with
+            // nothing standing still in between.
+            const idle = 1 - fanP;
+
             const radius = target.radius * (1 - inward) * (1 + APPEAR_ARC * settle);
-            const angle = target.angle + APPEAR_SWEEP * settle - SWEEP_IN * inward;
+            const angle =
+              target.angle + IDLE_SWEEP * idle + APPEAR_SWEEP * settle - SWEEP_IN * inward;
 
             x = (0.5 + radius * Math.cos(angle)) * width;
             y = (0.5 + radius * Math.sin(angle)) * height;
-            rotate = target.rotate + APPEAR_TURN * settle + MERGE_TURN * inward;
+            rotate =
+              target.rotate + IDLE_TURN * idle + APPEAR_TURN * settle + MERGE_TURN * inward;
           } else if (drop > 0 && isStackCard) {
             // The pile empties a card at a time, topmost first: each one waits
             // its turn, then falls down and to the left, leaning a little
@@ -335,7 +369,7 @@ export default function ServiceJourney() {
 
             x = lerp(deckX, DROP_TO_X * width, fall);
             y = lerp(deckY, DROP_TO_Y * height, fall);
-            rotate = lerp(deckTilt, DROP_TILT, fall);
+            rotate = DROP_TILT * fall;
           } else if (isStackCard && i > 0) {
             // Waiting below the fold, then rising into the deck in turn.
             const arrival = span(stackP, (i - 1) / (STACK_COUNT - 1), i / (STACK_COUNT - 1));
@@ -361,7 +395,7 @@ export default function ServiceJourney() {
           // the screen, not by fading — and every tile then fades up on its
           // resting place. A card is off-shot by the time it is repositioned, so
           // the jump is never seen. Everything fades out into the mark at the end.
-          const base = placed ? appear : isStackCard ? 1 : 0;
+          const base = placed ? clamp01(appear * APPEAR_FADE) : isStackCard ? 1 : 0;
           const opacity = base * (1 - clamp01((inward - 0.75) * 4));
 
           gsap.set(tile, {
@@ -378,17 +412,15 @@ export default function ServiceJourney() {
           });
         });
 
-        // Captions belong to the deck, and only the front card's shows. It rides
-        // below its card in the card's own frame, so it follows the deck to the
-        // middle and leans with it rather than staying square to the page.
+        // Captions belong to the deck, and only the front card's shows. The deck
+        // no longer leans, so a caption simply rides directly below its card and
+        // follows it to the middle of the screen.
         const landed = Math.round(stackP * (STACK_COUNT - 1));
-        const tiltRad = (deckTilt * Math.PI) / 180;
         const captionDrop = cardH / 2 + CAPTION_GAP * scale;
         captions.forEach((caption, i) => {
           gsap.set(caption, {
-            x: deckX - captionDrop * Math.sin(tiltRad),
-            y: deckY + captionDrop * Math.cos(tiltRad),
-            rotation: deckTilt,
+            x: deckX,
+            y: deckY + captionDrop,
             opacity: fanP > 0 ? 0 : i === landed ? 1 : 0,
           });
         });

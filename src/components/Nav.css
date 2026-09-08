@@ -7,6 +7,21 @@
   display: grid;
   grid-template-columns: repeat(4, 1fr);
   height: 32px;
+  transition: transform 0.35s ease, opacity 0.25s ease;
+}
+
+/* Retracted: the bar pulls up out of shot on the way down the page and comes
+   back the moment the reader scrolls up. */
+.nav.is-hidden {
+  transform: translateY(-100%);
+  opacity: 0;
+  pointer-events: none;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .nav {
+    transition: none;
+  }
 }
 
 /* The three links keep the four-column bar they had, by spanning the last
@@ -98,13 +113,25 @@
  * into a panel that drops over the page.
  */
 @media (max-width: 760px) {
+  /* A floating glass bar over the page rather than a solid strip above it. */
   .nav {
+    top: 18px;
+    left: 16px;
+    right: 16px;
     display: flex;
     align-items: center;
     justify-content: space-between;
-    height: 48px;
-    padding: 0 16px;
-    background: #041121;
+    height: 40px;
+    padding: 0 0 0 16px;
+    background: rgba(4, 17, 33, 0.25);
+    backdrop-filter: blur(4.5px);
+    -webkit-backdrop-filter: blur(4.5px);
+    border-radius: 2px;
+  }
+
+  /* Has to clear its own offset from the top as well as its height. */
+  .nav.is-hidden {
+    transform: translateY(calc(-100% - 18px));
   }
 
   .nav-col-logo {
@@ -118,15 +145,23 @@
     transform: none;
   }
 
+  /* The solid block at the right-hand end of the bar. */
   .nav-toggle {
+    align-self: stretch;
     display: flex;
     align-items: center;
-    gap: 10px;
+    justify-content: space-between;
+    gap: 8px;
+    min-width: 87px;
     appearance: none;
     margin: 0;
-    padding: 0;
+    padding: 0 16px;
     border: none;
-    background: none;
+    /* Matches the bar's own corners at that end. Clipping with `overflow` on
+       the bar instead would make it the containing block for the fixed panel
+       the moment the retract transform is applied. */
+    border-radius: 0 2px 2px 0;
+    background: #041121;
     font-family: 'Instrument Serif', serif;
     font-size: 14px;
     line-height: 17px;
@@ -143,9 +178,11 @@
    */
   .nav-items {
     position: fixed;
-    top: 48px;
-    right: 0;
-    left: 0;
+    /* Directly under the floating bar, and aligned with its edges. */
+    top: 58px;
+    right: 16px;
+    left: 16px;
+    border-radius: 2px;
     display: flex;
     flex-direction: column;
     max-height: 0;

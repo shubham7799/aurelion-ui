@@ -9,7 +9,7 @@
      uncropped image), which runs taller than one viewport. This total is that
      content height plus the scroll distance the reveal should span — raise it
      to slow the reveal down, lower it to speed it up. */
-  --track-height: 870vh;
+  --track-height: 620vh;
 
   position: relative;
   height: var(--track-height);
@@ -127,8 +127,9 @@
   }
 
   .membership-highlight {
-    font-size: 26px;
-    line-height: 31px;
+    font-size: 36px;
+    line-height: 36px;
+    letter-spacing: 0px;
   }
 
   .membership-link {

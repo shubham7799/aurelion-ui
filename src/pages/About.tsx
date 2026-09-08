@@ -1,5 +1,5 @@
 import AboutHero from '../components/AboutHero';
-import ServiceStack from '../components/ServiceStack';
+// import ServiceStack from '../components/ServiceStack';
 import FounderStory from '../components/FounderStory';
 import ApproachCarousel from '../components/ApproachCarousel';
 import FoundersNote from '../components/FoundersNote';

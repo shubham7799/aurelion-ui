@@ -299,8 +299,9 @@
   }
 
   .journey-heading {
-    font-size: 26px;
-    line-height: 31px;
+    font-size: 36px;
+    line-height: 36px;
+    letter-spacing: 0px;
   }
 
   .journey-caption {

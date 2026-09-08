@@ -1,17 +1,11 @@
 :root {
   /*
-   * Height the fixed nav bar occupies. Zero on desktop, where the bar is a
-   * translucent strip that content is meant to run beneath. On mobile it is a
-   * solid bar, so it takes real space: pages are pushed down by it and every
-   * sticky screen locks below it rather than sliding underneath.
+   * Height the fixed nav bar occupies in the flow. Zero at every width: the bar
+   * is a translucent strip that content runs beneath, and it now retracts on the
+   * way down the page, so reserving a strip for it would leave a permanent gap
+   * for something that is usually not there.
    */
   --nav-h: 0px;
-}
-
-@media (max-width: 760px) {
-  :root {
-    --nav-h: 48px;
-  }
 }
 
 * {
