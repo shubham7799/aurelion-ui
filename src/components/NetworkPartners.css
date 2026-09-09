@@ -142,7 +142,8 @@
 
 .network-globe-label {
   font-family: 'Instrument Sans', sans-serif;
-  font-size: 18px;
+  font-size: 16px;
+  letter-spacing: -0.3px;
   color: rgba(4, 17, 33, 0.62);
 }
 

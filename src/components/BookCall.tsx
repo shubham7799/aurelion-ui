@@ -3,7 +3,11 @@ import './BookCall.css';
 
 export default function BookCall() {
   return (
-    <section className="book-call" style={{ backgroundImage: 'url(../book-call.png)' }}>
+    <section
+      className="book-call"
+      data-guide-media
+      style={{ backgroundImage: 'url(../book-call.png)' }}
+    >
       <div className="book-call-content">
         <h2>What would life feel like if 
             <br />

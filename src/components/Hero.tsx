@@ -6,7 +6,7 @@ const ROLL_STAGGER = 0.06;
 
 export default function Hero() {
   return (
-    <section className="hero">
+    <section className="hero" data-guide-media>
       <video
         className="hero-video"
         autoPlay

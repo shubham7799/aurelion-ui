@@ -6,16 +6,16 @@ import DataCarousel, { CarouselSlide } from './DataCarousel';
 const SLIDES: CarouselSlide[] = [
   {
     number: '01',
-    label: 'Quick Call',
+    label: 'TRUST',
     heading: 'What is the approach like at Aurelion',
     description: 'The Cambrian. Perfect for spa days, families, and alpine adventures.',
     tabDescription:
-      'We turn architectural designs into masterpiece interiors crafted by genius Italian artists.',
+      'We build relationships through reliability, honesty and consistency — earning the confidence our members place in us.',
     image: '/carousel-slide-1.png',
   },
   {
     number: '02',
-    label: 'Manager',
+    label: 'DISCRETION',
     heading: 'What is the approach like at Aurelion',
     description: 'The Cambrian. Perfect for spa days, families, and alpine adventures.',
     tabDescription:

@@ -10,7 +10,20 @@
   top: 0;
   bottom: 0;
   width: 1px;
-  background: rgba(4, 17, 33, 0.08);
+  /*
+   * `--guide-paint` is a hard-stop gradient cut to wherever the media-backed
+   * blocks are on screen, so one line can carry a different colour for each
+   * section it crosses. The fallback is the same ink as a flat gradient, for
+   * the moment before the script's first paint.
+   *
+   * The gradient is the only layer: sitting it on top of a matching
+   * `background-color` composited each band with the colour underneath —
+   * doubling the ink to roughly 0.157 and muddying the light bands.
+   */
+  background-image: var(
+    --guide-paint,
+    linear-gradient(to bottom, rgba(4, 17, 33, 0.08), rgba(4, 17, 33, 0.08))
+  );
 }
 
 /* Desktop: the quarter marks of the four-column grid. */

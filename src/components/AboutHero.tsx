@@ -2,7 +2,11 @@ import './AboutHero.css';
 
 export default function AboutHero() {
   return (
-    <section className="about-hero" style={{ backgroundImage: 'url(/about-hero-bg.png)' }}>
+    <section
+      className="about-hero"
+      data-guide-media
+      style={{ backgroundImage: 'url(/about-hero-bg.png)' }}
+    >
       <div className="about-hero-scrim" />
 
       <h1 className="about-hero-heading">

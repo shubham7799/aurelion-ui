@@ -24,9 +24,9 @@ export default function Membership() {
               startOffset={10}
               text={HEADLINE}
             />
-            <button type="button" className="membership-link">
+            {/* <button type="button" className="membership-link">
               Read more about membership
-            </button>
+            </button> */}
           </div>
 
           {/* Sits inside the same grid as the copy rather than full-bleed below

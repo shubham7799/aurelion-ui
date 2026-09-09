@@ -3,13 +3,13 @@ import BookCall from '../components/BookCall';
 import Footer from '../components/Footer';
 import './Contact.css';
 
-const SERVICES = [
-  'Brand Identity',
-  'Web Design & Development',
-  'Motion & Animation',
-  'Creative Direction',
-  'Other',
-];
+// const SERVICES = [
+//   'Brand Identity',
+//   'Web Design & Development',
+//   'Motion & Animation',
+//   'Creative Direction',
+//   'Other',
+// ];
 
 /**
  * URL of the mail-sending endpoint. This is a plain URL and nothing else —
@@ -100,7 +100,11 @@ export default function Contact() {
           </div>
         </div>
 
-        <div className="contact-hero-map" style={{ backgroundImage: 'url(/hero-contact.png)' }} />
+        <div
+          className="contact-hero-map"
+          data-guide-media
+          style={{ backgroundImage: 'url(/hero-contact.png)' }}
+        />
       </section>
 
       <section className="contact-form-section">
@@ -158,37 +162,37 @@ export default function Contact() {
             <div className="contact-form-col contact-form-col-right">
               <div className="contact-group">
                 <p className="contact-group-label">
-                  Is your project personal
+                  Is your INQUIRY personal
                   <br />
-                  or for your company?
+                  or for SOMEONE ELSE?
                 </p>
                 <div className="contact-radio-group">
                   <label className="contact-radio">
                     <input
                       type="radio"
                       name="projectType"
-                      value="staff"
-                      checked={form.projectType === 'staff'}
+                      value="self"
+                      checked={form.projectType === 'self'}
                       onChange={(e) => update('projectType', e.target.value)}
                     />
                     <span className="contact-radio-dot" />
-                    <span>Staff</span>
+                    <span>MYSELF</span>
                   </label>
                   <label className="contact-radio">
                     <input
                       type="radio"
                       name="projectType"
-                      value="company"
-                      checked={form.projectType === 'company'}
+                      value="other"
+                      checked={form.projectType === 'other'}
                       onChange={(e) => update('projectType', e.target.value)}
                     />
                     <span className="contact-radio-dot" />
-                    <span>Company</span>
+                    <span>ON SOMEONE’s BEHALF </span>
                   </label>
                 </div>
               </div>
 
-              <div className="contact-group">
+              {/* <div className="contact-group">
                 <p className="contact-group-label">Service you are interested in</p>
                 <div className="contact-select-wrap">
                   <select
@@ -208,7 +212,7 @@ export default function Contact() {
                   </select>
                   <img src="/chevron-down.svg" alt="" className="contact-select-chevron" />
                 </div>
-              </div>
+              </div> */}
 
               <div className="contact-group">
                 <p className="contact-group-label">Tell us what you need</p>

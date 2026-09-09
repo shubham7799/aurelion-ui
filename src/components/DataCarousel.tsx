@@ -46,7 +46,7 @@ export default function DataCarousel({
   if (!active) return null;
 
   return (
-    <section className="data-carousel">
+    <section className="data-carousel" data-guide-media>
       <div className="data-carousel-images">
         {slides.map((slide, i) => (
           <div

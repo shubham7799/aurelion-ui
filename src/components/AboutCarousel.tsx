@@ -7,22 +7,22 @@ const SLIDES: CarouselSlide[] = [
   {
     number: '01',
     label: 'REQUEST',
-    heading: 'What goes in the backend of things',
-    description: 'Tell us what matters. Once we understand the context, your preferences and timing, we take it forward.',
+    heading: 'You ask. We take it from there.',
+    description: 'Every request begins with understanding. From the first conversation to the final outcome, Aurelion takes ownership, coordinates what is needed and stays with it until it is done.',
     image: '/carousel-slide-1.png',
   },
   {
     number: '02',
     label: 'ORCHESTRATE',
-    heading: 'Same view, different vibe.',
-    description: 'The Cambrian. Perfect for spa days, families, and alpine adventures.',
+    heading: 'You ask. We take it from there.',
+    description: 'Every request begins with understanding. From the first conversation to the final outcome, Aurelion takes ownership, coordinates what is needed and stays with it until it is done.',
     image: '/carousel-slide-2.png',
   },
   {
     number: '03',
     label: 'RESOLVE',
-    heading: "Everywhere you go, we've been before.",
-    description: 'The Aurelion Network. Perfect for seamless transitions, families, and alpine adventures.',
+    heading: "You ask. We take it from there.",
+    description: 'Every request begins with understanding. From the first conversation to the final outcome, Aurelion takes ownership, coordinates what is needed and stays with it until it is done.',
     image: '/hero.png',
   }
 ];
