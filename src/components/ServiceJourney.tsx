@@ -47,17 +47,17 @@ interface Tile {
  * bleed off every side rather than tucking neatly inside it.
  */
 const TILES: Tile[] = [
-  { image: '/collage-3.png', caption: 'Meetings', x: 137.7, y: 813.7, rotate: 153.61 },
-  { image: '/collage-5.png', caption: 'Reservations', x: -36.83, y: 543.39, rotate: 179.32 },
-  { image: '/collage-1.png', caption: 'Travel', x: -53.22, y: 183.36, rotate: -26.39 },
-  { image: '/collage-1.png', x: 759.63, y: 936.63, rotate: -26.39 },
-  { image: '/collage-4.png', x: 285.6, y: 27.45, rotate: -129.25 },
-  { image: '/collage-2.png', x: 1077.17, y: 50.11, rotate: -52.1 },
-  { image: '/collage-1.png', x: 1372.31, y: 201.1, rotate: -26.39 },
-  { image: '/collage-5.png', x: 1253.46, y: 778.5, rotate: -26 },
+  { image: '/collage-1.png', caption: 'Meetings', x: 137.7, y: 813.7, rotate: 153.61 },
+  { image: '/collage-2.png', caption: 'Dining', x: -36.83, y: 543.39, rotate: 179.32 },
+  { image: '/collage-3.png', caption: 'Travel', x: -53.22, y: 183.36, rotate: -26.39 },
+  { image: '/collage-4.png', caption: 'Experiences', x: 759.63, y: 936.63, rotate: -26.39 },
+  { image: '/collage-5.png', caption: 'Events', x: 285.6, y: 27.45, rotate: -129.25 },
+  { image: '/finale/01.png', x: 1077.17, y: 50.11, rotate: -52.1 },
+  { image: '/finale/02.png', x: 1372.31, y: 201.1, rotate: -26.39 },
+  { image: '/finale/03.png', x: 1253.46, y: 778.5, rotate: -26 },
 ];
 
-const STACK_COUNT = 3;
+const STACK_COUNT = 5;
 
 /** The closing screen's 4x3 grid, in reading order (Figma node 752:836). */
 const FINALE_IMAGES = Array.from(

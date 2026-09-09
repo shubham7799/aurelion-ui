@@ -2,8 +2,8 @@ import ScrollHighlightText, { scrollTrackProps, scrollStickyProps } from './Scro
 import './Membership.css';
 
 const HEADLINE =
-  "Success shouldn't come at the cost of your time as life becomes more successful, " +
-  'it also becomes more complex.';
+  "Aurelion is a private lifestyle membership designed to give you back what becomes most valuable — your time, attention and freedom." +
+  '\n\nOne trusted relationship, built around you.';
 
 export default function Membership() {
   return (
@@ -28,15 +28,18 @@ export default function Membership() {
               Read more about membership
             </button>
           </div>
-        </div>
 
-        <img
-          src="/membership.png"
-          alt=""
-          width={2880}
-          height={1526}
-          className="membership-image"
-        />
+          {/* Sits inside the same grid as the copy rather than full-bleed below
+              it, so its left edge lands on a column line instead of the page
+              edge. */}
+          <img
+            src="/membership.png"
+            alt=""
+            width={1071}
+            height={1138}
+            className="membership-image"
+          />
+        </div>
       </div>
     </section>
   );

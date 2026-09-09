@@ -5,10 +5,10 @@
  * across the surplus to drive the reveal.
  */
 .membership {
-  /* `.membership-sticky` is sized by its own content (text + a full-width,
-     uncropped image), which runs taller than one viewport. This total is that
-     content height plus the scroll distance the reveal should span — raise it
-     to slow the reveal down, lower it to speed it up. */
+  /* `.membership-sticky` is sized by its own content (the label/copy row plus
+     the product shot below it). This total is that content height plus the
+     scroll distance the reveal should span — raise it to slow the reveal
+     down, lower it to speed it up. */
   --track-height: 620vh;
 
   position: relative;
@@ -20,12 +20,9 @@
   position: sticky;
   /* Locks below the nav bar, not under it. */
   top: var(--nav-h);
-  display: flex;
-  flex-direction: column;
 }
 
 .membership-grid {
-  flex: 0 0 auto;
   display: grid;
   grid-template-columns: repeat(4, 1fr);
   width: 100%;
@@ -80,14 +77,22 @@
   cursor: pointer;
 }
 
+/*
+ * A grid item like the label and copy above it, not a full-bleed strip below
+ * them — its left edge lands on the third column line rather than the page
+ * edge, and it keeps clear air on both sides instead of touching the frame.
+ */
 .membership-image {
-  /* Full width with height derived from the source ratio, so it's never
-     cropped regardless of how much vertical space is left. */
+  grid-column: 3 / span 2;
+  margin-top: 40px;
   display: block;
-  flex: 0 0 auto;
   width: 100%;
   height: auto;
-  aspect-ratio: 2880 / 1526;
+  /* Shorter than the source photo's own 1071/1138 — the crop comes off the
+     bottom of the column, not the box or the cloth draped over the top. */
+  aspect-ratio: 1071 / 950;
+  object-fit: cover;
+  object-position: top;
 }
 
 @media (max-width: 900px) {
@@ -102,17 +107,11 @@
     grid-column: 1 / span 4;
     margin-top: 24px;
   }
-}
 
-@media (max-width: 760px) {
-  /* The sticky screen takes the full height so the image can sit on the bottom
-     edge of it, rather than trailing the copy with dead space underneath. */
-  .membership-sticky {
-    height: calc(100vh - var(--nav-h));
-  }
-
+  /* The label and copy above it have already gone full-width, so the image
+     follows rather than staying pinned to columns sized for the desktop row. */
   .membership-image {
-    margin-top: auto;
+    grid-column: 2 / span 3;
   }
 }
 

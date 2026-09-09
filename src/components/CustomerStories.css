@@ -86,13 +86,13 @@
 .customer-stories-quote {
   grid-column: 2;
   grid-row: 2;
-  align-self: start;
+  align-self: end;
   margin: 0;
   font-family: 'Instrument Serif', serif;
   font-style: normal;
   font-weight: 400;
-  font-size: 52px;
-  line-height: 57px;
+  font-size: 32px;
+  line-height: 38px;
   letter-spacing: -0.55px;
   color: #041121;
   word-break: break-word;
