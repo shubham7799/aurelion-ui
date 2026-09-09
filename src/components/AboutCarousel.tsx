@@ -7,21 +7,21 @@ const SLIDES: CarouselSlide[] = [
   {
     number: '01',
     label: 'REQUEST',
-    heading: 'You ask. We take it from there.',
+    heading: 'You ask.\nWe take it from there.',
     description: 'Every request begins with understanding. From the first conversation to the final outcome, Aurelion takes ownership, coordinates what is needed and stays with it until it is done.',
     image: '/carousel-slide-1.png',
   },
   {
     number: '02',
     label: 'ORCHESTRATE',
-    heading: 'You ask. We take it from there.',
+    heading: 'You ask.\nWe take it from there.',
     description: 'Every request begins with understanding. From the first conversation to the final outcome, Aurelion takes ownership, coordinates what is needed and stays with it until it is done.',
     image: '/carousel-slide-2.png',
   },
   {
     number: '03',
     label: 'RESOLVE',
-    heading: "You ask. We take it from there.",
+    heading: 'You ask.\nWe take it from there.',
     description: 'Every request begins with understanding. From the first conversation to the final outcome, Aurelion takes ownership, coordinates what is needed and stays with it until it is done.',
     image: '/hero.png',
   }

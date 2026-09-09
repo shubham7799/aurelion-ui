@@ -119,7 +119,11 @@
   display: flex;
   flex-direction: column;
   gap: 24px;
-  width: 334px;
+  /* Wide enough that the heading's own second line ("We take it from there.")
+     never has to wrap a second time — the description below keeps its own,
+     narrower max-width so it still settles into three lines rather than
+     opportunistically spreading across this extra room. */
+  width: 640px;
   max-width: calc(100% - 64px);
   animation: data-carousel-fade-in 0.6s ease both;
 }
@@ -137,7 +141,13 @@
 
 .data-carousel-heading {
   margin: 0;
-  max-width: 334px;
+  /* Wide enough that a line like "We take it from there." fits without
+     wrapping again on its own — only the explicit `\n` should break it. */
+  max-width: 640px;
+  /* A slide's heading can carry a `\n` for a deliberate break (e.g. after
+     "You ask.") rather than leaving the split to whatever the container's
+     width happens to wrap at. */
+  white-space: pre-line;
   font-family: 'Instrument Serif', serif;
   font-style: normal;
   font-weight: 400;
@@ -148,6 +158,10 @@
 
 .data-carousel-description {
   margin: 0;
+  /* Narrower than the content box now is — otherwise widening the container
+     for the heading's sake would let this opportunistically spread across
+     the extra room and settle into fewer, longer lines than intended. */
+  max-width: 560px;
   font-family: 'Instrument Sans', sans-serif;
   font-style: normal;
   font-weight: 400;
