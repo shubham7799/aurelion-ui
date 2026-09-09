@@ -44,7 +44,10 @@
   display: grid;
   grid-template-columns: repeat(2, 1fr);
   row-gap: 56px;
-  margin: 0;
+  /* Clears the label rather than starting level with it — the two share a grid
+     row, so without this the only thing between them is the leading above the
+     figures, which is a side effect of the type size, not a gap. */
+  margin: 80px 0 0;
   padding: 0 32px 0 32px;
   list-style: none;
 }
@@ -171,6 +174,8 @@
     grid-row: 2;
     row-gap: 36px;
     column-gap: 24px;
+    /* Stacked, the label owns the gap through its own margin-bottom. */
+    margin-top: 0;
     padding: 0;
   }
 

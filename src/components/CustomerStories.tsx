@@ -4,15 +4,17 @@ import './CustomerStories.css';
 interface QuoteStory {
   kind: 'quote';
   name: string;
-  title: string;
-  quote: string;
+  /** Omitted where the storyteller is named without a role. */
+  title?: string;
+  /** One entry per paragraph — the breaks carry the pacing of the telling. */
+  quote: string[];
   photo: string;
 }
 
 interface VideoStory {
   kind: 'video';
   name: string;
-  title: string;
+  title?: string;
   video: string;
   poster: string;
 }
@@ -28,13 +30,22 @@ type Story = QuoteStory | VideoStory;
 const STORIES: Story[] = [
   {
     kind: 'quote',
-    quote:
-      'Organizing a surprise family reunion while the client is overseas can be quite a challenge, but it’s also an exciting opportunity to create lasting memories. From selecting the perfect location to coordinating every detail, the made ensure that this celebration will be truly unforgettable.',
-    name: 'Deepali Mane',
-    title: 'Business Manager ITC',
-    photo: '/story-1.png',
+    name: 'Radhika',
+    quote: [
+      'When I was struggling with severe back pain, Deepali helped me find a place in Pune where I could stay and receive the care I needed for 10 days. But what I remember most is that she didn’t simply arrange it and leave it there. She kept checking on me, making sure everything was going well and that I was comfortable, so I could just focus on resting and feeling better.',
+      'That experience made me realise how valuable it is to have someone who understands what you need, takes care of it and stays involved until you are truly okay. I believe that is why Aurelion needed to exist — to give people that kind of support and peace of mind when life gets difficult, and even when it simply gets busy.',
+    ],
+    photo: '/testimonial-1.png',
   },
-  { kind: 'video', name: 'Customer Name', title: 'Guest', video: '/hero.mp4', poster: '/story-1.png' },
+  {
+    kind: 'quote',
+    name: 'Maithili',
+    quote: [
+      'Living abroad, I needed someone I could trust to manage my property in India. Deepali understood what I needed, coordinated everything on the ground, kept me updated and stayed involved until it was sorted. Knowing someone I trusted was looking out for my interests gave me incredible peace of mind.',
+      'For me, that experience was a reminder that distance should never mean being disconnected from the things that matter to you. Knowing I had someone I could trust on the ground gave me confidence to manage life from thousands of miles away. That is the kind of reassurance I now see at the heart of Aurelion.',
+    ],
+    photo: '/testimonial-2.png',
+  },
   { kind: 'video', name: 'Customer Name', title: 'Guest', video: '/hero.mp4', poster: '/story-1.png' },
   { kind: 'video', name: 'Customer Name', title: 'Guest', video: '/hero.mp4', poster: '/story-1.png' },
 ];
@@ -114,7 +125,11 @@ export default function CustomerStories() {
             <div className="customer-stories-quote-block">
               <img src="/about-quote.svg" alt="" className="customer-stories-quote-icon" />
               <img src={active.photo} alt={active.name} className="customer-stories-photo" />
-              <p className="customer-stories-quote">{active.quote}</p>
+              <div className="customer-stories-quote">
+                {active.quote.map((paragraph) => (
+                  <p key={paragraph}>{paragraph}</p>
+                ))}
+              </div>
             </div>
           ) : (
             <div className="customer-stories-media" ref={mediaRef}>
@@ -161,7 +176,8 @@ export default function CustomerStories() {
 
           <div className="customer-stories-footer">
             <p className="customer-stories-byline">
-              {active.name}, <span>{active.title}</span>
+              {active.name}
+              {active.title ? <span>, {active.title}</span> : null}
             </p>
             <div className="customer-stories-dots">
               {STORIES.map((story, i) => (

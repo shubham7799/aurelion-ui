@@ -95,7 +95,9 @@
 }
 
 .founders-note-quote {
-  margin: 0;
+  display: flex;
+  flex-direction: column;
+  gap: 24px;
   font-family: 'Instrument Serif', serif;
   font-style: normal;
   font-weight: 400;
@@ -104,6 +106,16 @@
   letter-spacing: -0.55px;
   max-width: 527px;
   color: #041121;
+}
+
+/* Type is inherited from the block above; a paragraph only has to drop the
+   margin browsers give it — the flex gap spaces them instead. */
+.founders-note-quote p {
+  margin: 0;
+}
+
+.founders-note-quote em {
+  font-style: italic;
 }
 
 @media (max-width: 900px) {

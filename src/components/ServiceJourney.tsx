@@ -543,8 +543,7 @@ export default function ServiceJourney() {
             {/* The reference cuts this sentence off mid-clause — the tail of the
                 copy still needs to come from the design. */}
             <p className="journey-finale-copy">
-              We analyze your personal and professional needs to detect blockages, enhance your
-              life goals,
+              QUIET AUTHORITY - PRIVATE ACCESS - TIME RETURNED
             </p>
           </div>
         </div>

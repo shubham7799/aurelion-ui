@@ -75,6 +75,9 @@
   display: block;
   grid-column: 1;
   grid-row: 2;
+  /* Without this it stretches to the row, which a multi-paragraph quote makes
+     far taller than the portrait's own proportion. */
+  align-self: start;
   width: 100%;
   aspect-ratio: 262.533 / 308;
   background: #ffffff;
@@ -87,6 +90,9 @@
   grid-column: 2;
   grid-row: 2;
   align-self: end;
+  display: flex;
+  flex-direction: column;
+  gap: 24px;
   margin: 0;
   font-family: 'Instrument Serif', serif;
   font-style: normal;
@@ -98,12 +104,16 @@
   word-break: break-word;
 }
 
-@media (max-width: 1200px) {
-  .customer-stories-quote {
-    font-size: 38px;
-    line-height: 44px;
-  }
+/* Type is inherited from the block above, so a paragraph only has to drop the
+   margin browsers give it — the flex gap spaces them instead. */
+.customer-stories-quote p {
+  margin: 0;
+}
 
+@media (max-width: 1200px) {
+  /* No font-size here: this rule used to scale 52px down to 38px, but the base
+     came down to 32px afterwards, leaving a max-width query that made the text
+     bigger below 1200 than above it. */
   .customer-stories-quote-icon {
     width: 60px;
     height: 60px;

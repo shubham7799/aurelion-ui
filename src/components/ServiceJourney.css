@@ -237,6 +237,7 @@
   line-height: 36px;
   text-align: center;
   color: #ffffff;
+  min-width: 700px;
 }
 
 @media (max-width: 1200px) {

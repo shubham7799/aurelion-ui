@@ -30,7 +30,7 @@ export default function Footer() {
 
       <div className="footer-row">
         <p className="footer-tagline">
-          We turn architectural designs into masterpiece interiors crafted by genius Italian artists.
+          QUIET AUTHORITY - PRIVATE ACCESS - TIME RETURNED
         </p>
         <div className="footer-social">
           {SOCIAL_LINKS.map((social) => (

@@ -10,7 +10,7 @@ const ALWAYS_SHOWN_ABOVE = 80;
 const NAV_ITEMS = [
   { label: 'About Us', to: '/about' },
   { label: 'Contact Us', to: '/contact' },
-  { label: 'Schedule a Call', highlight: true },
+  { label: 'Already a Member', highlight: true },
 ];
 
 export default function Nav() {
