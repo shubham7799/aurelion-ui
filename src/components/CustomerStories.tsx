@@ -50,9 +50,6 @@ const STORIES: Story[] = [
   { kind: 'video', name: 'Customer Name', title: 'Guest', video: '/hero.mp4', poster: '/story-1.png' },
 ];
 
-/** How long an unwatched story sits before the carousel moves on. */
-const INTERVAL_MS = 7000;
-
 export default function CustomerStories() {
   const [activeIndex, setActiveIndex] = useState(0);
   const [playing, setPlaying] = useState(false);
@@ -73,17 +70,6 @@ export default function CustomerStories() {
     observer.observe(media);
     return () => observer.disconnect();
   }, [activeIndex]);
-
-  // Advances on its own, but only while nobody is actually watching — a video
-  // story the visitor pressed play on keeps its place instead of being cut
-  // away from.
-  useEffect(() => {
-    if (playing) return;
-    const timer = window.setInterval(() => {
-      setActiveIndex((i) => (i + 1) % STORIES.length);
-    }, INTERVAL_MS);
-    return () => window.clearInterval(timer);
-  }, [playing]);
 
   // Switching stories always lands a video back on the poster frame with the
   // play button showing, never mid-playback of the story just left.

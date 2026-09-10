@@ -175,7 +175,11 @@
   left: 0;
   right: 0;
   bottom: 0;
-  z-index: 2;
+  /* Above the fixed guide lines (z-index 400), same as the footer: the tab
+     strip is opaque chrome and a guide line running through its text reads as
+     a defect, not as the page's underlying grid. The image, ring and heading
+     above still sit below the guides so those stay visible over the photo. */
+  z-index: 401;
   display: grid;
   /* Sized to however many slides are actually passed in — a fixed repeat(4, …)
      left a bare fourth column when a carousel ran with fewer, instead of the

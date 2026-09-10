@@ -68,7 +68,11 @@ export default function DataCarousel({
         </div>
       </div>
 
-      <div className="data-carousel-content" key={activeIndex}>
+      {/* No `key` on the slide index: the heading and description are the same
+          for every slide in a section, so remounting this block per slide only
+          re-ran the entrance animation on text that never changed. It stays
+          mounted and animates once, when the carousel first appears. */}
+      <div className="data-carousel-content">
         <h2 className="data-carousel-heading">{active.heading}</h2>
         <p className="data-carousel-description">{active.description}</p>
       </div>
