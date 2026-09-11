@@ -209,7 +209,8 @@ const easeOut = (t: number) => 1 - (1 - t) ** 2;
 
 /** Scroll budget per phase, in viewport heights. */
 const VH_TEXT = 150;
-const VH_ARRIVAL = 150;
+/** Short: a card should land within about one scroll gesture, not several. */
+const VH_ARRIVAL = 20;
 const VH_CENTRE = 150;
 const VH_FAN = 320;
 const VH_MERGE = 230;
@@ -543,7 +544,7 @@ export default function ServiceJourney() {
             {/* The reference cuts this sentence off mid-clause — the tail of the
                 copy still needs to come from the design. */}
             <p className="journey-finale-copy">
-              QUIET AUTHORITY - PRIVATE ACCESS - TIME RETURNED
+              QUIET AUTHORITY   PRIVATE ACCESS    TIME RETURNED
             </p>
           </div>
         </div>

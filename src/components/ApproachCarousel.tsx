@@ -17,7 +17,7 @@ const SLIDES: CarouselSlide[] = [
     number: '02',
     label: 'DISCRETION',
     heading: 'What is the approach like at Aurelion',
-    description: 'The Cambrian. Perfect for spa days, families, and alpine adventures.',
+    description: '',
     tabDescription:
       'We respect privacy and handle every request with sensitivity, confidentiality and quiet professionalism.',
     image: '/carousel-slide-2.png',
@@ -26,7 +26,7 @@ const SLIDES: CarouselSlide[] = [
     number: '03',
     label: 'PERSONALISATION',
     heading: "What is the approach like at Aurelion",
-    description: 'The Cambrian. Perfect for spa days, families, and alpine adventures.',
+    description: '',
     tabDescription:
       'We understand that every member is different. Our approach is shaped around their individual preferences, needs and way of life.',
     image: '/hero.png',
@@ -35,7 +35,7 @@ const SLIDES: CarouselSlide[] = [
     number: '04',
     label: 'OWNERSHIP',
     heading: 'What is the approach like at Aurelion',
-    description: 'The Cambrian. Perfect for spa days, families, and alpine adventures.',
+    description: '',
     tabDescription:
       'Once something is entrusted to us, we take responsibility for it from beginning to end. Our members should never have to chase or manage what they have entrusted to Aurelion.',
     image: '/book-call.png',

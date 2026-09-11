@@ -40,7 +40,47 @@
 
 .customer-stories-main {
   grid-column: 2 / span 3;
-  animation: customer-stories-fade-in 0.5s ease both;
+  overflow: hidden;
+}
+
+/* Direction set by whichever control switched the story — the next arrow and
+   a dot further down the list both slide in from the right, previous and a
+   dot further back both slide in from the left. */
+.customer-stories-main-forward {
+  animation: customer-stories-slide-in-forward 0.5s ease both;
+}
+
+.customer-stories-main-backward {
+  animation: customer-stories-slide-in-backward 0.5s ease both;
+}
+
+@keyframes customer-stories-slide-in-forward {
+  from {
+    opacity: 0;
+    transform: translateX(32px);
+  }
+  to {
+    opacity: 1;
+    transform: translateX(0);
+  }
+}
+
+@keyframes customer-stories-slide-in-backward {
+  from {
+    opacity: 0;
+    transform: translateX(-32px);
+  }
+  to {
+    opacity: 1;
+    transform: translateX(0);
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .customer-stories-main-forward,
+  .customer-stories-main-backward {
+    animation: none;
+  }
 }
 
 /*
@@ -97,8 +137,8 @@
   font-family: 'Instrument Serif', serif;
   font-style: normal;
   font-weight: 400;
-  font-size: 32px;
-  line-height: 38px;
+  font-size: 24px;
+  line-height: 28px;
   letter-spacing: -0.55px;
   color: #041121;
   word-break: break-word;
@@ -126,18 +166,9 @@
   aspect-ratio: 16 / 9;
   overflow: hidden;
   background: #000000;
-  animation: customer-stories-fade-in 0.5s ease both;
-}
-
-@keyframes customer-stories-fade-in {
-  from {
-    opacity: 0;
-    transform: translateY(8px);
-  }
-  to {
-    opacity: 1;
-    transform: translateY(0);
-  }
+  /* Its own entrance came from the parent remounting anyway — one slide,
+     driven by `.customer-stories-main-forward`/`-backward` above, not a
+     second animation stacked on top of that one. */
 }
 
 .customer-stories-video {
@@ -237,6 +268,35 @@
 
 .customer-stories-dot.is-active {
   background: #041121;
+}
+
+.customer-stories-controls {
+  display: flex;
+  gap: 8px;
+  margin-top: 24px;
+}
+
+.customer-stories-control {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 45px;
+  height: 45px;
+  padding: 0;
+  appearance: none;
+  background: none;
+  border: 0.5px dashed #041121;
+  cursor: pointer;
+}
+
+.customer-stories-control:hover {
+  background: rgba(4, 17, 33, 0.05);
+}
+
+/* The next control reuses the back arrow's own geometry, turned round, rather
+   than a second SVG asset. */
+.customer-stories-control-next svg {
+  transform: scaleX(-1);
 }
 
 @media (max-width: 900px) {

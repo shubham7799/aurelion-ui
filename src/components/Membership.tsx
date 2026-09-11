@@ -13,9 +13,9 @@ export default function Membership() {
       <div className="membership-sticky" {...scrollStickyProps}>
         <div className="membership-grid">
           <p className="membership-label">
-            Membership
+            {/* Membership
             <br />
-            Details
+            Details */}
           </p>
 
           <div className="membership-copy">

@@ -1,12 +1,12 @@
 import { useNavigate } from 'react-router-dom';
 import './Footer.css';
 
-const SOCIAL_LINKS = [
-  { name: 'Instagram', icon: '/footer-social-instagram.svg' },
-  { name: 'X', icon: '/footer-social-x.svg' },
-  { name: 'LinkedIn', icon: '/footer-social-linkedin.svg' },
-  { name: 'YouTube', icon: '/footer-social-youtube.svg' },
-];
+// const SOCIAL_LINKS = [
+//   { name: 'Instagram', icon: '/footer-social-instagram.svg' },
+//   { name: 'X', icon: '/footer-social-x.svg' },
+//   { name: 'LinkedIn', icon: '/footer-social-linkedin.svg' },
+//   { name: 'YouTube', icon: '/footer-social-youtube.svg' },
+// ];
 
 // Kept alongside the partner strip below, which is commented out for now.
 // const PARTNER_LOGOS = Array.from({ length: 16 }, (_, i) => `/partners/${String(i + 1).padStart(2, '0')}.svg`);
@@ -33,11 +33,11 @@ export default function Footer() {
           QUIET AUTHORITY - PRIVATE ACCESS - TIME RETURNED
         </p>
         <div className="footer-social">
-          {SOCIAL_LINKS.map((social) => (
+          {/* {SOCIAL_LINKS.map((social) => (
             <button key={social.name} type="button" aria-label={social.name} className="footer-social-icon">
               <img src={social.icon} alt="" />
             </button>
-          ))}
+          ))} */}
         </div>
       </div>
 

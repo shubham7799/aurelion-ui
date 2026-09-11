@@ -20,8 +20,8 @@ const TESTIMONIALS: Testimonial[] = [
       'I wanted to create a trusted platform where the things that create friction in everyday life could be taken care of — privately, seamlessly and with the right people around you.',
       "A community where you don't have to keep searching, arranging and figuring everything out yourself.",
       'So that when you become a part of Aurelion, you can simply feel:',
-      '*“It’s taken care of. I can get back to my life.”*',
-      'For me, that is what Aurelion is truly about — *giving people back their time, ease and peace of mind, wherever life takes them.*',
+      '“It’s taken care of. I can get back to my life.”',
+      'For me, that is what Aurelion is truly about — giving people back their time, ease and peace of mind, wherever life takes them.',
     ],
     name: 'Deepali Mane',
     title: 'Founder, M.D',
@@ -30,8 +30,8 @@ const TESTIMONIALS: Testimonial[] = [
   {
     quote: [
       'I believed in Aurelion because its vision connects with the real challenges faced by people whose time, privacy and convenience hold a different value. I saw an opportunity to build something that could genuinely make a difference, and that is what made me come forward and become part of this journey.',
-      'My vision is for Aurelion to become a trusted part of the lives of *families who value this way of living* — helping them solve problems, access the right opportunities and create greater success with ease.',
-      'For me, true success will be when our clients *recommend Aurelion to others and reach out with genuine gratitude*, knowing that we have made a meaningful difference in their lives.',
+      'My vision is for Aurelion to become a trusted part of the lives of families who value this way of living — helping them solve problems, access the right opportunities and create greater success with ease.',
+      'For me, true success will be when our clients recommend Aurelion to others and reach out with genuine gratitude, knowing that we have made a meaningful difference in their lives.',
     ],
     name: 'Bholesing Girase',
     title: 'Co-Founder & COO',
@@ -72,7 +72,7 @@ export default function FoundersNote() {
                   <p className="founders-note-name">{t.name}</p>
                   <p className="founders-note-title">{t.title}</p>
                 </div>
-                <img src="/about-signature.png" alt="" className="founders-note-signature" />
+                {/* <img src="/about-signature.png" alt="" className="founders-note-signature" /> */}
               </div>
 
               <div className="founders-note-quote-block">
