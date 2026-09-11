@@ -6,24 +6,42 @@ interface PreloaderProps {
   onComplete: () => void;
 }
 
+/** Whether an element's box is at least partly within the first screen. */
+const inViewport = (rect: DOMRect) => rect.bottom > 0 && rect.top < window.innerHeight;
+
+/**
+ * Waits only for what the first screen actually needs — the images (and video
+ * posters) already sitting in the initial viewport, plus the fonts they're
+ * set in. Everything further down the page — every other section's photos,
+ * and the video files themselves — keeps loading in the background exactly as
+ * the browser would anyway; the preloader no longer holds the door shut for
+ * assets nobody can see yet, which used to include a multi-megabyte hero clip
+ * and a whole page's worth of below-the-fold photography.
+ */
 function waitForAssets(): Promise<void> {
-  const imagePromises = Array.from(document.images).map((img) =>
-    img.complete
-      ? Promise.resolve()
-      : new Promise<void>((resolve) => {
-          img.addEventListener('load', () => resolve(), { once: true });
-          img.addEventListener('error', () => resolve(), { once: true });
-        })
-  );
+  const preload = (src: string) =>
+    new Promise<void>((resolve) => {
+      const probe = new Image();
+      probe.onload = () => resolve();
+      probe.onerror = () => resolve();
+      probe.src = src;
+    });
+
+  const imagePromises = Array.from(document.images)
+    .filter((img) => inViewport(img.getBoundingClientRect()))
+    .map((img) => (img.complete ? Promise.resolve() : preload(img.currentSrc || img.src)));
+
+  // A <video poster> isn't an <img>, so `document.images` never sees it — the
+  // still frame a visitor sees before playback starts is fetched separately.
+  const posterPromises = Array.from(document.querySelectorAll('video'))
+    .filter((video) => inViewport(video.getBoundingClientRect()))
+    .map((video) => video.poster)
+    .filter(Boolean)
+    .map(preload);
 
   const fontsPromise: Promise<unknown> = document.fonts?.ready ?? Promise.resolve();
 
-  const windowLoadPromise =
-    document.readyState === 'complete'
-      ? Promise.resolve()
-      : new Promise<void>((resolve) => window.addEventListener('load', () => resolve(), { once: true }));
-
-  return Promise.all([...imagePromises, fontsPromise, windowLoadPromise]).then(() => undefined);
+  return Promise.all([...imagePromises, ...posterPromises, fontsPromise]).then(() => undefined);
 }
 
 const SHAPE_WIDTH = 76;
@@ -89,24 +107,34 @@ export default function Preloader({ onComplete }: PreloaderProps) {
 
       const tl = gsap.timeline({ onComplete });
 
-      tl.to(backdrop, { backgroundColor: '#ffffff', duration: 1, ease: 'power1.in' }, 0)
+      tl.to(backdrop, { backgroundColor: '#ffffff', duration: 0.6, ease: 'power1.in' }, 0)
         // expo.in: the hole barely grows at first, then explodes outward — matches the reference reveal.
-        .to(holeSize, { value: targetSize, duration: 1.2, ease: 'expo.in', onUpdate: setMaskSize }, 0.05)
-        .to(rootRef.current, { opacity: 0, duration: 0.3 }, '-=0.2');
+        .to(holeSize, { value: targetSize, duration: 0.8, ease: 'expo.in', onUpdate: setMaskSize }, 0.03)
+        .to(rootRef.current, { opacity: 0, duration: 0.2 }, '-=0.15');
     };
 
+    // Keeps the counter visibly climbing while assets are still in flight —
+    // now scoped to just the first screen, so this rarely runs to completion
+    // before waitForAssets resolves and cuts it off.
     const softTween = gsap.to(counter, {
       value: 90,
-      duration: 2.5,
+      duration: 1.2,
       ease: 'power1.out',
       onUpdate: render,
     });
 
     waitForAssets().then(() => {
       softTween.kill();
+      // The finish is a quick snap to 100, not another simulated wait — its
+      // duration only scales with how far the soft tween actually got, so a
+      // near-instant load (little ground covered) still reads as motion
+      // rather than a blink, and a load that got most of the way there
+      // doesn't sit through a needless extra second closing the last few
+      // percent.
+      const duration = 0.25 + 0.35 * ((100 - counter.value) / 100);
       gsap.to(counter, {
         value: 100,
-        duration: 5,
+        duration,
         ease: 'power2.out',
         onUpdate: render,
         onComplete: reveal,
