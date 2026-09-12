@@ -7,10 +7,14 @@ const SCROLL_THRESHOLD = 8;
 /** Above this point the bar is always shown, whichever way the page is going. */
 const ALWAYS_SHOWN_ABOVE = 80;
 
+const MEMBER_PORTAL_URL = 'https://mindescapes.club/aurelion';
+
 const NAV_ITEMS = [
   { label: 'About Us', to: '/about' },
   { label: 'Contact Us', to: '/contact' },
-  { label: 'Already a Member', highlight: true },
+  // An external member portal, not a page of this site, so it opens in its
+  // own tab rather than navigating away from the one the visitor is on.
+  { label: 'Member Access', href: MEMBER_PORTAL_URL, highlight: true },
 ];
 
 export default function Nav() {
@@ -81,17 +85,34 @@ export default function Nav() {
       </button>
 
       <div className="nav-items" id="nav-panel">
-        {NAV_ITEMS.map((item) => (
-          <button
-            key={item.label}
-            type="button"
-            onClick={() => go(item.to)}
-            className={`nav-col nav-item${item.highlight ? ' nav-item-highlight' : ' nav-item-glass'}`}
-          >
-            <span>{item.label.toUpperCase()}</span>
-            <span className="nav-item-marker" />
-          </button>
-        ))}
+        {NAV_ITEMS.map((item) => {
+          const className = `nav-col nav-item${item.highlight ? ' nav-item-highlight' : ' nav-item-glass'}`;
+          const content = (
+            <>
+              <span>{item.label.toUpperCase()}</span>
+              <span className="nav-item-marker" />
+            </>
+          );
+
+          // The member portal lives outside this site, so it's a real link
+          // (new tab) rather than a button that hands off to react-router.
+          return 'href' in item ? (
+            <a
+              key={item.label}
+              href={item.href}
+              target="_blank"
+              rel="noopener noreferrer"
+              onClick={() => setOpen(false)}
+              className={className}
+            >
+              {content}
+            </a>
+          ) : (
+            <button key={item.label} type="button" onClick={() => go(item.to)} className={className}>
+              {content}
+            </button>
+          );
+        })}
       </div>
     </header>
   );

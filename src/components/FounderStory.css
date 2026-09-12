@@ -66,8 +66,14 @@
 }
 
 @media (max-width: 900px) {
+  /*
+   * Set against the screen's height rather than a fixed number. The row can't
+   * grow any wider here — three photographs already span the full measure —
+   * so the only thing that stops the heading and the gallery reading as one
+   * cramped island adrift in a tall empty screen is the air between them.
+   */
   .founder-story-sticky {
-    gap: 40px;
+    gap: clamp(40px, 9vh, 280px);
     padding: 0 24px;
   }
 
@@ -82,7 +88,7 @@
 
 @media (max-width: 560px) {
   .founder-story-sticky {
-    gap: 28px;
+    gap: clamp(36px, 18vh, 172px);
     padding: 0 20px;
   }
 

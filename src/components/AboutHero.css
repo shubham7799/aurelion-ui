@@ -57,23 +57,49 @@
 }
 
 @media (max-width: 900px) {
+  /*
+   * The heading comes out of absolute positioning here. Pinned at `top:
+   * 104px` inside a 110vh section with the description at the foot, the two
+   * sit further apart than a phone screen is tall — scroll to one and the
+   * other is always off-frame. In flow they're a column that sizes to its
+   * own content, so both are on screen together.
+   *
+   * `svh` rather than `vh`: the latter is the viewport with the browser's
+   * URL bar hidden, which would push the description below the fold again
+   * for as long as the bar is showing.
+   */
+  .about-hero {
+    min-height: calc(100vh - var(--nav-h));
+    min-height: calc(100svh - var(--nav-h));
+    flex-direction: column;
+    align-items: stretch;
+    justify-content: space-between;
+  }
+
   .about-hero-heading {
-    right: 24px;
-    left: 24px;
+    position: static;
     max-width: none;
+    padding: 88px 24px 0;
   }
 
   .about-hero-description {
     grid-column: 1 / span 4;
   }
+
+  .about-hero-grid {
+    padding: 56px 24px 48px;
+  }
 }
 
 @media (max-width: 560px) {
   .about-hero-grid {
-    padding: 0 20px;
+    padding: 40px 20px 40px;
   }
 
   .about-hero-heading {
+    padding: 72px 20px 0;
+    /* 100px of first-line indent costs a third of the measure at this width. */
+    text-indent: 0;
     font-size: 28px;
     line-height: 32px;
   }

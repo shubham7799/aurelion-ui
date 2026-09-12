@@ -14,11 +14,20 @@ const inViewport = (rect: DOMRect) => rect.bottom > 0 && rect.top < window.inner
  * flight. A hard ceiling matters more than the exact number: `Promise.all`
  * has no deadline of its own, so a single request that never settles — a
  * stalled font, an image whose src resolves to nothing — would otherwise
- * pin the counter at its ceiling indefinitely. Wider than before now that a
- * video can be part of the wait: it needs real room to buffer, not the couple
- * of seconds that was only ever meant to cover a font and a handful of images.
+ * pin the counter at its ceiling indefinitely. Covers the images and fonts;
+ * video gets its own, longer budget below.
  */
-const ASSET_TIMEOUT_MS = 6000;
+const ASSET_TIMEOUT_MS = 3000;
+/**
+ * Video gets a budget of its own because it is the one thing here worth
+ * genuinely waiting for — handing over to a hero that hasn't started moving
+ * is the whole failure this guards against — and the one thing that can't be
+ * measured in the couple of seconds an image takes. It is still a ceiling,
+ * not an open wait: autoplay can be refused outright (some mobile browsers,
+ * low-power mode), in which case nothing would ever fire and the loader would
+ * hang here forever.
+ */
+const VIDEO_TIMEOUT_MS = 12000;
 /**
  * Fonts get a shorter leash of their own: they come from a third party
  * (fonts.gstatic.com), so they're the most likely thing to hang, and the
@@ -37,15 +46,15 @@ const withTimeout = (promise: Promise<unknown>, ms: number): Promise<void> =>
   ]).then(() => undefined);
 
 /**
- * Waits only for what the first screen actually needs — the images, video
- * posters, and video playability already sitting in the initial viewport
- * (a video only exists in this list on the homepage, so this is naturally a
- * no-op on every other route), plus the fonts they're set in, and never for
- * longer than ASSET_TIMEOUT_MS. Everything further down the page — every
- * other section's photos — keeps loading in the background exactly as the
- * browser would anyway; the preloader no longer holds the door shut for
- * assets nobody can see yet, and anything that overruns simply finishes
- * behind the revealed page.
+ * Waits only for what the first screen actually needs: the images and video
+ * posters already sitting in the initial viewport, the fonts they're set in,
+ * and — the point of the whole thing — the hero video actually playing. A
+ * video only lands in that list on the homepage, so the playback wait is
+ * naturally a no-op on every other route.
+ *
+ * Everything further down the page keeps loading in the background exactly
+ * as the browser would anyway, and anything that overruns its budget simply
+ * finishes behind the revealed page rather than holding the door shut.
  */
 function waitForAssets(): Promise<void> {
   const preload = (src: string) =>
@@ -68,21 +77,19 @@ function waitForAssets(): Promise<void> {
   // still frame a visitor sees before playback starts is fetched separately.
   const posterPromises = videos.map((video) => video.poster).filter(Boolean).map(preload);
 
-  // The loader shouldn't hand off to a video that hasn't actually started
-  // playing — a frozen frame (or nothing at all, with no poster) sitting
-  // still while the rest of the page is already live reads as broken, which
-  // is exactly what was happening. `canplay` is the browser's own bar for
-  // "this can start now", not "the whole file is down" — that's what
-  // `canplaythrough` would ask for, and for a multi-megabyte clip that can
-  // take far longer than is worth holding the page for.
-  const videoReadyPromises = videos.map(
+  // `playing`, not `canplay`. The loader shouldn't hand off to a hero that is
+  // merely *able* to start — it should hand off to one that already has,
+  // because a frozen first frame (or nothing at all, with no poster) sitting
+  // still while the rest of the page is live is exactly the failure this is
+  // here to prevent. `playing` fires when frames are actually moving.
+  const videoPlayingPromises = videos.map(
     (video) =>
       new Promise<void>((resolve) => {
-        if (video.readyState >= video.HAVE_FUTURE_DATA) {
+        if (!video.paused && video.readyState >= video.HAVE_FUTURE_DATA) {
           resolve();
           return;
         }
-        video.addEventListener('canplay', () => resolve(), { once: true });
+        video.addEventListener('playing', () => resolve(), { once: true });
         // A video that errors out should never hang the loader forever.
         video.addEventListener('error', () => resolve(), { once: true });
       })
@@ -90,10 +97,18 @@ function waitForAssets(): Promise<void> {
 
   const fontsPromise = withTimeout(document.fonts?.ready ?? Promise.resolve(), FONT_TIMEOUT_MS);
 
-  return withTimeout(
-    Promise.all([...imagePromises, ...posterPromises, ...videoReadyPromises, fontsPromise]),
+  // Two budgets rather than one: the images and fonts are quick and shouldn't
+  // be given the video's long leash, and the video shouldn't be cut off by
+  // their short one — which is precisely what was happening, the loader
+  // abandoning a part-buffered clip after a few seconds and revealing a hero
+  // that had nothing to show.
+  const supporting = withTimeout(
+    Promise.all([...imagePromises, ...posterPromises, fontsPromise]),
     ASSET_TIMEOUT_MS
   );
+  const playback = withTimeout(Promise.all(videoPlayingPromises), VIDEO_TIMEOUT_MS);
+
+  return Promise.all([supporting, playback]).then(() => undefined);
 }
 
 const SHAPE_WIDTH = 76;

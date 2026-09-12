@@ -78,6 +78,9 @@
   padding: 0 24px;
   cursor: pointer;
   color: #ffffff;
+  /* The member-portal item is a real <a>, which underlines by default —
+     everything else here is a <button>, which needed no such reset. */
+  text-decoration: none;
   font-family: 'Instrument Sans', sans-serif;
   font-size: 13px;
   font-weight: 500;
