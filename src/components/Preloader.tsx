@@ -14,9 +14,11 @@ const inViewport = (rect: DOMRect) => rect.bottom > 0 && rect.top < window.inner
  * flight. A hard ceiling matters more than the exact number: `Promise.all`
  * has no deadline of its own, so a single request that never settles — a
  * stalled font, an image whose src resolves to nothing — would otherwise
- * pin the counter at its ceiling indefinitely.
+ * pin the counter at its ceiling indefinitely. Wider than before now that a
+ * video can be part of the wait: it needs real room to buffer, not the couple
+ * of seconds that was only ever meant to cover a font and a handful of images.
  */
-const ASSET_TIMEOUT_MS = 3000;
+const ASSET_TIMEOUT_MS = 6000;
 /**
  * Fonts get a shorter leash of their own: they come from a third party
  * (fonts.gstatic.com), so they're the most likely thing to hang, and the
@@ -35,13 +37,15 @@ const withTimeout = (promise: Promise<unknown>, ms: number): Promise<void> =>
   ]).then(() => undefined);
 
 /**
- * Waits only for what the first screen actually needs — the images (and video
- * posters) already sitting in the initial viewport, plus the fonts they're
- * set in, and never for longer than ASSET_TIMEOUT_MS. Everything further down
- * the page — every other section's photos, and the video files themselves —
- * keeps loading in the background exactly as the browser would anyway; the
- * preloader no longer holds the door shut for assets nobody can see yet, and
- * anything that overruns simply finishes behind the revealed page.
+ * Waits only for what the first screen actually needs — the images, video
+ * posters, and video playability already sitting in the initial viewport
+ * (a video only exists in this list on the homepage, so this is naturally a
+ * no-op on every other route), plus the fonts they're set in, and never for
+ * longer than ASSET_TIMEOUT_MS. Everything further down the page — every
+ * other section's photos — keeps loading in the background exactly as the
+ * browser would anyway; the preloader no longer holds the door shut for
+ * assets nobody can see yet, and anything that overruns simply finishes
+ * behind the revealed page.
  */
 function waitForAssets(): Promise<void> {
   const preload = (src: string) =>
@@ -56,18 +60,38 @@ function waitForAssets(): Promise<void> {
     .filter((img) => inViewport(img.getBoundingClientRect()))
     .map((img) => (img.complete ? Promise.resolve() : preload(img.currentSrc || img.src)));
 
+  const videos = Array.from(document.querySelectorAll('video')).filter((video) =>
+    inViewport(video.getBoundingClientRect())
+  );
+
   // A <video poster> isn't an <img>, so `document.images` never sees it — the
   // still frame a visitor sees before playback starts is fetched separately.
-  const posterPromises = Array.from(document.querySelectorAll('video'))
-    .filter((video) => inViewport(video.getBoundingClientRect()))
-    .map((video) => video.poster)
-    .filter(Boolean)
-    .map(preload);
+  const posterPromises = videos.map((video) => video.poster).filter(Boolean).map(preload);
+
+  // The loader shouldn't hand off to a video that hasn't actually started
+  // playing — a frozen frame (or nothing at all, with no poster) sitting
+  // still while the rest of the page is already live reads as broken, which
+  // is exactly what was happening. `canplay` is the browser's own bar for
+  // "this can start now", not "the whole file is down" — that's what
+  // `canplaythrough` would ask for, and for a multi-megabyte clip that can
+  // take far longer than is worth holding the page for.
+  const videoReadyPromises = videos.map(
+    (video) =>
+      new Promise<void>((resolve) => {
+        if (video.readyState >= video.HAVE_FUTURE_DATA) {
+          resolve();
+          return;
+        }
+        video.addEventListener('canplay', () => resolve(), { once: true });
+        // A video that errors out should never hang the loader forever.
+        video.addEventListener('error', () => resolve(), { once: true });
+      })
+  );
 
   const fontsPromise = withTimeout(document.fonts?.ready ?? Promise.resolve(), FONT_TIMEOUT_MS);
 
   return withTimeout(
-    Promise.all([...imagePromises, ...posterPromises, fontsPromise]),
+    Promise.all([...imagePromises, ...posterPromises, ...videoReadyPromises, fontsPromise]),
     ASSET_TIMEOUT_MS
   );
 }
