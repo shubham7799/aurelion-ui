@@ -30,7 +30,7 @@ export default function Footer() {
 
       <div className="footer-row">
         <p className="footer-tagline">
-          QUIET AUTHORITY - PRIVATE ACCESS - TIME RETURNED
+          QUIET AUTHORITY   PRIVATE ACCESS   TIME RETURNED
         </p>
         <div className="footer-social">
           {/* {SOCIAL_LINKS.map((social) => (
@@ -61,7 +61,7 @@ export default function Footer() {
         <p>2026 © Aurelion</p>
         <p className="footer-powered">Powered by Concierge ®</p>
         <div className="footer-legal">
-          <button type="button">Cookie Policy</button>
+          {/* <button type="button">Cookie Policy</button> */}
           <button type="button">Privacy Policy</button>
         </div>
       </div>

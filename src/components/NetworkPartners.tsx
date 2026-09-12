@@ -14,7 +14,7 @@ const STATS = [
   { value: '4,061', label: 'Private Clubs Worldwide' },
   { value: '87', label: 'Countries' },
   { value: '2,399', label: 'Cities & Destinations' },
-  { value: 'XX', label: 'Cities & Destinations' },
+  // { value: 'XX', label: 'Cities & Destinations' },
 ];
 
 /** The sequence that runs round the globe, in the order the design has it. */

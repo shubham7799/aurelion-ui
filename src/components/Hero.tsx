@@ -3,6 +3,8 @@ import './Hero.css';
 const SCROLL_LABEL = 'Scroll Down';
 /** Seconds between one character starting its roll and the next. */
 const ROLL_STAGGER = 0.06;
+/** There's no HTML attribute for this — a slower, calmer read on the clip. */
+const PLAYBACK_RATE = 0.9;
 
 export default function Hero() {
   return (
@@ -13,7 +15,13 @@ export default function Hero() {
         loop
         muted
         playsInline
-        poster="/hero.png"
+        // poster="/hero.png"
+        // Also sets defaultPlaybackRate, since some browsers reset the
+        // effective rate to it whenever the loop restarts.
+        onLoadedMetadata={(e) => {
+          e.currentTarget.defaultPlaybackRate = PLAYBACK_RATE;
+          e.currentTarget.playbackRate = PLAYBACK_RATE;
+        }}
       >
         <source src="/hero.mp4" type="video/mp4" />
         Your browser does not support the video tag.

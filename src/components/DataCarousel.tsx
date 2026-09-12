@@ -4,8 +4,6 @@ import './DataCarousel.css';
 export interface CarouselSlide {
   number: string;
   label: string;
-  heading: string;
-  description: string;
   image: string;
   /** Shown in this slide's own expanded tab panel. Falls back to the
       carousel-level `tabDescription` when a slide doesn't set one. */
@@ -13,6 +11,9 @@ export interface CarouselSlide {
 }
 
 interface DataCarouselProps {
+  /** Fixed for the whole carousel — every slide shared the same wording
+      anyway, so it's no longer something a slide carries individually. */
+  heading: string;
   slides: CarouselSlide[];
   /** How long each slide stays up before auto-advancing, in ms. */
   intervalMs?: number;
@@ -24,6 +25,7 @@ const DEFAULT_TAB_DESCRIPTION =
   'We turn architectural designs into masterpiece interiors crafted by genius Italian artists.';
 
 export default function DataCarousel({
+  heading,
   slides,
   intervalMs = 6000,
   tabDescription = DEFAULT_TAB_DESCRIPTION,
@@ -68,13 +70,10 @@ export default function DataCarousel({
         </div>
       </div>
 
-      {/* No `key` on the slide index: the heading and description are the same
-          for every slide in a section, so remounting this block per slide only
-          re-ran the entrance animation on text that never changed. It stays
-          mounted and animates once, when the carousel first appears. */}
+      {/* Fixed for the whole carousel, so this never needs to remount or
+          re-animate as the active slide changes. */}
       <div className="data-carousel-content">
-        <h2 className="data-carousel-heading">{active.heading}</h2>
-        <p className="data-carousel-description">{active.description}</p>
+        <h2 className="data-carousel-heading">{heading}</h2>
       </div>
 
       <div

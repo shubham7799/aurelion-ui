@@ -7,9 +7,7 @@ import './FounderStory.css';
 
 gsap.registerPlugin(ScrollTrigger);
 
-const HEADING =
-  "Success shouldn't come at the cost of your time as life becomes more successful, " +
-  'it also becomes more complex.';
+const HEADING = "Aurelion began with a simple belief. Life should leave more room for what matters. We believe that when life gets busy, having someone you trust to take care of what matters can make all the difference.";
 
 /** Scroll the section stays locked for while the sentence reveals, in vh. */
 const VH_REVEAL = 180;

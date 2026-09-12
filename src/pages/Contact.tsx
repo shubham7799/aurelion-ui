@@ -83,7 +83,7 @@ export default function Contact() {
 
           <div className="contact-info-col contact-info-write">
             <p className="contact-info-label">Write Us</p>
-            <p className="contact-info-text">contact@aurelion.com</p>
+            <p className="contact-info-text">contact@aurelionlm.com</p>
           </div>
 
           <div className="contact-info-col contact-info-office">

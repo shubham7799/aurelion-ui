@@ -96,22 +96,36 @@
 }
 
 @media (max-width: 900px) {
+  /*
+   * The sticky screen otherwise sizes to its content — label, copy, image —
+   * which is shorter than the viewport, so the section's own tall track
+   * showed through as dead blue space below the image instead of the image
+   * sitting at the foot of the screen. Giving the sticky box the full
+   * viewport height and turning the grid into a column lets the image push
+   * down into that leftover space instead of just trailing the copy.
+   */
+  .membership-sticky {
+    height: calc(100vh - var(--nav-h));
+  }
+
+  .membership-grid {
+    display: flex;
+    flex-direction: column;
+    height: 100%;
+  }
+
   .membership-label {
-    grid-column: 1 / span 4;
     margin-bottom: 24px;
     padding-right: 0;
     text-align: left;
   }
 
   .membership-copy {
-    grid-column: 1 / span 4;
     margin-top: 24px;
   }
 
-  /* The label and copy above it have already gone full-width, so the image
-     follows rather than staying pinned to columns sized for the desktop row. */
   .membership-image {
-    grid-column: 2 / span 3;
+    margin-top: auto;
   }
 }
 

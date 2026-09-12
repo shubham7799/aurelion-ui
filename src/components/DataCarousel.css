@@ -116,13 +116,8 @@
   left: 32px;
   top: 64px;
   z-index: 2;
-  display: flex;
-  flex-direction: column;
-  gap: 24px;
-  /* Wide enough that the heading's own second line ("We take it from there.")
-     never has to wrap a second time — the description below keeps its own,
-     narrower max-width so it still settles into three lines rather than
-     opportunistically spreading across this extra room. */
+  /* Wide enough that a heading's own second line (e.g. "We take it from
+     there.") never has to wrap a second time on its own. */
   width: 640px;
   max-width: calc(100% - 64px);
   animation: data-carousel-fade-in 0.6s ease both;
@@ -153,20 +148,6 @@
   font-weight: 400;
   font-size: 52px;
   line-height: 52px;
-  color: #ffffff;
-}
-
-.data-carousel-description {
-  margin: 0;
-  /* Narrower than the content box now is — otherwise widening the container
-     for the heading's sake would let this opportunistically spread across
-     the extra room and settle into fewer, longer lines than intended. */
-  max-width: 560px;
-  font-family: 'Instrument Sans', sans-serif;
-  font-style: normal;
-  font-weight: 400;
-  font-size: 18px;
-  line-height: 21px;
   color: #ffffff;
 }
 
@@ -337,11 +318,6 @@
   .data-carousel-heading {
     font-size: 26px;
     line-height: 29px;
-  }
-
-  .data-carousel-description {
-    font-size: 13px;
-    line-height: 18px;
   }
 
   /* One tab per row, the open one expanding in place — the ring is too small to
