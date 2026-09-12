@@ -7,7 +7,7 @@ import './FounderStory.css';
 
 gsap.registerPlugin(ScrollTrigger);
 
-const HEADING = "Aurelion began with a simple belief. Life should leave more room for what matters. We believe that when life gets busy, having someone you trust to take care of what matters can make all the difference.";
+const HEADING = "Aurelion began with a simple belief. Life should leave more room for what matters.";
 
 /** Scroll the section stays locked for while the sentence reveals, in vh. */
 const VH_REVEAL = 180;
@@ -118,13 +118,13 @@ export default function FounderStory() {
         />
 
         <div className="founder-story-gallery">
-          <img src="/finale/02.png" alt="" className="founder-story-image" />
+          <img src="/founder-story-1.png" alt="" className="founder-story-image" />
           <img
-            src="/finale/07.png"
+            src="/founder-story-2.png"
             alt=""
             className="founder-story-image founder-story-image-tall"
-          />
-          <img src="/finale/05.png" alt="" className="founder-story-image" />
+          />  
+          <img src="/founder-story-3.png" alt="" className="founder-story-image" />
         </div>
       </div>
     </section>

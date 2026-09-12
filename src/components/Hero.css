@@ -4,7 +4,19 @@
   align-items: flex-end;
   justify-content: space-between;
   gap: 32px;
+  /*
+   * `svh`, not `vh`. On mobile, `100vh` is the viewport with the browser's
+   * URL bar *hidden* — its tallest state — so while the bar is on screen the
+   * box runs taller than what's actually visible, and the headline (bottom
+   * aligned) falls below the fold. `svh` is the height with the bar showing,
+   * so the content fits either way. `dvh` would also fit, but it resizes as
+   * the bar hides and shows, which shifts the layout mid-scroll and forces
+   * every ScrollTrigger on the page to recalculate.
+   *
+   * The `vh` line above it is the fallback for browsers without `svh`.
+   */
   min-height: calc(100vh - var(--nav-h));
+  min-height: calc(100svh - var(--nav-h));
   padding: 0 32px 40px;
   overflow: hidden;
 }

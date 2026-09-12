@@ -28,6 +28,8 @@ const CAPTION_GAP = 31;
 
 /** At or below this width the deck is sized and placed for a phone. */
 const COMPACT_WIDTH = 760;
+/** How much bigger the scattered tiles run there than the frame scale alone. */
+const COMPACT_TILE_BOOST = 1.35;
 
 
 interface Tile {
@@ -262,7 +264,14 @@ export default function ServiceJourney() {
         // Sizes track the design frame proportionally; positions are fractions
         // of the real container, so tiles reach the actual edges at any aspect.
         const scale = Math.min(width / FRAME_W, height / FRAME_H);
-        const tileSize = TILE * scale;
+        const compact = width <= COMPACT_WIDTH;
+        // Tiles get the same treatment the deck card does below: at a phone's
+        // frame scale they come out barely 12% of the screen's width — the
+        // design's own proportion, but too small to read as photographs
+        // rather than specks. The boost is applied to the radius too, so the
+        // corner rounding keeps its ratio to the tile instead of tightening.
+        const tileScale = compact ? scale * COMPACT_TILE_BOOST : scale;
+        const tileSize = TILE * tileScale;
 
         // The deck hangs off the real bottom of the headline rather than the
         // middle of the screen, so it can never ride up over the copy — the
@@ -282,7 +291,6 @@ export default function ServiceJourney() {
         // screen half empty beneath it. There the card is sized from the space
         // it actually has instead, capped so it still leaves a margin either
         // side. Desktop keeps the design's own size.
-        const compact = width <= COMPACT_WIDTH;
         const cardH = compact
           ? Math.min(
               Math.max(CARD_H * scale, room * 0.7),
@@ -407,7 +415,7 @@ export default function ServiceJourney() {
             rotation: rotate,
             scale: depthScale,
             opacity,
-            borderRadius: lerp(0, TILE_RADIUS * scale, morph),
+            borderRadius: lerp(0, TILE_RADIUS * tileScale, morph),
             // In the deck, the most recently landed card is the front one.
             zIndex: isStackCard ? 10 + i : 5,
           });
@@ -436,7 +444,7 @@ export default function ServiceJourney() {
           height: tileSize,
           x: width / 2,
           y: height / 2,
-          borderRadius: TILE_RADIUS * scale,
+          borderRadius: TILE_RADIUS * tileScale,
           opacity: clamp01((mergeP - 0.72) * 4) * (1 - clamp01(finaleP * 3.5)),
         });
 
