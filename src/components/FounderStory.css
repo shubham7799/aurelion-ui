@@ -79,22 +79,28 @@
    */
   .founder-story-sticky {
     gap: clamp(40px, 9vh, 280px);
-    padding: 0 24px;
+    /* Tightened from the desktop 24px — this and the gallery's own gap below
+       are the two things standing between the row and the full screen width,
+       since three photos already claim the full measure regardless. */
+    padding: 0 14px;
   }
 
   /* Stays three across, as the design has it, rather than reflowing — the row
      is the composition. */
   .founder-story-gallery {
-    --shot: min(29vw, 34vh);
+    --shot: min(30vw, 36vh);
 
-    gap: 16px;
+    gap: 10px;
   }
 }
 
 @media (max-width: 560px) {
   .founder-story-sticky {
     gap: clamp(36px, 18vh, 172px);
-    padding: 0 20px;
+    /* Same trade as the 900px tier, pushed further: at this width three
+       photos plus any real padding and gap were already close to as big as
+       the row can get, so both come down to near their practical floor. */
+    padding: 0 8px;
   }
 
   .founder-story-heading {
@@ -103,8 +109,8 @@
   }
 
   .founder-story-gallery {
-    --shot: min(28vw, 30vh);
+    --shot: min(32vw, 32vh);
 
-    gap: 10px;
+    gap: 6px;
   }
 }

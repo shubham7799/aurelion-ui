@@ -7,6 +7,9 @@
 }
 
 .footer-top {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
   padding-bottom: 40px;
 }
 
@@ -37,26 +40,20 @@
 
 .footer-tagline {
   max-width: 620px;
-  margin: 0 0 64px;
+  /* Carries the gap down to the watermark on its own now — that space used to
+     come from the (now removed) empty row the nav briefly sat in below it. */
+  margin: 0 0 160px;
   font-family: 'Instrument Sans', sans-serif;
   font-weight: 500;
-  font-size: 12px;
+  font-size: 14px;
   line-height: 1.4;
   letter-spacing: 0.01em;
   text-transform: uppercase;
   color: rgba(255, 255, 255, 0.85);
 }
 
-/* Social icons (left) and the two page links (right), on one line — the
-   tagline above no longer shares this row with either. */
-.footer-row {
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-  gap: 24px;
-  padding-bottom: 96px;
-}
-
+/* Unused while there's nothing to put in it — kept for if the social icons
+   come back, rather than restyled away and rebuilt later. */
 .footer-social {
   display: flex;
   align-items: center;
@@ -186,11 +183,7 @@
 
   .footer-tagline {
     font-size: 19px;
-    margin-bottom: 48px;
-  }
-
-  .footer-row {
-    padding-bottom: 64px;
+    margin-bottom: 112px;
   }
 
   .footer-partners-grid {
@@ -204,9 +197,8 @@
     padding: 36px 20px 24px;
   }
 
-  /* The social/nav row still stacks; the logo is already alone on its own
-     line and needs no row behaviour to give up. */
-  .footer-row,
+  /* Logo and nav no longer sit comfortably side by side at this width. */
+  .footer-top,
   .footer-bottom {
     flex-direction: column;
     align-items: flex-start;
@@ -230,14 +222,10 @@
     font-size: 13px;
   }
 
-  .footer-row {
-    padding: 0 0 40px;
-  }
-
   .footer-tagline {
     max-width: none;
-    margin-bottom: 32px;
-    font-size: 15px;
+    margin-bottom: 72px;
+    font-size: 12px;
   }
 
   .footer-partners-grid {

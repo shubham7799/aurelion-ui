@@ -29,7 +29,7 @@ const TESTIMONIALS: Testimonial[] = [
   },
   {
     quote: [
-      'I believed in Aurelion because its vision connects with the real challenges faced by people whose time, privacy and convenience hold a different value. I saw an opportunity to build something that could genuinely make a difference, and that is what made me come forward and become part of this journey.',
+      'I believe in Aurelion because its vision connects with the real challenges faced by people whose time, privacy and convenience hold a different value. I saw an opportunity to build something that could genuinely make a difference, and that is what made me come forward and become part of this journey.',
       'My vision is for Aurelion to become a trusted part of the lives of families who value this way of living — helping them solve problems, access the right opportunities and create greater success with ease.',
       'For me, true success will be when our clients recommend Aurelion to others and reach out with genuine gratitude, knowing that we have made a meaningful difference in their lives.',
     ],

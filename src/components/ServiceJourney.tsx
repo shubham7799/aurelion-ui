@@ -552,7 +552,7 @@ export default function ServiceJourney() {
             {/* The reference cuts this sentence off mid-clause — the tail of the
                 copy still needs to come from the design. */}
             <p className="journey-finale-copy">
-              QUIET AUTHORITY   PRIVATE ACCESS    TIME RETURNED
+              QUIET AUTHORITY&nbsp;&nbsp;&nbsp;PRIVATE ACCESS&nbsp;&nbsp;&nbsp;TIME RETURNED
             </p>
           </div>
         </div>
