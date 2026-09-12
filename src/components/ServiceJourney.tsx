@@ -506,7 +506,7 @@ export default function ServiceJourney() {
         <div className="journey-stage">
           {TILES.map((tile, i) => (
             <div key={tile.image + i} className="journey-tile">
-              <img src={tile.image} alt="" className="journey-tile-image" />
+              <img src={tile.image} alt="" className="journey-tile-image" loading="lazy" />
             </div>
           ))}
 
@@ -538,7 +538,7 @@ export default function ServiceJourney() {
               <div key={copy} className="journey-finale-block" aria-hidden={copy === 1}>
                 {FINALE_IMAGES.map((src) => (
                   <div key={src} className="journey-finale-cell">
-                    <img src={src} alt="" className="journey-finale-photo" />
+                    <img src={src} alt="" className="journey-finale-photo" loading="lazy" />
                   </div>
                 ))}
               </div>

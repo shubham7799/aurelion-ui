@@ -67,7 +67,7 @@ export default function FoundersNote() {
           {TESTIMONIALS.map((t) => (
             <div key={t.name} className="founders-note-item">
               <div className="founders-note-person">
-                <img src={t.photo} alt={t.name} className="founders-note-photo" />
+                <img src={t.photo} alt={t.name} className="founders-note-photo" loading="lazy" />
                 <div className="founders-note-byline">
                   <p className="founders-note-name">{t.name}</p>
                   <p className="founders-note-title">{t.title}</p>

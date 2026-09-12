@@ -118,13 +118,14 @@ export default function FounderStory() {
         />
 
         <div className="founder-story-gallery">
-          <img src="/founder-story-1.png" alt="" className="founder-story-image" />
+          <img src="/founder-story-1.png" alt="" className="founder-story-image" loading="lazy" />
           <img
             src="/founder-story-2.png"
             alt=""
             className="founder-story-image founder-story-image-tall"
-          />  
-          <img src="/founder-story-3.png" alt="" className="founder-story-image" />
+            loading="lazy"
+          />
+          <img src="/founder-story-3.png" alt="" className="founder-story-image" loading="lazy" />
         </div>
       </div>
     </section>

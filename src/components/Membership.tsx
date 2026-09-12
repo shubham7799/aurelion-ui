@@ -38,6 +38,7 @@ export default function Membership() {
             width={1071}
             height={1138}
             className="membership-image"
+            loading="lazy"
           />
         </div>
       </div>

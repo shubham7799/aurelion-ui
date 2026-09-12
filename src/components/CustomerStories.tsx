@@ -112,7 +112,7 @@ export default function CustomerStories() {
               icon above — a named grid row for each, not stacked margins. */}
           <div className="customer-stories-quote-block">
             <img src="/about-quote.svg" alt="" className="customer-stories-quote-icon" />
-            <img src={active.photo} alt={active.name} className="customer-stories-photo" />
+            <img src={active.photo} alt={active.name} className="customer-stories-photo" loading="lazy" />
             <div className="customer-stories-quote">
               {active.quote.map((paragraph) => (
                 <p key={paragraph}>{paragraph}</p>
