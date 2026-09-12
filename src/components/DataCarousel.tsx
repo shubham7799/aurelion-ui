@@ -5,9 +5,31 @@ export interface CarouselSlide {
   number: string;
   label: string;
   image: string;
+  /** A crop composed for a narrow screen, used in place of `image` at the
+      same width the carousel's own layout switches to its mobile tab
+      arrangement. Falls back to `image` where a slide has no mobile crop. */
+  mobileImage?: string;
   /** Shown in this slide's own expanded tab panel. Falls back to the
       carousel-level `tabDescription` when a slide doesn't set one. */
   tabDescription?: string;
+}
+
+/** Below this, the carousel's own layout is already the mobile one. */
+const MOBILE_BREAKPOINT = '(max-width: 900px)';
+
+/** Tracks a media query as state, so the image swap reacts to a live resize. */
+function useMediaQuery(query: string): boolean {
+  const [matches, setMatches] = useState(() => window.matchMedia(query).matches);
+
+  useEffect(() => {
+    const mql = window.matchMedia(query);
+    const onChange = () => setMatches(mql.matches);
+    onChange();
+    mql.addEventListener('change', onChange);
+    return () => mql.removeEventListener('change', onChange);
+  }, [query]);
+
+  return matches;
 }
 
 interface DataCarouselProps {
@@ -31,6 +53,7 @@ export default function DataCarousel({
   tabDescription = DEFAULT_TAB_DESCRIPTION,
 }: DataCarouselProps) {
   const [activeIndex, setActiveIndex] = useState(0);
+  const isMobile = useMediaQuery(MOBILE_BREAKPOINT);
 
   // Auto-advances, and the tabs below can jump straight to a slide. Keyed on
   // activeIndex with a timeout rather than a standing interval, so picking a tab
@@ -54,7 +77,7 @@ export default function DataCarousel({
           <div
             key={slide.label}
             className={`data-carousel-image${i === activeIndex ? ' is-active' : ''}`}
-            style={{ backgroundImage: `url(${slide.image})` }}
+            style={{ backgroundImage: `url(${isMobile && slide.mobileImage ? slide.mobileImage : slide.image})` }}
           />
         ))}
       </div>

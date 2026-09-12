@@ -49,6 +49,7 @@
   aspect-ratio: 262 / 308;
   object-fit: cover;
   background: #ffffff;
+  z-index: 401;
 }
 
 .founders-note-byline {

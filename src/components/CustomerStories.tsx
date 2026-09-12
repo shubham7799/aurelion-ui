@@ -1,4 +1,4 @@
-import { useEffect, useRef, useState } from 'react';
+import { useState } from 'react';
 import './CustomerStories.css';
 
 /**
@@ -34,8 +34,7 @@ function ArrowIcon() {
   );
 }
 
-interface QuoteStory {
-  kind: 'quote';
+interface Story {
   name: string;
   /** Omitted where the storyteller is named without a role. */
   title?: string;
@@ -44,25 +43,9 @@ interface QuoteStory {
   photo: string;
 }
 
-interface VideoStory {
-  kind: 'video';
-  name: string;
-  title?: string;
-  video: string;
-  poster: string;
-}
-
-type Story = QuoteStory | VideoStory;
-
-/**
- * Figma nodes 357:308 (the written testimonial) and 822:42 (the video one) —
- * two card layouts on the same rotation, distinguished by `kind`. Only one
- * video asset exists in the project so far (`hero.mp4`), so every video story
- * points at it until the real clips are supplied.
- */
+/** Figma node 357:308 — a portrait beside the quote it belongs to. */
 const STORIES: Story[] = [
   {
-    kind: 'quote',
     name: 'Radhika',
     quote: [
       'When I was struggling with severe back pain, Deepali helped me find a place in Pune where I could stay and receive the care I needed for 10 days. But what I remember most is that she didn’t simply arrange it and leave it there. She kept checking on me, making sure everything was going well and that I was comfortable, so I could just focus on resting and feeling better.',
@@ -71,7 +54,6 @@ const STORIES: Story[] = [
     photo: '/testimonial-1.png',
   },
   {
-    kind: 'quote',
     name: 'Maithili',
     quote: [
       'Living abroad, I needed someone I could trust to manage my property in India. Deepali understood what I needed, coordinated everything on the ground, kept me updated and stayed involved until it was sorted. Knowing someone I trusted was looking out for my interests gave me incredible peace of mind.',
@@ -80,7 +62,6 @@ const STORIES: Story[] = [
     photo: '/testimonial-2.png',
   },
   {
-    kind: 'quote',
     name: 'Mr. Suraj Kazi',
     quote: [
       'During a trip to Ahmedabad, I accidentally left behind one of my favourite and most expensive suits at the airport. A few days later, I casually mentioned it to Mr. Girase. Without me even asking, he reached out to his contact in Ahmedabad, followed up and somehow managed to get my suit back to me.',
@@ -89,43 +70,16 @@ const STORIES: Story[] = [
     ],
     photo: '/testimonial-3.png',
   },
-  { kind: 'video', name: 'Customer Name', title: 'Guest', video: '/hero.mp4', poster: '/story-1.png' },
 ];
 
 export default function CustomerStories() {
   const [activeIndex, setActiveIndex] = useState(0);
   /** Which side the incoming story slides in from. */
   const [direction, setDirection] = useState<'forward' | 'backward'>('forward');
-  const [playing, setPlaying] = useState(false);
-  const videoRef = useRef<HTMLVideoElement>(null);
-  const mediaRef = useRef<HTMLDivElement>(null);
-
-  // Pauses the moment the clip scrolls out of view, rather than running on
-  // silently underneath the rest of the page.
-  useEffect(() => {
-    const media = mediaRef.current;
-    if (!media) return;
-    const observer = new IntersectionObserver(
-      ([entry]) => {
-        if (!entry.isIntersecting) videoRef.current?.pause();
-      },
-      { threshold: 0 }
-    );
-    observer.observe(media);
-    return () => observer.disconnect();
-  }, [activeIndex]);
-
-  // Switching stories always lands a video back on the poster frame with the
-  // play button showing, never mid-playback of the story just left.
-  useEffect(() => {
-    setPlaying(false);
-  }, [activeIndex]);
 
   const active = STORIES[activeIndex];
-  const isQuote = active.kind === 'quote';
 
   const goTo = (i: number, dir?: 'forward' | 'backward') => {
-    videoRef.current?.pause();
     // A dot can jump several stories at once with no arrow involved; absent an
     // explicit direction, forward/backward is simply which side of where we
     // are now it sits.
@@ -138,14 +92,6 @@ export default function CustomerStories() {
   // would otherwise read backwards (0 → last looks like a jump forward).
   const goPrev = () => goTo((activeIndex - 1 + STORIES.length) % STORIES.length, 'backward');
   const goNext = () => goTo((activeIndex + 1) % STORIES.length, 'forward');
-
-  const play = () => {
-    videoRef.current?.play();
-  };
-
-  const pause = () => {
-    videoRef.current?.pause();
-  };
 
   return (
     <section className="customer-stories">
@@ -161,61 +107,18 @@ export default function CustomerStories() {
           className={`customer-stories-main customer-stories-main-${direction}`}
           key={`main-${activeIndex}`}
         >
-          {isQuote ? (
-            // The quote mark sits above the portrait; the portrait and the
-            // copy then share a row, aligned to each other rather than to the
-            // icon above — a named grid row for each, not stacked margins.
-            <div className="customer-stories-quote-block">
-              <img src="/about-quote.svg" alt="" className="customer-stories-quote-icon" />
-              <img src={active.photo} alt={active.name} className="customer-stories-photo" />
-              <div className="customer-stories-quote">
-                {active.quote.map((paragraph) => (
-                  <p key={paragraph}>{paragraph}</p>
-                ))}
-              </div>
+          {/* The quote mark sits above the portrait; the portrait and the
+              copy then share a row, aligned to each other rather than to the
+              icon above — a named grid row for each, not stacked margins. */}
+          <div className="customer-stories-quote-block">
+            <img src="/about-quote.svg" alt="" className="customer-stories-quote-icon" />
+            <img src={active.photo} alt={active.name} className="customer-stories-photo" />
+            <div className="customer-stories-quote">
+              {active.quote.map((paragraph) => (
+                <p key={paragraph}>{paragraph}</p>
+              ))}
             </div>
-          ) : (
-            <div className="customer-stories-media" ref={mediaRef}>
-              <video
-                ref={videoRef}
-                className="customer-stories-video"
-                src={active.video}
-                poster={active.poster}
-                playsInline
-                onPlay={() => setPlaying(true)}
-                onPause={() => setPlaying(false)}
-                onEnded={() => setPlaying(false)}
-              />
-
-              {/* Paused: a solid button, always there, the invitation to
-                  start. Playing: the same spot turns into a hover-only pause
-                  control — out of the way while watching, a click away when
-                  wanted. */}
-              {!playing ? (
-                <button
-                  type="button"
-                  className="customer-stories-play"
-                  aria-label={`Play ${active.name}'s story`}
-                  onClick={play}
-                >
-                  <svg viewBox="0 0 24 24" fill="none" aria-hidden="true">
-                    <path d="M9 7.5v9l7.5-4.5L9 7.5Z" fill="#041121" />
-                  </svg>
-                </button>
-              ) : (
-                <button
-                  type="button"
-                  className="customer-stories-pause"
-                  aria-label={`Pause ${active.name}'s story`}
-                  onClick={pause}
-                >
-                  <svg viewBox="0 0 24 24" fill="none" aria-hidden="true">
-                    <path d="M8 7h2.5v10H8V7Zm5.5 0H16v10h-2.5V7Z" fill="#041121" />
-                  </svg>
-                </button>
-              )}
-            </div>
-          )}
+          </div>
 
           <div className="customer-stories-footer">
             <p className="customer-stories-byline">

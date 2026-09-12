@@ -1,9 +1,7 @@
 /*
- * Two card layouts share this section: a written testimonial (Figma node
- * 357:308 — a portrait alongside the label, a large quote) and a video story
- * (node 822:42 — no portrait, a single 16:9 clip with a play control in its
- * place). Which one shows is per-story (`kind`); the label, byline and
- * pagination dots are common to both.
+ * A written testimonial (Figma node 357:308): a portrait alongside the quote
+ * it belongs to, under the section label, with the byline, pagination dots
+ * and prev/next controls beneath.
  */
 .customer-stories {
   background: #f5f0e6;
@@ -110,7 +108,6 @@
   height: 80px;
 }
 
-/* Only a quote card has one of these — a video card's image is the video. */
 .customer-stories-photo {
   display: block;
   grid-column: 1;
@@ -157,71 +154,6 @@
   .customer-stories-quote-icon {
     width: 60px;
     height: 60px;
-  }
-}
-
-.customer-stories-media {
-  position: relative;
-  width: 100%;
-  aspect-ratio: 16 / 9;
-  overflow: hidden;
-  background: #000000;
-  /* Its own entrance came from the parent remounting anyway — one slide,
-     driven by `.customer-stories-main-forward`/`-backward` above, not a
-     second animation stacked on top of that one. */
-}
-
-.customer-stories-video {
-  display: block;
-  width: 100%;
-  height: 100%;
-  object-fit: cover;
-}
-
-.customer-stories-play,
-.customer-stories-pause {
-  position: absolute;
-  top: 50%;
-  left: 50%;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  width: 64px;
-  height: 64px;
-  padding: 0;
-  border: none;
-  border-radius: 50%;
-  background: #ffffff;
-  box-shadow: 0 4px 18px rgba(0, 0, 0, 0.28);
-  transform: translate(-50%, -50%);
-  cursor: pointer;
-}
-
-.customer-stories-play svg,
-.customer-stories-pause svg {
-  width: 24px;
-  height: 24px;
-}
-
-/*
- * While playing, the control only shows up on hover — invisible during
- * ordinary viewing, a click away as soon as the pointer lands on the video.
- * Opacity rather than mount/unmount, so it fades rather than snapping in.
- */
-.customer-stories-pause {
-  opacity: 0;
-  transition: opacity 0.2s ease;
-}
-
-.customer-stories-media:hover .customer-stories-pause,
-.customer-stories-pause:focus-visible {
-  opacity: 1;
-}
-
-/* Touch has no hover to reveal it on, so the control stays reachable there. */
-@media (hover: none) {
-  .customer-stories-pause {
-    opacity: 1;
   }
 }
 
@@ -348,12 +280,6 @@
     font-size: 16px;
     line-height: 20px;
   }
-
-  .customer-stories-play,
-  .customer-stories-pause {
-    width: 56px;
-    height: 56px;
-  }
 }
 
 @media (max-width: 560px) {
@@ -364,18 +290,6 @@
   .customer-stories-label {
     font-size: 11px;
     line-height: 14px;
-  }
-
-  .customer-stories-play,
-  .customer-stories-pause {
-    width: 48px;
-    height: 48px;
-  }
-
-  .customer-stories-play svg,
-  .customer-stories-pause svg {
-    width: 18px;
-    height: 18px;
   }
 
   /* The byline and dots no longer fit on one line at this width. */

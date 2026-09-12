@@ -16,8 +16,22 @@ export default function Footer() {
 
   return (
     <footer className="footer">
+      {/* The logo now sits on its own line — the nav links moved down to sit
+          beside the social row instead. */}
       <div className="footer-top">
         <img src="/footer-logo.svg" alt="Aurelion" className="footer-logo" />
+      </div>
+
+      <p className="footer-tagline">QUIET AUTHORITY&nbsp;&nbsp;PRIVATE ACCESS&nbsp;&nbsp;TIME RETURNED</p>
+
+      <div className="footer-row">
+        {/* <div className="footer-social">
+          {SOCIAL_LINKS.map((social) => (
+            <button key={social.name} type="button" aria-label={social.name} className="footer-social-icon">
+              <img src={social.icon} alt="" />
+            </button>
+          ))}
+        </div> */}
         <nav className="footer-nav">
           <button type="button" onClick={() => navigate('/contact')}>
             Contact
@@ -26,19 +40,6 @@ export default function Footer() {
             About
           </button>
         </nav>
-      </div>
-
-      <div className="footer-row">
-        <p className="footer-tagline">
-          QUIET AUTHORITY   PRIVATE ACCESS   TIME RETURNED
-        </p>
-        <div className="footer-social">
-          {/* {SOCIAL_LINKS.map((social) => (
-            <button key={social.name} type="button" aria-label={social.name} className="footer-social-icon">
-              <img src={social.icon} alt="" />
-            </button>
-          ))} */}
-        </div>
       </div>
 
       {/* <div className="footer-partners">

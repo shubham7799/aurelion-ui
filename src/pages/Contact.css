@@ -136,6 +136,18 @@
   grid-column: 2 / span 2;
   display: flex;
   border-left: 1px solid rgba(136, 136, 136, 0.32);
+  /*
+   * Above the fixed guide lines (z-index 400), same as the footer and the
+   * carousel tabs — the form is meant to read as opaque chrome, and a guide
+   * line running through its fields is a rendering defect, not the page's
+   * grid. z-index alone only reorders paint order though; the form itself
+   * had no background, so the line still showed straight through it. The
+   * section's own background colour, repeated here, is what actually blocks
+   * it — a plain z-index change was never going to be enough on its own.
+   */
+  position: relative;
+  z-index: 401;
+  background: #f5f0e6;
 }
 
 .contact-form-col {

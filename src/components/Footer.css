@@ -7,14 +7,12 @@
 }
 
 .footer-top {
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-  padding-bottom: 24px;
+  padding-bottom: 40px;
 }
 
 .footer-logo {
-  height: 40px;
+  display: block;
+  height: 46px;
   width: auto;
 }
 
@@ -37,23 +35,26 @@
   text-transform: uppercase;
 }
 
-.footer-row {
-  display: flex;
-  align-items: flex-end;
-  justify-content: space-between;
-  gap: 24px;
-  padding: 0 0 40px;
-}
-
 .footer-tagline {
-  max-width: 400px;
+  max-width: 620px;
+  margin: 0 0 64px;
   font-family: 'Instrument Sans', sans-serif;
   font-weight: 500;
-  font-size: 14px;
-  line-height: 1.6;
-  letter-spacing: 0.02em;
+  font-size: 12px;
+  line-height: 1.4;
+  letter-spacing: 0.01em;
   text-transform: uppercase;
   color: rgba(255, 255, 255, 0.85);
+}
+
+/* Social icons (left) and the two page links (right), on one line — the
+   tagline above no longer shares this row with either. */
+.footer-row {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 24px;
+  padding-bottom: 96px;
 }
 
 .footer-social {
@@ -66,9 +67,14 @@
 .footer-social-icon {
   appearance: none;
   background: none;
-  border: none;
+  border: 1px solid rgba(255, 255, 255, 0.2);
+  border-radius: 8px;
+  width: 40px;
+  height: 40px;
   padding: 0;
   display: flex;
+  align-items: center;
+  justify-content: center;
   cursor: pointer;
 }
 
@@ -174,6 +180,19 @@
     padding: 48px 24px 28px;
   }
 
+  .footer-top {
+    padding-bottom: 32px;
+  }
+
+  .footer-tagline {
+    font-size: 19px;
+    margin-bottom: 48px;
+  }
+
+  .footer-row {
+    padding-bottom: 64px;
+  }
+
   .footer-partners-grid {
     grid-template-columns: repeat(4, 1fr);
     row-gap: 32px;
@@ -185,13 +204,17 @@
     padding: 36px 20px 24px;
   }
 
-  /* Everything that sat as a row across the footer stacks. */
-  .footer-top,
+  /* The social/nav row still stacks; the logo is already alone on its own
+     line and needs no row behaviour to give up. */
   .footer-row,
   .footer-bottom {
     flex-direction: column;
     align-items: flex-start;
     gap: 20px;
+  }
+
+  .footer-top {
+    padding-bottom: 24px;
   }
 
   .footer-logo {
@@ -208,12 +231,13 @@
   }
 
   .footer-row {
-    padding: 20px 0 28px;
+    padding: 0 0 40px;
   }
 
   .footer-tagline {
     max-width: none;
-    font-size: 12px;
+    margin-bottom: 32px;
+    font-size: 15px;
   }
 
   .footer-partners-grid {

@@ -48,6 +48,11 @@
   align-items: flex-start;
   justify-content: center;
   gap: clamp(24px, 4vw, 56px);
+  /* Above the fixed guide lines (z-index 400), same as the footer and the
+     carousel tabs — the photos are opaque, and a guide line running across
+     one reads as a rendering defect, not the page's grid. */
+  position: relative;
+  z-index: 401;
 }
 
 .founder-story-image {
