@@ -25,7 +25,7 @@ const TESTIMONIALS: Testimonial[] = [
     ],
     name: 'Deepali Mane',
     title: 'Founder, M.D',
-    photo: '/about-founder-1.jpeg',
+    photo: '/about-founder-1.webp',
   },
   {
     quote: [
@@ -35,7 +35,7 @@ const TESTIMONIALS: Testimonial[] = [
     ],
     name: 'Bholesing Girase',
     title: 'Co-Founder & COO',
-    photo: '/about-founder-2.jpeg',
+    photo: '/about-founder-2.webp',
   },
 ];
 

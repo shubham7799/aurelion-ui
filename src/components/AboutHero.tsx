@@ -5,7 +5,7 @@ export default function AboutHero() {
     <section
       className="about-hero"
       data-guide-media
-      style={{ backgroundImage: 'url(/about-hero-bg.png)' }}
+      style={{ backgroundImage: 'url(/about-hero-bg.webp)' }}
     >
       <div className="about-hero-scrim" />
 

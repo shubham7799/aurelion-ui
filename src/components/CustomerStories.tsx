@@ -51,7 +51,7 @@ const STORIES: Story[] = [
       'When I was struggling with severe back pain, Deepali helped me find a place in Pune where I could stay and receive the care I needed for 10 days. But what I remember most is that she didn’t simply arrange it and leave it there. She kept checking on me, making sure everything was going well and that I was comfortable, so I could just focus on resting and feeling better.',
       'That experience made me realise how valuable it is to have someone who understands what you need, takes care of it and stays involved until you are truly okay. I believe that is why Aurelion needed to exist — to give people that kind of support and peace of mind when life gets difficult, and even when it simply gets busy.',
     ],
-    photo: '/testimonial-1.png',
+    photo: '/testimonial-1.webp',
   },
   {
     name: 'Maithili',
@@ -59,7 +59,7 @@ const STORIES: Story[] = [
       'Living abroad, I needed someone I could trust to manage my property in India. Deepali understood what I needed, coordinated everything on the ground, kept me updated and stayed involved until it was sorted. Knowing someone I trusted was looking out for my interests gave me incredible peace of mind.',
       'For me, that experience was a reminder that distance should never mean being disconnected from the things that matter to you. Knowing I had someone I could trust on the ground gave me confidence to manage life from thousands of miles away. That is the kind of reassurance I now see at the heart of Aurelion.',
     ],
-    photo: '/testimonial-2.png',
+    photo: '/testimonial-2.webp',
   },
   {
     name: 'Mr. Suraj Kazi',
@@ -68,7 +68,7 @@ const STORIES: Story[] = [
       'What touched me most wasn\'t just getting the suit back, but the fact that he took my problem as his own and quietly saw it through.',
       'That is what I see in Aurelion — someone who listens, takes ownership and makes things happen, even when they seem impossible.'
     ],
-    photo: '/testimonial-3.png',
+    photo: '/testimonial-3.webp',
   },
 ];
 

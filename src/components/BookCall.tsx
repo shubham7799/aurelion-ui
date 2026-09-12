@@ -6,7 +6,7 @@ export default function BookCall() {
     <section
       className="book-call"
       data-guide-media
-      style={{ backgroundImage: 'url(../book-call.png)' }}
+      style={{ backgroundImage: 'url(../book-call.webp)' }}
     >
       <div className="book-call-content">
         <h2>What would life feel like if 
