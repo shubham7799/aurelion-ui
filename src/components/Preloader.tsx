@@ -10,13 +10,38 @@ interface PreloaderProps {
 const inViewport = (rect: DOMRect) => rect.bottom > 0 && rect.top < window.innerHeight;
 
 /**
+ * The longest the loader will hold the page back, whatever is still in
+ * flight. A hard ceiling matters more than the exact number: `Promise.all`
+ * has no deadline of its own, so a single request that never settles — a
+ * stalled font, an image whose src resolves to nothing — would otherwise
+ * pin the counter at its ceiling indefinitely.
+ */
+const ASSET_TIMEOUT_MS = 3000;
+/**
+ * Fonts get a shorter leash of their own: they come from a third party
+ * (fonts.gstatic.com), so they're the most likely thing to hang, and the
+ * stylesheet asks for `display=swap` anyway — text is already on screen in a
+ * fallback, so there's no flash being hidden by waiting on them.
+ */
+const FONT_TIMEOUT_MS = 1500;
+
+/** Settles with the promise, or on its own once `ms` is up — whichever first. */
+const withTimeout = (promise: Promise<unknown>, ms: number): Promise<void> =>
+  Promise.race([
+    promise,
+    new Promise<void>((resolve) => {
+      window.setTimeout(resolve, ms);
+    }),
+  ]).then(() => undefined);
+
+/**
  * Waits only for what the first screen actually needs — the images (and video
  * posters) already sitting in the initial viewport, plus the fonts they're
- * set in. Everything further down the page — every other section's photos,
- * and the video files themselves — keeps loading in the background exactly as
- * the browser would anyway; the preloader no longer holds the door shut for
- * assets nobody can see yet, which used to include a multi-megabyte hero clip
- * and a whole page's worth of below-the-fold photography.
+ * set in, and never for longer than ASSET_TIMEOUT_MS. Everything further down
+ * the page — every other section's photos, and the video files themselves —
+ * keeps loading in the background exactly as the browser would anyway; the
+ * preloader no longer holds the door shut for assets nobody can see yet, and
+ * anything that overruns simply finishes behind the revealed page.
  */
 function waitForAssets(): Promise<void> {
   const preload = (src: string) =>
@@ -39,9 +64,12 @@ function waitForAssets(): Promise<void> {
     .filter(Boolean)
     .map(preload);
 
-  const fontsPromise: Promise<unknown> = document.fonts?.ready ?? Promise.resolve();
+  const fontsPromise = withTimeout(document.fonts?.ready ?? Promise.resolve(), FONT_TIMEOUT_MS);
 
-  return Promise.all([...imagePromises, ...posterPromises, fontsPromise]).then(() => undefined);
+  return withTimeout(
+    Promise.all([...imagePromises, ...posterPromises, fontsPromise]),
+    ASSET_TIMEOUT_MS
+  );
 }
 
 const SHAPE_WIDTH = 76;
@@ -113,15 +141,15 @@ export default function Preloader({ onComplete }: PreloaderProps) {
         .to(rootRef.current, { opacity: 0, duration: 0.2 }, '-=0.15');
     };
 
-    // Keeps the counter visibly climbing while assets are still in flight —
-    // now scoped to just the first screen, so this rarely runs to completion
-    // before waitForAssets resolves and cuts it off.
-    const softTween = gsap.to(counter, {
-      value: 90,
-      duration: 1.2,
-      ease: 'power1.out',
-      onUpdate: render,
-    });
+    // Two legs, not one: a quick climb to 70 so it reads as responsive
+    // straight away, then a slow trickle toward 96 for as long as the wait
+    // lasts. A single tween reached its ceiling and stopped dead, so any
+    // remaining wait looked like a freeze rather than work still happening.
+    // Killed wherever it's got to the moment waitForAssets resolves.
+    const softTween = gsap
+      .timeline()
+      .to(counter, { value: 70, duration: 0.8, ease: 'power1.out', onUpdate: render })
+      .to(counter, { value: 96, duration: 6, ease: 'power1.out', onUpdate: render });
 
     waitForAssets().then(() => {
       softTween.kill();

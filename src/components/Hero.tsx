@@ -15,6 +15,10 @@ export default function Hero() {
         loop
         muted
         playsInline
+        // Without this the browser reaches for the whole clip the moment the
+        // page mounts, competing with the handful of requests the preloader
+        // is waiting on — which is what was pinning the loader at its ceiling.
+        preload="metadata"
         // poster="/hero.png"
         // Also sets defaultPlaybackRate, since some browsers reset the
         // effective rate to it whenever the loop restarts.
