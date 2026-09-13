@@ -96,7 +96,7 @@ export default function Contact() {
 
           <div className="contact-info-col contact-info-call">
             <p className="contact-info-label">Call Us On</p>
-            <p className="contact-info-text">+91 - 9167873930</p>
+            <p className="contact-info-text">+91 - 7219312755</p>
           </div>
         </div>
 
