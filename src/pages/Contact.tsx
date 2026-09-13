@@ -103,7 +103,7 @@ export default function Contact() {
         <div
           className="contact-hero-map"
           data-guide-media
-          style={{ backgroundImage: 'url(/hero-contact.png)' }}
+          style={{ backgroundImage: 'url(/hero-contact.webp)' }}
         />
       </section>
 

@@ -138,7 +138,7 @@ export default function NetworkPartners() {
         */}
         <div
           className="network-globe-map"
-          style={{ backgroundImage: 'url(/network-globe.png)' }}
+          style={{ backgroundImage: 'url(/network-globe.webp)' }}
         />
 
         <svg

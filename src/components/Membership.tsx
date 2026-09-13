@@ -33,7 +33,7 @@ export default function Membership() {
               it, so its left edge lands on a column line instead of the page
               edge. */}
           <img
-            src="/membership.png"
+            src="/membership.webp"
             alt=""
             width={1071}
             height={1138}
