@@ -42,7 +42,7 @@
   max-width: 620px;
   /* Carries the gap down to the watermark on its own now — that space used to
      come from the (now removed) empty row the nav briefly sat in below it. */
-  margin: 0 0 160px;
+  margin: 0 0 60px;
   font-family: 'Instrument Sans', sans-serif;
   font-weight: 500;
   font-size: 14px;
